@@ -11,8 +11,8 @@ function App() {
   return (
     <Router>
       <div>This is the router.</div>
-      <Route path={ROUTES.LOGIN} exact component={Login} />
-      <Route path={ROUTES.HOME} component={Home} />
+      <Route path={ROUTES.HOME} exact component={Home} />
+      <Route path={ROUTES.LOGIN} component={Login} />
     </Router>
   );
 }
