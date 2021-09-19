@@ -13,7 +13,9 @@ Bloomington, IN, USA
 
 
 ### Austin Parks, Caomputer Science BS 
-Add your bio here
+Luddy School of Informatics, Computing & Engineering, 2023 <br/>
+Indiana Univserity-Bloomington <br/>
+Bloomington, IN, USA
 <br/><br/>
 
 ### Christian Elliot, Computer Science BS
