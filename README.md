@@ -2,7 +2,9 @@
 
 ## Team Members
 ### Vedant Vachharajani, Computer Science MS 
-Add your bio here
+Luddy School of Informatics, Computing & Engineering, 2022 <br/>
+Indiana University-Bloomington <br/>
+Bloomington, IN, USA
 <br/><br/>
 
 ### Camisa Vines, Computer Science BS
