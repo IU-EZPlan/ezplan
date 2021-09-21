@@ -2,7 +2,7 @@
 
 ## Team Members
 ### Vedant Vachharajani, Computer Science MS 
-Luddy School of Informatics, Computing & Engineering, 2022 <br/>
+Luddy School of Informatics, Computing & Engineering, 2022  <br/>
 Indiana University-Bloomington <br/>
 Bloomington, IN, USA
 <br/><br/>
