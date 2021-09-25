@@ -14,7 +14,7 @@ Bloomington, IN, USA
 <br/><br/>
 
 
-### Austin Parks, Caomputer Science BS 
+### Austin Parks, Computer Science BS 
 Luddy School of Informatics, Computing & Engineering, 2023 <br/>
 Indiana Univserity-Bloomington <br/>
 Bloomington, IN, USA
