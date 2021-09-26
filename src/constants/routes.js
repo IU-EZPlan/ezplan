@@ -8,3 +8,4 @@ export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 
 export const DASHBOARD = "/dashboard";
+export const UPDATE_PROFILE = "/update-profile"

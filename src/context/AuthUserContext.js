@@ -33,6 +33,14 @@ export const AuthProvider = ({children}) => {
         return auth.sendPasswordResetEmail(email);
     }
 
+    function updateEmail(email) {
+        return currentUser.updateEmail(email);
+    }
+
+    function updatePassword(password) {
+        return currentUser.updatePassword(password);
+    }
+
     // UseEffect is like a constructor. only runs once when the page is loaded
     useEffect(() => {        
         const unsubscribe = auth.onAuthStateChanged(user => {
@@ -48,7 +56,9 @@ export const AuthProvider = ({children}) => {
         signup,
         login,
         logout,
-        resetPassword
+        resetPassword,
+        updateEmail,
+        updatePassword
     }
 
     return (

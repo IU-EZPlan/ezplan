@@ -8,6 +8,7 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import ForgotPassword from './pages/forgotPassword';
+import UpdateProfile from './pages/updateProfile';
 
 import SignUp from './components/signup';
 import PrivateRoute from './components/PrivateRoute';
@@ -23,6 +24,7 @@ function App() {
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
         <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
+        <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
       </AuthProvider>
     </Router>
   );
