@@ -24,6 +24,7 @@ const Dashboard = () => {
         <div>
             <h1>Profile</h1>
             <p>Email: <strong>{currentUser.email}</strong></p>
+            {error ? <p>{error}</p> : null}
 
             <button onClick={handleLogout}>Log out</button>
         </div>

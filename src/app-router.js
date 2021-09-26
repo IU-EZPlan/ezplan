@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthUserContext';
 import Home from './pages/home';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
+import ForgotPassword from './pages/forgotPassword';
 
 import SignUp from './components/signup';
 import PrivateRoute from './components/PrivateRoute';
@@ -17,10 +18,11 @@ function App() {
     <Router>
       <div>This is the router.</div>
       <AuthProvider>
-      <Route path={ROUTES.HOME} exact component={Home} />
-      <Route path={ROUTES.LOGIN} component={Login} />
-      <Route path={ROUTES.SIGN_UP} component={SignUp} />
-      <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
+        <Route path={ROUTES.HOME} exact component={Home} />
+        <Route path={ROUTES.LOGIN} component={Login} />
+        <Route path={ROUTES.SIGN_UP} component={SignUp} />
+        <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
+        <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
       </AuthProvider>
     </Router>
   );

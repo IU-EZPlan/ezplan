@@ -1,20 +1,15 @@
 import React, {useRef, useState} from "react";
 import { useAuth } from "../context/AuthUserContext";
-import { useHistory } from "react-router";
-import * as ROUTES from '../constants/routes';
+// import * as ROUTES from '../constants/routes';
 
-const Login = () => {
+const ForgotPassword = () => {
     const emailRef = useRef();
-    const passwordRef = useRef();
-    const { login } = useAuth();
+    const { resetPassword } = useAuth();
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const history = useHistory();
+    const [message, setMessage] = useState("");
 
-
-    // TODO: need to add functionality to check that a password is strong enough
-    // currently the passwird must be at least 6 characters long to meet firebase standards
 
     // on sibmit functional 
     const handleSubmit = async (e) => {
@@ -22,11 +17,12 @@ const Login = () => {
 
         try {
             setError("");
+            setMessage("")
             setLoading(true);
-            await login(emailRef.current.value, passwordRef.current.value);
-            history.push(ROUTES.DASHBOARD)
+            await resetPassword(emailRef.current.value);
+            setMessage("Request Successful. Check email for further instructions.")
         } catch {
-            return setError("Failed to sign in.");
+            return setError("Failed to reset password.");
         }
         setLoading(false);
     }
@@ -34,7 +30,7 @@ const Login = () => {
 
     return (
         <div className="container">
-            <h1>Login Page</h1>
+            <h1>Forogt Password</h1>
   
             <div className="row">
                 <form className="col s12" onSubmit={handleSubmit}>
@@ -47,26 +43,21 @@ const Login = () => {
                         </div>
                     </div>
 
-                    {/* This row is for password */}
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <input id="password" type="password" className="validate" required ref={passwordRef}/>
-                            <label htmlFor="password">Password</label>
-                        </div>
-                    </div>
-
                     {error ? (
                         <p className="red-text">{error}</p>
                     ):null}
 
-                    <button type="submit" disabled={loading}>Login</button>
+                    {message ? (
+                        <p className="red-text">{message}</p>
+                    ):null}
+
+                    <button type="submit" disabled={loading}>Reset login</button>
                 </form>
             </div>
             
-            <div>Need an account? Sign in</div>
-            <div>Forgot Password?</div>
+            <div>Login</div>
         </div>
     )
 }
 
-export default Login;
+export default ForgotPassword;
