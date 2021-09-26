@@ -1,123 +1,97 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
-
-import { withFirebase } from '../Firebase';
+import React, {useRef, useState} from "react";
+import { useAuth } from "../../context/AuthUserContext";
+import { useHistory } from "react-router";
 import * as ROUTES from '../../constants/routes';
- 
-const SignUpPage = () => (
-  <div className="container">
-    <h1>SignUp</h1>
-    <SignUpForm />
-  </div>
-);
- 
-const INITIAL_STATE = {
-    username: '',
-    email: '',
-    passwordOne: '',
-    passwordTwo: '',
-    error: null,
-};
+
+const SignUp = () => {
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const passwordConfirmRef = useRef();
+    const { signup } = useAuth();
+
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const history = useHistory();
 
 
-class SignUpFormBase extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { INITIAL_STATE };
-  }
- 
-  onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
- 
-    this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
-        // Create a user in your Firebase realtime database
-        return this.props.firebase
-          .user(authUser.user.uid)
-          .set({
-            username,
-            email,
-          });
-      })
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
- 
-    event.preventDefault();
-  }
- 
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
- 
-  render() {
-    const {
-      username,
-      email,
-      passwordOne,
-      passwordTwo,
-      error,
-    } = this.state;
- 
-    const isInvalid =
-        passwordOne !== passwordTwo ||
-        passwordOne === '' ||
-        email === '' ||
-        username === '';
+    // TODO: need to add functionality to check that a password is strong enough
+    // currently the passwird must be at least 6 characters long to meet firebase standards
+
+    // on sibmit functional 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // If the password and the confirm password do not math
+        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+            return setError("Passwords do not match.")
+        }
+
+        try {
+            setError("");
+            setLoading(true);
+            console.log(emailRef.current.value, passwordConfirmRef.current.value);
+            await signup(emailRef.current.value, passwordRef.current.value);
+            history.push(ROUTES.DASHBOARD)
+        } catch {
+            return setError("Failed to create an account");
+        }
+        setLoading(false);
+    }
 
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">Sign Up</button>
- 
-        {error && <p>{error.message}</p>}
-      </form>
-    );
-  }
-}
- 
-const SignUpLink = () => (
-  <p>
-    Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
-);
+        <div className="container">
+            <h1>Sign up</h1>
+  
+            <div className="row">
+                <form className="col s12" onSubmit={handleSubmit}>
+                    {/* This row is for first and last name */}
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <input placeholder="Placeholder" id="first_name" type="text" className="validate" required/>
+                            <label htmlFor="first_name">First Name</label>
+                        </div>
+                        <div className="input-field col s6">
+                            <input id="last_name" type="text" className="validate"/>
+                            <label htmlFor="last_name">Last Name</label>
+                        </div>
+                    </div>
 
-const SignUpForm = compose(withRouter, withFirebase,)(SignUpFormBase);
- 
-export default SignUpPage;
- 
-export { SignUpForm, SignUpLink };
+                    {/* This row is for email */}
+                    <div className="row">
+                        <div className="input-field col s12">
+                            <input id="email" type="email" className="validate" required ref={emailRef}/>
+                            <label htmlFor="email">Email</label>
+                        </div>
+                    </div>
+
+                    {/* This row is for password */}
+                    <div className="row">
+                        <div className="input-field col s12">
+                            <input id="password" type="password" className="validate" required ref={passwordRef}/>
+                            <label htmlFor="password">Password</label>
+                        </div>
+                    </div>
+
+                    {/* This row is for password confirmation */}
+                    <div className="row">
+                        <div className="input-field col s12">
+                            <input id="passwordConfrim" type="password" className="validate" required ref={passwordConfirmRef} />
+                            <label htmlFor="passwordConfirm">Confirm Password</label>
+                        </div>
+                    </div>
+
+                    {error ? (
+                        <p className="red-text">{error}</p>
+                    ):null}
+
+                    <button type="submit" disabled={loading}>Sign up</button>
+                </form>
+            </div>
+            
+            <div>Already have an account? Log in</div>
+        </div>
+    )
+}
+
+export default SignUp
