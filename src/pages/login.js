@@ -1,4 +1,5 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthUserContext";
 import { useHistory } from "react-router";
 import * as ROUTES from '../constants/routes';
@@ -13,9 +14,6 @@ const Login = () => {
     const history = useHistory();
 
 
-    // TODO: need to add functionality to check that a password is strong enough
-    // currently the passwird must be at least 6 characters long to meet firebase standards
-
     // on sibmit functional 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,7 +22,7 @@ const Login = () => {
             setError("");
             setLoading(true);
             await login(emailRef.current.value, passwordRef.current.value);
-            history.push(ROUTES.DASHBOARD)
+            history.push(ROUTES.DASHBOARD);
         } catch {
             return setError("Failed to sign in.");
         }
@@ -34,37 +32,31 @@ const Login = () => {
 
     return (
         <div className="container">
-            <h1>Login Page</h1>
-  
-            <div className="row">
-                <form className="col s12" onSubmit={handleSubmit}>
+            <div class="card my-5">
+                <div class="card-body">
+                    <h1>Login Page</h1>
 
-                    {/* This row is for email */}
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <input id="email" type="email" className="validate" required ref={emailRef}/>
-                            <label htmlFor="email">Email</label>
+                    <form onSubmit={handleSubmit} className="my-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input id="email" type="email" className="form-control" required ref={emailRef} placeholder="Enter email" />
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
-                    </div>
-
-                    {/* This row is for password */}
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <input id="password" type="password" className="validate" required ref={passwordRef}/>
-                            <label htmlFor="password">Password</label>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input id="password" type="password" className="form-control" required ref={passwordRef} placeholder="Password" />
                         </div>
-                    </div>
+                    
+                        {error ? <p>{error}</p> : null}
+                        <button type="submit" className="btn btn-primary" disabled={loading}>Login</button>
+                    </form>
+                </div>
 
-                    {error ? (
-                        <p className="red-text">{error}</p>
-                    ):null}
-
-                    <button type="submit" disabled={loading}>Login</button>
-                </form>
-            </div>
-            
-            <div>Need an account? Sign in</div>
-            <div>Forgot Password?</div>
+                <div className="ml-3">
+                    <p>Need an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link></p>
+                    <p><Link to={ROUTES.PASSWORD_FORGET}>Forogt Password?</Link></p>
+                </div>
+            </div>            
         </div>
     )
 }

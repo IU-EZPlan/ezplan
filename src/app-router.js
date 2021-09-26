@@ -5,25 +5,31 @@ import { AuthProvider } from './context/AuthUserContext';
 
 // importing pages
 import Home from './pages/home';
-import Login from './pages/login';
+import Landing from './pages/landing';
 import Dashboard from './pages/dashboard';
+import SignUp from './pages/signup';
+import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import UpdateProfile from './pages/updateProfile';
 
-import SignUp from './components/signup';
+// importing components
+import Navbar from './components/navbar';
 import PrivateRoute from './components/PrivateRoute';
 import * as ROUTES from './constants/routes';
 
 function App() {
   return (
     <Router>
-      <div>This is the router.</div>
       <AuthProvider>
-        <Route path={ROUTES.HOME} exact component={Home} />
+        <Navbar />
+        <Route path={ROUTES.LANDING} exact component={Landing} />
+        <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.LOGIN} component={Login} />
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
-        <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
         <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
+
+        {/* Must have an account to see the following pages */}
+        <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
         <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
       </AuthProvider>
     </Router>

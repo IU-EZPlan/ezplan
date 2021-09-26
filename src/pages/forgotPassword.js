@@ -1,6 +1,7 @@
 import React, {useRef, useState} from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthUserContext";
-// import * as ROUTES from '../constants/routes';
+import * as ROUTES from '../constants/routes';
 
 const ForgotPassword = () => {
     const emailRef = useRef();
@@ -30,32 +31,35 @@ const ForgotPassword = () => {
 
     return (
         <div className="container">
-            <h1>Forogt Password</h1>
-  
-            <div className="row">
-                <form className="col s12" onSubmit={handleSubmit}>
+            <div class="card my-5">
+                <div class="card-body">
+                    <h1>Forogt Password</h1>
 
-                    {/* This row is for email */}
-                    <div className="row">
-                        <div className="input-field col s12">
-                            <input id="email" type="email" className="validate" required ref={emailRef}/>
-                            <label htmlFor="email">Email</label>
+                    <form className="my-3" onSubmit={handleSubmit}>
+
+                        {/* This row is for email */}
+                        <div className="row">
+                            <div className="input-field col s12">
+                                <input id="email" type="email" className="form-control" required ref={emailRef}/>
+                                <label htmlFor="email">Email</label>
+                            </div>
                         </div>
-                    </div>
 
-                    {error ? (
-                        <p className="red-text">{error}</p>
-                    ):null}
+                        {error ? (
+                            <p className="red-text">{error}</p>
+                        ):null}
 
-                    {message ? (
-                        <p className="red-text">{message}</p>
-                    ):null}
+                        {message ? (
+                            <p className="red-text">{message}</p>
+                        ):null}
 
-                    <button type="submit" disabled={loading}>Reset login</button>
-                </form>
+                        <button type="submit" className="btn btn-primary" disabled={loading}>Reset login</button>
+                    </form>
+                    
+                    <div>Ready to <Link to={ROUTES.LOGIN}>Login</Link></div>
+
+                </div>
             </div>
-            
-            <div>Login</div>
         </div>
     )
 }

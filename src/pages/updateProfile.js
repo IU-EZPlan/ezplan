@@ -1,4 +1,5 @@
 import React, {useRef, useState} from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthUserContext";
 import { useHistory } from "react-router";
 import * as ROUTES from '../constants/routes';
@@ -63,11 +64,11 @@ const UpdateProfile = () => {
                     {/* This row is for first and last name */}
                     <div className="row">
                         <div className="input-field col s6">
-                            <input placeholder="Placeholder" id="first_name" type="text" className="validate" required/>
+                            <input placeholder="Placeholder" id="first_name" type="text" className="form-control" required/>
                             <label htmlFor="first_name">First Name</label>
                         </div>
                         <div className="input-field col s6">
-                            <input id="last_name" type="text" className="validate"/>
+                            <input id="last_name" type="text" className="form-control"/>
                             <label htmlFor="last_name">Last Name</label>
                         </div>
                     </div>
@@ -75,7 +76,7 @@ const UpdateProfile = () => {
                     {/* This row is for email */}
                     <div className="row">
                         <div className="input-field col s12">
-                            <input id="email" type="email" className="validate" required ref={emailRef} defaultValue={currentUser.email} />
+                            <input id="email" type="email" className="form-control" required ref={emailRef} defaultValue={currentUser.email} />
                             <label htmlFor="email">Email</label>
                         </div>
                     </div>
@@ -83,7 +84,7 @@ const UpdateProfile = () => {
                     {/* This row is for password */}
                     <div className="row">
                         <div className="input-field col s12">
-                            <input id="password" type="password" className="validate" ref={passwordRef} placeholder="Leave blank to keep the same" />
+                            <input id="password" type="password" className="form-control" ref={passwordRef} placeholder="Leave blank to keep the same" />
                             <label htmlFor="password">Password</label>
                         </div>
                     </div>
@@ -91,7 +92,7 @@ const UpdateProfile = () => {
                     {/* This row is for password confirmation */}
                     <div className="row">
                         <div className="input-field col s12">
-                            <input id="passwordConfrim" type="password" className="validate" ref={passwordConfirmRef} placeholder="Leave blank to keep the same" />
+                            <input id="passwordConfrim" type="password" className="form-control" ref={passwordConfirmRef} placeholder="Leave blank to keep the same" />
                             <label htmlFor="passwordConfirm">Confirm Password</label>
                         </div>
                     </div>
@@ -100,13 +101,14 @@ const UpdateProfile = () => {
                         <p className="red-text">{error}</p>
                     ):null}
 
-                    <button type="submit" disabled={loading}>Save Changes</button>
+                    <button type="submit" className="btn btn-primary" disabled={loading}>Save Changes</button>
                 </form>
 
                 {/* Add in cancel button and redirect back to dashboard */}
             </div>
-            
-            <div>Already have an account? Log in</div>
+            <Link to={ROUTES.DASHBOARD}>
+                <button type="button" className="btn btn-secondary">Cancel</button>
+            </Link>
         </div>
     )
 }
