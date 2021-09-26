@@ -1,14 +1,23 @@
 import React, {useState} from "react";
 import { useAuth } from "../context/AuthUserContext";
+import { useHistory } from "react-router";
+import * as ROUTES from '../constants/routes';
 
  // this page is only visible to users who are logged in
 const Dashboard = () => {
-
+    const history = useHistory();
     const [error, setError] = useState();
     const { currentUser, logout } = useAuth();
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        setError("");
 
+        try {
+            await logout(); 
+            history.push(ROUTES.LOGIN);
+        } catch {
+            setError("failed to log out");
+        }
     }
 
     return (

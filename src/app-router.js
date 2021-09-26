@@ -9,6 +9,7 @@ import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 
 import SignUp from './components/signup';
+import PrivateRoute from './components/PrivateRoute';
 import * as ROUTES from './constants/routes';
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
       <Route path={ROUTES.HOME} exact component={Home} />
       <Route path={ROUTES.LOGIN} component={Login} />
       <Route path={ROUTES.SIGN_UP} component={SignUp} />
-      <Route path={ROUTES.DASHBOARD} component={Dashboard} />
+      <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
       </AuthProvider>
     </Router>
   );
