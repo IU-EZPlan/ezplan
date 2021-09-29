@@ -22,7 +22,7 @@ const Login = () => {
             setError("");
             setLoading(true);
             await login(emailRef.current.value, passwordRef.current.value);
-            history.push(ROUTES.DASHBOARD);
+            history.push(ROUTES.ACCOUNT);
         } catch {
             return setError("Failed to sign in.");
         }
@@ -54,7 +54,7 @@ const Login = () => {
 
                 <div className="ml-3">
                     <p>Need an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link></p>
-                    <p><Link to={ROUTES.PASSWORD_FORGET}>Forogt Password?</Link></p>
+                    <p><Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link></p>
                 </div>
             </div>            
         </div>

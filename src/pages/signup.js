@@ -17,6 +17,25 @@ const SignUp = () => {
 
     // TODO: need to add functionality to check that a password is strong enough
     // currently the passwird must be at least 6 characters long to meet firebase standards
+    function passwordReq(password){
+        if (password.length < 8) {
+            setError("Password must be more than 8 characters long.")
+            return false
+        }
+        if (!/[A-Z]/.test(password)){
+            setError("Password must contain a uppercase letter.")
+            return false
+        }
+        if (!/[a-z]/.test(password)){
+            setError("Password must contain a lowercase letter.")
+            return false
+        }
+        if (!/[!@#\$%\^\&*\)\(+=._-]/.test(password)){
+            setError("Password must contain a special character.")
+            return false
+        }
+        return true
+    }
 
     // on sibmit functional 
     const handleSubmit = async (e) => {
@@ -25,6 +44,10 @@ const SignUp = () => {
         // If the password and the confirm password do not math
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
             return setError("Passwords do not match.")
+        }
+        
+        if(!passwordReq(passwordRef.current.value)){
+            return
         }
 
         try {
