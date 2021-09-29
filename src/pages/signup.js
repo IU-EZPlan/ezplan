@@ -55,7 +55,7 @@ const SignUp = () => {
             setLoading(true);
             console.log(emailRef.current.value, passwordConfirmRef.current.value);
             await signup(emailRef.current.value, passwordRef.current.value);
-            history.push(ROUTES.DASHBOARD)
+            history.push(ROUTES.ACCOUNT)
         } catch {
             return setError("Failed to create an account");
         }

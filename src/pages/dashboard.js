@@ -37,7 +37,7 @@ const Dashboard = () => {
             <p>Things we need to add:</p>
             <ul>
                 <li>View Itinerary</li>
-                <li>Change Itinerary --> Maybe drag and drop?</li>
+                <li>Change Itinerary -- Maybe drag and drop?</li>
                 <li>Share Itinerary with friends</li>
             </ul>
         </div>

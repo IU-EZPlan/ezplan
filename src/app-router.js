@@ -29,7 +29,7 @@ function App() {
         <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
 
         {/* Must have an account to see the following pages */}
-        <PrivateRoute path={ROUTES.DASHBOARD} component={Dashboard} />
+        <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />
         <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
       </AuthProvider>
     </Router>

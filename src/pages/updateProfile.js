@@ -44,7 +44,7 @@ const UpdateProfile = () => {
 
         
         Promise.all(promises).then(() => {
-            history.push(ROUTES.DASHBOARD)
+            history.push(ROUTES.ACCOUNT)
         }).catch(() => {
             setError("faild to update");
         }).finally(() => {
@@ -106,7 +106,7 @@ const UpdateProfile = () => {
 
                 {/* Add in cancel button and redirect back to dashboard */}
             </div>
-            <Link to={ROUTES.DASHBOARD}>
+            <Link to={ROUTES.ACCOUNT}>
                 <button type="button" className="btn btn-secondary">Cancel</button>
             </Link>
         </div>
