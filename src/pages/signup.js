@@ -17,22 +17,22 @@ const SignUp = () => {
 
     // TODO: need to add functionality to check that a password is strong enough
     // currently the passwird must be at least 6 characters long to meet firebase standards
-    function passwordReq(password){
+    function passwordReq(password) {
         if (password.length < 8) {
-            setError("Password must be more than 8 characters long.")
-            return false
+            setError("Password must be more than 8 characters long.");
+            return false;
         }
-        if (!/[A-Z]/.test(password)){
-            setError("Password must contain a uppercase letter.")
-            return false
+        if (!/[A-Z]/.test(password)) {
+            setError("Password must contain a uppercase letter.");
+            return false;
         }
-        if (!/[a-z]/.test(password)){
-            setError("Password must contain a lowercase letter.")
-            return false
+        if (!/[a-z]/.test(password)) {
+            setError("Password must contain a lowercase letter.");
+            return false;
         }
-        if (!/[!@#\$%\^\&*\)\(+=._-]/.test(password)){
-            setError("Password must contain a special character.")
-            return false
+        if (!/[!@#$%^&*)(+=._-]/.test(password) || !/[0-9]/.test(password)) {
+            setError("Password must contain a special character and a number.");
+            return false;
         }
         return true
     }
