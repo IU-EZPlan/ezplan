@@ -30,10 +30,10 @@ const ForgotPassword = () => {
 
 
     return (
-        <div className="container">
-            <div class="card my-5">
+        <div className="container d-flex justify-content-center">
+            <div class="card my-5 w-75">
                 <div class="card-body">
-                    <h1>Forogt Password</h1>
+                    <h3 className="text-center">Forogt Password</h3>
 
                     <form className="my-3" onSubmit={handleSubmit}>
 
@@ -45,18 +45,17 @@ const ForgotPassword = () => {
                             </div>
                         </div>
 
-                        {error ? (
-                            <p className="red-text">{error}</p>
-                        ):null}
 
-                        {message ? (
-                            <p className="red-text">{message}</p>
-                        ):null}
+                        {error ? <p className="text-danger">{error}</p> : null}
+                        {message ? <p className="text-danger">{message}</p> : null}
 
-                        <button type="submit" className="btn btn-primary" disabled={loading}>Reset login</button>
+                        <div className="text-center">
+                            <button type="submit" className="btn btn-primary m-3" disabled={loading}>Reset Password</button>
+
+                            <div>Return to <Link to={ROUTES.LOGIN}>Login</Link></div>
+                        </div>
                     </form>
                     
-                    <div>Ready to <Link to={ROUTES.LOGIN}>Login</Link></div>
 
                 </div>
             </div>

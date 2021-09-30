@@ -1,0 +1,9 @@
+.card.profile img {
+    border-radius: 50%;
+}
+
+.card.profile .name-and-pic {
+    text-align: center;
+    /* align-items: center; */
+    /* display: flex; */
+}

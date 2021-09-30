@@ -64,17 +64,17 @@ const SignUp = () => {
 
 
     return (
-        <div className="container">
-            <div class="card my-5">
+        <div className="container d-flex justify-content-center">
+            <div class="card my-5 w-75">
                 <div class="card-body">
-                    <h1>Sign up</h1>
+                    <h3 className="text-center mb-5">Sign Up for EZ Plan</h3>
 
 
                     <form className="my-3" onSubmit={handleSubmit}>
                         {/* This row is for first and last name */}
-                        <div className="row">
+                        <div className="row my-2">
                             <div className="input-field col s6">
-                                <input placeholder="Placeholder" id="first_name" type="text" className="form-control" required/>
+                                <input id="first_name" type="text" className="form-control" required/>
                                 <label htmlFor="first_name">First Name</label>
                             </div>
                             <div className="input-field col s6">
@@ -84,7 +84,7 @@ const SignUp = () => {
                         </div>
 
                         {/* This row is for email */}
-                        <div className="row">
+                        <div className="row my-2">
                             <div className="input-field col s12">
                                 <input id="email" type="email" className="form-control" required ref={emailRef}/>
                                 <label htmlFor="email">Email</label>
@@ -92,7 +92,7 @@ const SignUp = () => {
                         </div>
 
                         {/* This row is for password */}
-                        <div className="row">
+                        <div className="row my-2">
                             <div className="input-field col s12">
                                 <input id="password" type="password" className="form-control" required ref={passwordRef}/>
                                 <label htmlFor="password">Password</label>
@@ -100,20 +100,22 @@ const SignUp = () => {
                         </div>
 
                         {/* This row is for password confirmation */}
-                        <div className="row">
+                        <div className="row my-2">
                             <div className="input-field col s12">
                                 <input id="passwordConfrim" type="password" className="form-control" required ref={passwordConfirmRef} />
                                 <label htmlFor="passwordConfirm">Confirm Password</label>
                             </div>
                         </div>
 
-                        {error ? <p>{error}</p> : null}
+                        {error ? <p className="text-danger">{error}</p> : null}
 
-                        <button type="submit" className="btn btn-primary" disabled={loading}>Sign up</button>
+                        <div className="text-center">
+                            <button type="submit" className="btn btn-primary my-3" disabled={loading}>Sign up</button>
+                            <div>Already have an account? <Link to={ROUTES.LOGIN}>Log in</Link></div>
+                        </div>
                     </form>
 
                     
-                    <div>Already have an account? <Link to={ROUTES.LOGIN}>Log in</Link></div>
                 </div>
             </div>
         </div>

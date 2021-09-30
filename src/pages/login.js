@@ -31,28 +31,31 @@ const Login = () => {
 
 
     return (
-        <div className="container">
-            <div class="card my-5">
+        <div className="container d-flex justify-content-center">
+            <div class="card my-5 w-75">
                 <div class="card-body">
-                    <h1>Login Page</h1>
+
+                    <h3 className="text-center">Log into EZ Plan</h3>
 
                     <form onSubmit={handleSubmit} className="my-3">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email address</label>
-                            <input id="email" type="email" className="form-control" required ref={emailRef} placeholder="Enter email" />
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <input id="email" type="email" className="form-control" required ref={emailRef} placeholder="Email" />
+                            {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
                             <input id="password" type="password" className="form-control" required ref={passwordRef} placeholder="Password" />
                         </div>
                     
-                        {error ? <p>{error}</p> : null}
-                        <button type="submit" className="btn btn-primary" disabled={loading}>Login</button>
+                        {error ? <p className="text-danger">{error}</p> : null}
+                        <div className="d-flex justify-content-center">
+                            <button type="submit" className="btn btn-primary d-flex" disabled={loading}>Login</button>
+                        </div>
                     </form>
                 </div>
 
-                <div className="ml-3">
+                <div className="ml-3 text-center">
                     <p>Need an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link></p>
                     <p><Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link></p>
                 </div>
