@@ -1,0 +1,11 @@
+.landing-hero {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.4)), url("https://wallpaperbat.com/img/238360-ocean-waves-wallpaper-hd.jpg");
+    margin-top: -8vh; /* height of the navbar */
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
