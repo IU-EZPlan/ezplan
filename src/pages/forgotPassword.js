@@ -12,10 +12,10 @@ const ForgotPassword = () => {
     const [message, setMessage] = useState("");
 
 
+
     // on sibmit functional 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             setError("");
             setMessage("")
