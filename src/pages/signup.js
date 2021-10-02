@@ -3,13 +3,16 @@ import { useAuth } from "../context/AuthUserContext";
 import { useHistory } from "react-router";
 import * as ROUTES from '../constants/routes';
 import { Link } from "react-router-dom";
+import { database } from "../firebase";
 
 const SignUp = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const { signup } = useAuth();
+    const fname = useRef();
+    const lname = useRef();
 
+    const { signup } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const history = useHistory();
@@ -54,19 +57,33 @@ const SignUp = () => {
             setError("");
             setLoading(true);
             console.log(emailRef.current.value, passwordConfirmRef.current.value);
-            await signup(emailRef.current.value, passwordRef.current.value);
-            history.push(ROUTES.ACCOUNT)
+            const res =  await signup(emailRef.current.value, passwordRef.current.value);
+            const newUser = res.user;
+            console.log(newUser);
+
+
+            database.collection('users').doc(newUser.uid).set({
+                email: newUser.email,
+                first_name: fname.current.value,
+                last_name: lname.current.value,
+            });
+
+
+            // await signup(emailRef.current.value, passwordRef.current.value);
+            history.push(ROUTES.ACCOUNT);
         } catch {
             return setError("Failed to create an account");
         }
+
+
         setLoading(false);
     }
 
 
     return (
         <div className="container d-flex justify-content-center">
-            <div class="card my-5 w-75">
-                <div class="card-body">
+            <div className="card my-5 w-75">
+                <div className="card-body">
                     <h3 className="text-center mb-5">Sign Up for EZ Plan</h3>
 
 
@@ -74,11 +91,11 @@ const SignUp = () => {
                         {/* This row is for first and last name */}
                         <div className="row my-2">
                             <div className="input-field col s6">
-                                <input id="first_name" type="text" className="form-control" required/>
+                                <input id="first_name" type="text" className="form-control" required ref={fname}/>
                                 <label htmlFor="first_name">First Name</label>
                             </div>
                             <div className="input-field col s6">
-                                <input id="last_name" type="text" className="form-control"/>
+                                <input id="last_name" type="text" className="form-control" ref={lname} />
                                 <label htmlFor="last_name">Last Name</label>
                             </div>
                         </div>

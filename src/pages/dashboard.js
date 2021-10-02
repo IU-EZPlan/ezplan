@@ -1,15 +1,21 @@
-import React, {useState} from "react";
-import { useAuth } from "../context/AuthUserContext";
-import { useHistory } from "react-router";
-import * as ROUTES from '../constants/routes';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAsync, IfFulfilled } from "react-async";
+
+import { useHistory } from "react-router";
+import { useAuth } from "../context/AuthUserContext";
+
+import * as ROUTES from '../constants/routes';
 import "../styles/dashboard.css";
 
  // this page is only visible to users who are logged in
 const Dashboard = () => {
     const history = useHistory();
     const [error, setError] = useState();
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout, getUserData } = useAuth();
+    const fetchState = useAsync({ promiseFn: getUserData })
+    // console.log(currentUserInfo);
+
 
     const handleLogout = async () => {
         setError("");
@@ -34,15 +40,21 @@ const Dashboard = () => {
                             </div>
 
                             <div className="card-body ml-2 mr-2">
+                                <IfFulfilled state={fetchState}>
+                                    {(data) => {
+                                        return <p>Name: {data.first_name + " " + data.last_name}</p>
+                                    }}
+                                </IfFulfilled>
+
                                 <p>Email: <strong>{currentUser.email}</strong></p>
                             </div>
 
                             {error ? <p>{error}</p> : null}
-                            <div class="card-footer bg-transparent d-flex justify-content-between">
+                            <div className="card-footer bg-transparent d-flex justify-content-between">
 
-                                <button type="button" class="btn btn-danger mr-5" onClick={handleLogout}>Log Out</button>
+                                <button type="button" className="btn btn-danger mr-5" onClick={handleLogout}>Log Out</button>
                                 <Link to={ROUTES.UPDATE_PROFILE}>
-                                    <button type="button" class="btn btn-secondary">Update Profile</button>
+                                    <button type="button" className="btn btn-secondary">Update Profile</button>
                                 </Link>
                             </div>
                         </div>
