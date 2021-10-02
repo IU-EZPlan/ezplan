@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAsync, IfFulfilled } from "react-async";
 
 import { useHistory } from "react-router";
 import { useAuth } from "../context/AuthUserContext";
@@ -13,8 +12,6 @@ const Dashboard = () => {
     const history = useHistory();
     const [error, setError] = useState();
     const { currentUser, logout, getUserData } = useAuth();
-    const fetchState = useAsync({ promiseFn: getUserData })
-    // console.log(currentUserInfo);
 
 
     const handleLogout = async () => {
@@ -35,17 +32,12 @@ const Dashboard = () => {
                     <div className="card profile">
                         <div className="card-body">
                             <div className="name-and-pic mb-5">
-                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="profile pic" width="50%" />
+                                <img src={currentUser.photoURL} alt="profile pic" width="50%" />
                                 <h4>My Account</h4>
                             </div>
 
                             <div className="card-body ml-2 mr-2">
-                                <IfFulfilled state={fetchState}>
-                                    {(data) => {
-                                        return <p>Name: {data.first_name + " " + data.last_name}</p>
-                                    }}
-                                </IfFulfilled>
-
+                                <p>Display Name: <strong>{currentUser.displayName}</strong></p>
                                 <p>Email: <strong>{currentUser.email}</strong></p>
                             </div>
 

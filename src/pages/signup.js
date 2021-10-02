@@ -18,8 +18,6 @@ const SignUp = () => {
     const history = useHistory();
 
 
-    // TODO: need to add functionality to check that a password is strong enough
-    // currently the passwird must be at least 6 characters long to meet firebase standards
     function passwordReq(password) {
         if (password.length < 6) {
             setError("Password must beat least 6 characters long.");
@@ -49,27 +47,29 @@ const SignUp = () => {
             return setError("Passwords do not match.")
         }
         
-        if(!passwordReq(passwordRef.current.value)){
+        if (!passwordReq(passwordRef.current.value)) {
             return
         }
 
         try {
             setError("");
             setLoading(true);
-            console.log(emailRef.current.value, passwordConfirmRef.current.value);
+
             const res =  await signup(emailRef.current.value, passwordRef.current.value);
             const newUser = res.user;
-            console.log(newUser);
 
-
-            database.collection('users').doc(newUser.uid).set({
-                email: newUser.email,
-                first_name: fname.current.value,
-                last_name: lname.current.value,
+            newUser.updateProfile({
+                displayName: fname.current.value + " " + lname.current.value,
+                photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             });
 
 
-            // await signup(emailRef.current.value, passwordRef.current.value);
+            // database.collection('users').doc(newUser.uid).set({
+            //     email: newUser.email,
+            //     first_name: fname.current.value,
+            //     last_name: lname.current.value,
+            // });
+
             history.push(ROUTES.ACCOUNT);
         } catch {
             return setError("Failed to create an account");

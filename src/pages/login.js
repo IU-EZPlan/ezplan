@@ -32,19 +32,19 @@ const Login = () => {
 
     return (
         <div className="container d-flex justify-content-center">
-            <div class="card my-5 w-75">
-                <div class="card-body">
+            <div className="card my-5 w-75">
+                <div className="card-body">
 
                     <h3 className="text-center">Log into EZ Plan</h3>
 
                     <form onSubmit={handleSubmit} className="my-3">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Email address</label>
                             <input id="email" type="email" className="form-control" required ref={emailRef} placeholder="Email" />
-                            {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
+                            {/* <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small> */}
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Password</label>
                             <input id="password" type="password" className="form-control" required ref={passwordRef} placeholder="Password" />
                         </div>
                     
