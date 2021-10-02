@@ -8,8 +8,6 @@ const UpdateProfile = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const fname = useRef();
-    const lname = useRef();
 
     const { currentUser, updateEmail, updatePassword } = useAuth();
 
@@ -69,7 +67,7 @@ const UpdateProfile = () => {
                             {/* This row is for first and last name.  The name is not allowed to be changed. */}
                             <div className="row my-2">
                                 <div className="input-field col s12">
-                                    <input id="name" type="text" className="form-control" ref={fname} disabled defaultValue={currentUser.displayName} />
+                                    <input id="name" type="text" className="form-control" disabled defaultValue={currentUser.displayName} />
                                     <label htmlFor="first_name">Display Name</label>
                                 </div>
                             </div>

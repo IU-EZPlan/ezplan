@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthUserContext";
 import { useHistory } from "react-router";
 import * as ROUTES from '../constants/routes';
 import { Link } from "react-router-dom";
-import { database } from "../firebase";
+// import { database } from "../firebase";
 
 const SignUp = () => {
     const emailRef = useRef();
@@ -64,6 +64,8 @@ const SignUp = () => {
             });
 
 
+
+            // If we were using firestore database
             // database.collection('users').doc(newUser.uid).set({
             //     email: newUser.email,
             //     first_name: fname.current.value,

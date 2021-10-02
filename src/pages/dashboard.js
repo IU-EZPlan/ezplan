@@ -11,7 +11,7 @@ import "../styles/dashboard.css";
 const Dashboard = () => {
     const history = useHistory();
     const [error, setError] = useState();
-    const { currentUser, logout, getUserData } = useAuth();
+    const { currentUser, logout } = useAuth();
 
 
     const handleLogout = async () => {
