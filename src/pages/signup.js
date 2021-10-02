@@ -58,12 +58,10 @@ const SignUp = () => {
             const res =  await signup(emailRef.current.value, passwordRef.current.value);
             const newUser = res.user;
 
-            newUser.updateProfile({
+            await newUser.updateProfile({
                 displayName: fname.current.value + " " + lname.current.value,
                 photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             });
-
-
 
             // If we were using firestore database
             // database.collection('users').doc(newUser.uid).set({
