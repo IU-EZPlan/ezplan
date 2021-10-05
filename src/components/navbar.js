@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import * as ROUTES from "../../constants/routes";
-import { useAuth } from "../../context/AuthUserContext";
-import '../../styles/navbar.css';
+import * as ROUTES from "../constants/routes";
+import { useAuth } from "../context/AuthUserContext";
+import '../styles/navbar.css';
 
 const LoggedOutNav = () => {
     return (

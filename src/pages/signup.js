@@ -90,11 +90,11 @@ const SignUp = () => {
                     <form className="my-3" onSubmit={handleSubmit}>
                         {/* This row is for first and last name */}
                         <div className="row my-2">
-                            <div className="input-field col s6">
+                            <div className="input-field col-sm-6">
                                 <input id="first_name" type="text" className="form-control" required ref={fname}/>
                                 <label htmlFor="first_name">First Name</label>
                             </div>
-                            <div className="input-field col s6">
+                            <div className="input-field col-sm-6">
                                 <input id="last_name" type="text" className="form-control" ref={lname} />
                                 <label htmlFor="last_name">Last Name</label>
                             </div>
@@ -102,7 +102,7 @@ const SignUp = () => {
 
                         {/* This row is for email */}
                         <div className="row my-2">
-                            <div className="input-field col s12">
+                            <div className="input-field col-12">
                                 <input id="email" type="email" className="form-control" required ref={emailRef}/>
                                 <label htmlFor="email">Email</label>
                             </div>
@@ -110,7 +110,7 @@ const SignUp = () => {
 
                         {/* This row is for password */}
                         <div className="row my-2">
-                            <div className="input-field col s12">
+                            <div className="input-field col-12">
                                 <input id="password" type="password" className="form-control" required ref={passwordRef}/>
                                 <label htmlFor="password">Password</label>
                             </div>
@@ -118,7 +118,7 @@ const SignUp = () => {
 
                         {/* This row is for password confirmation */}
                         <div className="row my-2">
-                            <div className="input-field col s12">
+                            <div className="input-field col-12">
                                 <input id="passwordConfrim" type="password" className="form-control" required ref={passwordConfirmRef} />
                                 <label htmlFor="passwordConfirm">Confirm Password</label>
                             </div>
