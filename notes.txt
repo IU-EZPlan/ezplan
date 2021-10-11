@@ -1,0 +1,9 @@
+To install pip:
+sudo apt install python3-pip
+
+To activate virtual environment on powershell:
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+venv/Scripts/activate
+
+To install requirements on virtual environment:
+python3 -m pip install -r .\requirements.txt
