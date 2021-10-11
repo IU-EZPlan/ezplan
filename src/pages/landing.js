@@ -9,7 +9,7 @@ const Landing = () => {
             <div className="landing-hero">
                 <div>
                     <img src={logo} alt="landing logo" />
-                    {/* <h3>Get started on your tour by planning a customize itinerary to your dream vacation</h3> */}
+                    <h4>Get started planning things to do with a customized itinerary for your next vacation</h4>
                 </div>
             </div>
 
