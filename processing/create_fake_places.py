@@ -1,4 +1,6 @@
-from firebase_connection import firebase_fake_places
+import sys
+sys.path.insert(0, "D:\IUB\SE\Project\ezplan\firebase_connection\firebase_fake_places")
+import FirebaseFakePlaces
 
 firebase_fake_places = firebase_fake_places.FirebaseFakePlaces()
 

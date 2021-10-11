@@ -1,4 +1,6 @@
-from flask import Flask, redirect, send_from_directory
+from flask import Flask, redirect, send_from_directory, request
+from processing import *
+from processing.places import Places
 
 app = Flask(__name__, static_folder='public')
 
@@ -6,6 +8,13 @@ app = Flask(__name__, static_folder='public')
 def hello_world():
     # return send_from_directory(app.static_folder, 'index.html')
     return "<p>Flask app </p>"
+
+# @app.route("/call1")
+# def fn():
+#     json = request.json()
+#     print(json)
+#     Places.getPlaces(json)
+
 
 
 
