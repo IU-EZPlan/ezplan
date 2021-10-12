@@ -1,10 +1,6 @@
 import React from "react";
 import "../styles/home.css";
 
-
-            
-
-
 // <p>Things we need to add:</p>
 // <ul>
 // <li>Search</li>
