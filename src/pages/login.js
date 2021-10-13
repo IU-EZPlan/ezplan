@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthUserContext";
 import { useHistory } from "react-router";
 import * as ROUTES from '../constants/routes';
+import "../styles/login.css";
+import logo from "../photos/logos/logo-black.png";
+
 
 const Login = () => {
     const emailRef = useRef();
@@ -31,31 +34,27 @@ const Login = () => {
 
 
     return (
-        <div className="container d-flex justify-content-center">
-            <div className="card my-5 w-75">
-                <div className="card-body">
+        <div className="login">
+            <div className="w-sm-25 w-mg-50 text-center">
+                <img src={logo} alt="logo" className="mx-auto w-50" />
 
-                    <h3 className="text-center">Log into EZ Plan</h3>
+                <div className="card-body">
+                    <h3>Log into EZ Plan</h3>
 
                     <form onSubmit={handleSubmit} className="my-3">
                         <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Email address</label>
                             <input id="email" type="email" className="form-control" required ref={emailRef} placeholder="Email" />
-                            {/* <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small> */}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleInputPassword1">Password</label>
                             <input id="password" type="password" className="form-control" required ref={passwordRef} placeholder="Password" />
                         </div>
                     
                         {error ? <p className="text-danger">{error}</p> : null}
                         <div className="d-flex justify-content-center">
-                            <button type="submit" className="btn btn-primary d-flex" disabled={loading}>Login</button>
+                            <button type="submit" className="btn btn-primary btn-block text-center" disabled={loading}>Login</button>
                         </div>
                     </form>
-                </div>
 
-                <div className="ml-3 text-center">
                     <p>Need an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link></p>
                     <p><Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link></p>
                 </div>

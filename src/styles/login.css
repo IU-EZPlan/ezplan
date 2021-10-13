@@ -1,0 +1,20 @@
+.login, .forgotPassword {
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lato', sans-serif;
+}
+
+.signup {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lato', sans-serif;
+
+}
+
+.login h3, .forgotPassword h3, .signup h3 {
+    font-family: 'Oswald', sans-serif;
+}

@@ -2,6 +2,8 @@ import React, {useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthUserContext";
 import * as ROUTES from '../constants/routes';
+import logo from "../photos/logos/logo-black.png";
+
 
 const ForgotPassword = () => {
     const emailRef = useRef();
@@ -30,18 +32,20 @@ const ForgotPassword = () => {
 
 
     return (
-        <div className="container d-flex justify-content-center">
-            <div class="card my-5 w-75">
+        <div className="forgotPassword">
+            <div className="w-sm-25 w-md-50 text-center">
+                <img src={logo} alt="logo" className="mx-auto w-50" />
+
                 <div class="card-body">
-                    <h3 className="text-center">Forogt Password</h3>
+                    <h3>Forogt Password</h3>
 
                     <form className="my-3" onSubmit={handleSubmit}>
 
                         {/* This row is for email */}
                         <div className="row">
                             <div className="input-field col s12">
-                                <input id="email" type="email" className="form-control" required ref={emailRef}/>
-                                <label htmlFor="email">Email</label>
+                                <input id="email" type="email" className="form-control" placeholder="Email" required ref={emailRef}/>
+                                {/* <label htmlFor="email">Email</label> */}
                             </div>
                         </div>
 
@@ -50,7 +54,7 @@ const ForgotPassword = () => {
                         {message ? <p className="text-danger">{message}</p> : null}
 
                         <div className="text-center">
-                            <button type="submit" className="btn btn-primary m-3" disabled={loading}>Reset Password</button>
+                            <button type="submit" className="btn btn-primary btn-block my-3" disabled={loading}>Reset Password</button>
 
                             <div>Return to <Link to={ROUTES.LOGIN}>Login</Link></div>
                         </div>

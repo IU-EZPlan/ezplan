@@ -5,6 +5,9 @@ import * as ROUTES from '../constants/routes';
 import { Link } from "react-router-dom";
 // import { database } from "../firebase";
 
+import logo from "../photos/logos/logo-black.png";
+
+
 const SignUp = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -81,8 +84,14 @@ const SignUp = () => {
 
 
     return (
-        <div className="container d-flex justify-content-center">
-            <div className="card my-5 w-75">
+        <div className="signup">
+            <div className="w-75">
+                <div className="text-center">
+
+                <img src={logo} alt="logo" className="mx-auto w-25" />
+                </div>
+
+
                 <div className="card-body">
                     <h3 className="text-center mb-5">Sign Up for EZ Plan</h3>
 
@@ -91,11 +100,11 @@ const SignUp = () => {
                         {/* This row is for first and last name */}
                         <div className="row my-2">
                             <div className="input-field col-sm-6">
-                                <input id="first_name" type="text" className="form-control" required ref={fname}/>
+                                <input id="first_name" type="text" className="form-control" required ref={fname} placeholder="Ex. John"/>
                                 <label htmlFor="first_name">First Name</label>
                             </div>
                             <div className="input-field col-sm-6">
-                                <input id="last_name" type="text" className="form-control" ref={lname} />
+                                <input id="last_name" type="text" className="form-control" ref={lname} placeholder="Ex. Doe" />
                                 <label htmlFor="last_name">Last Name</label>
                             </div>
                         </div>
@@ -103,7 +112,7 @@ const SignUp = () => {
                         {/* This row is for email */}
                         <div className="row my-2">
                             <div className="input-field col-12">
-                                <input id="email" type="email" className="form-control" required ref={emailRef}/>
+                                <input id="email" type="email" className="form-control" required ref={emailRef} placeholder="Ex. johndoe3@gmail.com"/>
                                 <label htmlFor="email">Email</label>
                             </div>
                         </div>
@@ -127,7 +136,7 @@ const SignUp = () => {
                         {error ? <p className="text-danger">{error}</p> : null}
 
                         <div className="text-center">
-                            <button type="submit" className="btn btn-primary my-3" disabled={loading}>Sign up</button>
+                            <button type="submit" className="btn btn-primary my-3 btn-block" disabled={loading}>Sign up</button>
                             <div>Already have an account? <Link to={ROUTES.LOGIN}>Log in</Link></div>
                         </div>
                     </form>
