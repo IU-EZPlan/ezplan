@@ -1,106 +1,70 @@
 import React from "react";
 import "../styles/home.css";
-
-// <p>Things we need to add:</p>
-// <ul>
-// <li>Search</li>
-// <li>Options to explore</li>
-// <li>Cards for users to explore and book quickly</li>
-// </ul> 
             
 
 const Home = () => {
     return (
-        <div className="container-fluid mt-3">
-            <form>
-                {/* Search Bar and Button Row */}
-                <div className="row container-fluid">
-                    <div className="col-12 d-flex">
-                        <input type="Search" className="form-control rounded" placeholder="Search" />
-
-                        <button className="btn btn-primary ml-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-
-                            <i className="fa fa-filter"></i>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Filter Reveal container */}
-                <div className="row container-fluid">
-                    <div className="collapse col-12 mt-3" id="collapseExample">
-                        <h3>Dates</h3>
-                        <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Currently Available
-                        </label>
-                        </div>
-
-                        {/* <div className="card card-body">
-                            <h3>Be able to Filter their search here</h3>
-                        </div> */}
-
-                        <hr />
-                    </div>
-                </div>
-            </form>
-
-            <section className="my-5">
-                <h3 className="container-fluid mb-2">Recommended</h3>
-                <div className="row container-fluid">
-
-
-                    <div className="col-12 col-md-4 col-lg-3">
-                        <div className="card trip mb-3">
-                            <img src="https://ipt.imgix.net/201349/x/0/1.jpg?ar=1.91%3A1&w=1200&fit=crop" className="card-img-top" alt="..." />
-                            <div className="card-body">
-                                <h5 className="card-title">Sunset Boat Ride</h5>
-                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-12 col-md-4 col-lg-3">
-                        <div className="card rounded mb-3">
-                            <img src="https://ipt.imgix.net/201349/x/0/1.jpg?ar=1.91%3A1&w=1200&fit=crop" className="card-img-top" alt="..." />
-                            <div className="card-body">
-                                <h5 className="card-title">Sunset Boat Ride</h5>
-                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-12 col-md-4 col-lg-3">
-                        <div className="card mb-3">
-                            <img src="https://ipt.imgix.net/201349/x/0/1.jpg?ar=1.91%3A1&w=1200&fit=crop" className="card-img-top" alt="..." />
-                            <div className="card-body">
-                                <h5 className="card-title">Sunset Boat Ride</h5>
-                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-12 col-md-4 col-lg-3">
-                        <div className="card mb-3">
-                            <img src="https://ipt.imgix.net/201349/x/0/1.jpg?ar=1.91%3A1&w=1200&fit=crop" className="card-img-top" alt="..." />
-                            <div className="card-body">
-                                <h5 className="card-title">Sunset Boat Ride</h5>
-                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-                </div>
-            </section>
+        <>
+        <div className="home-hero">
+            <div className="container">
+                <h1>EXPLORE THE WORLD</h1>
+                <p>Grab the helm and go on an adventure.</p>
+                <button className="btn border-white text-white">Start Here</button>
+            </div>
         </div>
+
+        
+        <section className="row">
+            <div className="col-sm-6 col-md-3 explore-highlight" style={{backgroundImage: "url('https://cdn.tourradar.com/s3/content-pages/499/436x336/9CSXn4.jpeg')"}}>
+                <div className="card explore-highlight-card w-75 h-75">
+                    <div className="card-body">
+                        <h4 className="card-title">Asia</h4>
+                        <p>Shop at lavish malls is Dubai, go surfing in Bali, or take on Mt. Everest!</p>
+                    </div>
+                    <div class="card-footer border-top border-2">Trip Details</div>
+                </div>
+            </div>
+
+            <div className="col-sm-6 col-md-3 explore-highlight" style={{backgroundImage: "url('https://cdn.businesstraveller.com/wp-content/uploads/2018/02/iStock-540229848.jpg')"}}>
+                <div className="card explore-highlight-card w-75 h-75">
+                    <div className="card-body">
+                        <h4 className="card-title">Sydney</h4>
+                        <p>Shop at lavish malls is Dubai, go surfing in Bali, or take on Mt. Everest!</p>
+                    </div>
+                    <div class="card-footer border-top border-2">Trip Details</div>
+                </div>
+            </div>
+
+            <div className="col-sm-6 col-md-3 explore-highlight" style={{backgroundImage: "url('https://www.pedc.ir/Portals/0/news/Rio3-1-980x699.jpg?ver=UEpkIPlmG7hNthqGNqk2RA%3D%3D')"}}>
+                <div className="card explore-highlight-card w-75 h-75">
+                    <div className="card-body">
+                        <h4 className="card-title">Brazil</h4>
+                        <p>Shop at lavish malls is Dubai, go surfing in Bali, or take on Mt. Everest!</p>
+                    </div>
+                    <div class="card-footer border-top border-2">Trip Details</div>
+                </div>
+            </div>
+
+            <div className="col-sm-6 col-md-3 explore-highlight" style={{backgroundImage: "url('https://www.pandotrip.com/wp-content/uploads/2018/03/The-Great-Sphinx-Egypt.jpg')"}}>
+                <div className="card explore-highlight-card w-75 h-75">
+                    <div className="card-body">
+                        <h4 className="card-title">Egypt</h4>
+                        <p>Shop at lavish malls is Dubai, go surfing in Bali, or take on Mt. Everest!</p>
+                    </div>
+                    <div class="card-footer border-top border-2">Trip Details</div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section className="landing-content landing-content-footer">
+            <div className="container">
+                <h2>PLAN YOUR ADVENTURE NOW</h2>
+                <p>Sign up now to start personalizing a tour just right for you.</p>
+            </div>
+        </section>
+        </>
     )
 }
 

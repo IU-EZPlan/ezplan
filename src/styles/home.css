@@ -1,0 +1,33 @@
+.home-hero {
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.4)), url("http://cdn.cnn.com/cnnnext/dam/assets/140909173618-photo-vacation-angkor-helicopter-tour.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    color: white;
+    font-family: "Lato", "sans-serif";
+}
+
+.home-hero h1 {
+    font-size: 4em;
+    font-family: "Oswald", "sans-serif";
+}
+
+.explore-highlight {
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.explore-highlight-card {
+    /* padding: 15px; */
+    color: white;
+    background: rgba(0,0,0,.4);
+}

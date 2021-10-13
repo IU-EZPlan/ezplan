@@ -1,6 +1,6 @@
 .nav-transparent {
     background-color: transparent;
-    color: black;
+    color: white;
 }
 
 .brand-logo {
@@ -14,4 +14,9 @@ nav .nav-item, .navbar-brand {
 
 .navbar-brand {
     float: center;
+}
+
+input[type="search"] {
+    background: transparent;
+    border: solid white .5px;
 }

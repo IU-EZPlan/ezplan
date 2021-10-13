@@ -6,12 +6,32 @@ import * as ROUTES from "../constants/routes";
 import { useAuth } from "../context/AuthUserContext";
 import '../styles/navbar.css';
 
+const isPositionFixed = (pathname) => {
+    if (pathname === ROUTES.LANDING) {
+        return true;
+    } else if (pathname === ROUTES.HOME) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+const showSearch = (pathname) => {
+    if (pathname === ROUTES.LANDING) {
+        return true;
+    } else if (pathname === ROUTES.HOME) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 const LoggedOutNav = () => {
     const location = useLocation();
 
     return (
         <>
-        <nav className={`navbar navbar-expand-lg navbar-light w-100 ${location.pathname === ROUTES.LANDING ? "position-fixed nav-transparent" : ""}`}>
+        <nav className={`navbar navbar-expand-lg w-100 ${isPositionFixed(location.pathname) ? "position-fixed nav-transparent navbar-dark" : "navbar-light"}`}>
             <Link className="navbar-brand" to={ROUTES.LANDING}>EZ Plan</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -25,10 +45,12 @@ const LoggedOutNav = () => {
                     <li className="nav-item">
                         <Link className="nav-link" to={ROUTES.LOGIN}>LOGIN</Link>
                     </li>
-                    {/* <li className="nav-item">
-                        <Link className="nav-link" to={ROUTES.SIGN_UP}>Signup</Link>
-                    </li> */}
                 </ul>
+
+                <form className={`form-inline my-2 my-lg-0 ${showSearch(location.pathname) ? "d-block" : "d-none"}`}>
+                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button className="btn m-0 p-0 -mb-1" type="submit"><span class="material-icons">search</span></button>
+                </form>
             </div>
         </nav>
         </>    
@@ -40,7 +62,7 @@ const LoggedInNav = () => {
 
     return (
         <>
-        <nav className={`navbar navbar-expand-lg navbar-light w-100 ${location.pathname === ROUTES.LANDING ? "position-fixed nav-transparent" : ""}`}>
+        <nav className={`navbar navbar-expand-lg w-100 ${isPositionFixed(location.pathname) ? "position-fixed nav-transparent navbar-dark" : "navbar-light"}`}>
             <Link className="navbar-brand" to={ROUTES.LANDING}>EZ Plan</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -55,6 +77,11 @@ const LoggedInNav = () => {
                         <Link className="nav-link" to={ROUTES.ACCOUNT}>My Account</Link>
                     </li>
                 </ul>
+
+                <form className="form-inline my-2 my-lg-0">
+                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                    <button className="btn m-0 p-0 -mb-1" type="submit"><span class="material-icons">search</span></button>
+                </form>
             </div>
         </nav>
         </>
