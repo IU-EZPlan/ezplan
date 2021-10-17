@@ -1,5 +1,6 @@
 import time
-from flask import Flask #,redirect, send_from_directory, request
+from flask import Flask, request 
+#,redirect, send_from_directory, request
 from config import *
 from processing import *
 
@@ -26,11 +27,16 @@ def get_current_time():
     return {'time': time.time()}
 
 
-@app.route('/hotels')
+@app.route('/hotels', methods=['GET'])
 def get_all_hotels():
+    location = request.args.get("location")
+    print("LOCATION=", location)
     return hotels.get_all()
 
-
+@app.route('/home/<name>')
+def get_all_hotels_with_location(name):
+    print(name)
+    return 'your name is %s' % name
 
 # @app.route("/call1")
 # def fn():
