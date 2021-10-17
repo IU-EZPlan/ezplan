@@ -2,6 +2,7 @@ import time
 from flask import Flask #,redirect, send_from_directory, request
 from config import *
 from processing import *
+import data.hotels as hotels
 
 # THIS IS THROWING AN ERROR 
 #   from processing.places import Places
@@ -21,6 +22,11 @@ def hello_world():
 @app.route('/time')
 def get_current_time():
     return {'time': time.time()}
+
+@app.route('/hotels')
+def get_all_hotels():
+    return hotels.get_all()
+
 
 
 # @app.route("/call1")
