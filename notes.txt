@@ -40,3 +40,10 @@ yarn start
 cd ..
 yarn start-api
 ```
+
+* to install certificates for the API Development work
+```
+Macintosh HD > Applications > 
+Python<3.8> folder (or whatever version of python you're using) > 
+double click on "Install Certificates.command" file.
+```
