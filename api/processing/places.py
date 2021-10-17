@@ -1,10 +1,14 @@
-from firebase import firebase_places
+# from api.firebase_connection import firebase_places
+# from firebase_connection import *
+
 
 class Places():
     def __init__(self) -> None:
         self.city = None
         self.state = None
         self.country = None
+        from firebase_connection import firebase_places
+        print(firebase_places.__file__)
         self.firebase_places = firebase_places.FirebasePlaces()
 
     # Autocomplete and Search - Requirement 1.a

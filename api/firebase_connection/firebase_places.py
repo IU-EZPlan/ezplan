@@ -8,6 +8,7 @@ class FirebasePlaces(FirebaseInitialize):
     def getAllPlaces(self):
         # Write get query
         try:
+            print("HEREEEE\n")
             return self.db.child("places").get().val()
 
         except Exception as e:

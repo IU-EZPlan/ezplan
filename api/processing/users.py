@@ -1,4 +1,4 @@
-from firebase.firebase_users import Firebase_Users
+# from ..firebase_connection import Firebase_Users
 
 class User():
     def __init__(self) -> None:

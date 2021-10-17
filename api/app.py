@@ -1,7 +1,7 @@
 import time
-from flask import Flask #,redirect, send_from_directory, request
+from flask import Flask, request #,redirect, send_from_directory, request
 from config import *
-from processing import *
+from processing.places import *
 
 # THIS IS THROWING AN ERROR 
 #   from processing.places import Places
@@ -23,11 +23,13 @@ def get_current_time():
     return {'time': time.time()}
 
 
-# @app.route("/call1")
-# def fn():
-#     json = request.json()
-#     print(json)
-#     Places.getPlaces(json)
+@app.route("/call1")
+def fn():
+    json = {'test': 'test'}
+    # print(json)
+    placesObject = Places()
+    placesObject.getPlaces(json)
+    print("HERE \n")
 
 
 
