@@ -11,6 +11,8 @@ import SignUp from './pages/signup';
 import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import UpdateProfile from './pages/updateProfile';
+import Search from './pages/searchResults';
+
 
 // importing components
 import Navbar from './components/navbar';
@@ -27,6 +29,7 @@ function App() {
         <Route path={ROUTES.LOGIN} component={Login} />
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
+        <Route path="/search" component={Search} />
 
         {/* Must have an account to see the following pages */}
         <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />

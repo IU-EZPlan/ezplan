@@ -1,7 +1,11 @@
 import time
-from flask import Flask, request #,redirect, send_from_directory, request
+from flask import Flask, request 
+#,redirect, send_from_directory, request
 from config import *
 from processing.places import *
+
+# More files to help 
+import display_data.hotels as hotels
 
 # THIS IS THROWING AN ERROR 
 #   from processing.places import Places
@@ -23,13 +27,21 @@ def get_current_time():
     return {'time': time.time()}
 
 
-@app.route("/call1")
-def fn():
-    json = {'test': 'test'}
-    # print(json)
-    placesObject = Places()
-    placesObject.getPlaces(json)
-    print("HERE \n")
+@app.route('/hotels', methods=['GET'])
+def get_all_hotels():
+    location = request.args.get("location")
+
+    if location:
+        return hotels.get_hotels_by_location(location)
+    return hotels.get_all()
+
+
+
+# @app.route("/call1")
+# def fn():
+#     json = request.json()
+#     print(json)
+#     Places.getPlaces(json)
 
 
 

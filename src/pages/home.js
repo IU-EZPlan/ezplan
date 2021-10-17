@@ -21,7 +21,7 @@ const Home = () => {
                         <h4 className="card-title">Asia</h4>
                         <p>Shop at lavish malls is Dubai, go surfing in Bali, or take on Mt. Everest!</p>
                     </div>
-                    <div class="card-footer border-top border-2">Trip Details</div>
+                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@ const Home = () => {
                         <h4 className="card-title">Sydney</h4>
                         <p>Go on the famous Sydney Opera House Tour.</p>
                     </div>
-                    <div class="card-footer border-top border-2">Trip Details</div>
+                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
 
@@ -41,7 +41,7 @@ const Home = () => {
                         <h4 className="card-title">Brazil</h4>
                         <p>Visit the capital and see one of the most famous locations in the world.</p>
                     </div>
-                    <div class="card-footer border-top border-2">Trip Details</div>
+                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
 
@@ -51,7 +51,7 @@ const Home = () => {
                         <h4 className="card-title">Egypt</h4>
                         <p>Visit the Pyramids of Giza, cruise the Nile River, and explore historic Cario</p>
                     </div>
-                    <div class="card-footer border-top border-2">Trip Details</div>
+                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
         </section>
