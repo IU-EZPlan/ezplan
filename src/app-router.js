@@ -11,7 +11,7 @@ import SignUp from './pages/signup';
 import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import UpdateProfile from './pages/updateProfile';
-import Search from './pages/searchResults';
+import Search from './pages/search';
 
 
 // importing components

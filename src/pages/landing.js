@@ -12,9 +12,6 @@ const Landing = () => {
         </div>
 
 
-
-
-
         <section className="landing-content landing-content-footer">
             <div className="container">
                 <h2>DREAM BIGGER</h2>

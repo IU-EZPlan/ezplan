@@ -80,6 +80,29 @@ const Home = () => {
             </div>
         </section>
 
+        <section className="landing-content">
+            <div  className="row" style={{backgroundImage: `linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,0.4)), url("http://www.cartogramme.com/wp-content/uploads/2017/11/Kualoa-Ranch2-970x710.jpg")`, height: "90vh", backgroundRepeat: "no-repeat", backgroundSize: "cover"}}>
+                <div className="col-sm-6 p-3">
+                    <h2 className="w-50">SEE THE FILMING SITES FOR OVER 200 HOLLYWOOD MOVIES AND TV SHOWS</h2>
+
+                    <div className="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
+                        <div className="card-header bg-transparent border border-4">Explore Oahu</div>
+                        <div className="card-body border border-4">
+                            <h5 className="card-title">Success card title</h5>
+                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <div className="card-footer bg-transparent border border-4">Trip Details</div>
+                    </div>
+
+
+                </div>
+                <div className="col-sm-6 p-3">
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section className="landing-content landing-content-footer">
             <div className="container">
                 <h2>PLAN YOUR ADVENTURE NOW</h2>

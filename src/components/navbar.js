@@ -61,6 +61,9 @@ const LoggedInNav = () => {
                     <li className="nav-item">
                         <Link className="nav-link" to={ROUTES.ACCOUNT}>My Account</Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" to={ROUTES.SEARCH}>New Search</Link>
+                    </li>
                 </ul>
             </div>
         </nav>

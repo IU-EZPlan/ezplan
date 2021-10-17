@@ -84,8 +84,8 @@ def parse_data(dataObject):
 
 
     # TODO: Include all the following parameters
-    #   REQ dest_type="+destType
-    #   REQ dest_id="+destID
+    #   REQ dest_type=destType
+    #   REQ dest_id=destID
 
     #   room_number=1
     #   checkout_date=2021-11-26
