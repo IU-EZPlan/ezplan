@@ -30,7 +30,6 @@ def get_current_time():
 @app.route('/hotels', methods=['GET'])
 def get_all_hotels():
     location = request.args.get("location")
-    print("LOCATION=", location)
 
     if location:
         return hotels.get_hotels_by_location(location)

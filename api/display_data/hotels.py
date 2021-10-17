@@ -18,9 +18,7 @@ headers = {
 
 
 def get_all():
-    
-    location = "Ohio"
-    conn.request("GET", "/v1/hotels/locations?name="+location+"&locale=en-us", headers=headers)
+    conn.request("GET", "/v1/hotels/locations&locale=en-us", headers=headers)
 
     res = conn.getresponse()
     data = res.read()
@@ -63,7 +61,7 @@ def get_hotels_by_location(state):
 
     res = conn.getresponse()
     data = res.read()
-    
+
     # Turn into String
     dataStr = data.decode()
 

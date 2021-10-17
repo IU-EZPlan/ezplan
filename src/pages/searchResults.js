@@ -11,7 +11,7 @@ const Search = () => {
     });
 
     // endpoint si currently getting hotel results in ohio    
-    fetch("/hotels?location=michigan").then(function(response) {
+    fetch("/hotels?location=indiana").then(function(response) {
         if (response.ok) { return response.json();} 
         else { throw response; }
 
