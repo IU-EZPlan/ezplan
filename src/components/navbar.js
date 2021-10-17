@@ -16,14 +16,6 @@ const isPositionFixed = (pathname) => {
     }
 }
 
-const showSearch = (pathname) => {
-    if (pathname === ROUTES.SEARCH) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 const LoggedOutNav = () => {
     const location = useLocation();
 
@@ -44,11 +36,6 @@ const LoggedOutNav = () => {
                         <Link className="nav-link" to={ROUTES.LOGIN}>LOGIN</Link>
                     </li>
                 </ul>
-
-                <form className={`form-inline my-2 my-lg-0 ${showSearch(location.pathname) ? "d-block" : "d-none"}`}>
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button className="btn m-0 p-0 -mb-1" type="submit"><span className="material-icons">search</span></button>
-                </form>
             </div>
         </nav>
         </>    
@@ -75,11 +62,6 @@ const LoggedInNav = () => {
                         <Link className="nav-link" to={ROUTES.ACCOUNT}>My Account</Link>
                     </li>
                 </ul>
-
-                <form className="form-inline my-2 my-lg-0">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button className="btn m-0 p-0 -mb-1" type="submit"><span className="material-icons">search</span></button>
-                </form>
             </div>
         </nav>
         </>

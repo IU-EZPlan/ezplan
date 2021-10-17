@@ -1,12 +1,18 @@
 import http.client
 import json
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+API_HOST = os.getenv("RAPID_API_HOST")
+API_KEY = os.getenv("RAPID_API_KEY")
 
+# We are using the booking.com API for hotel data
 conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
 
 headers = {
-    'x-rapidapi-host': "booking-com.p.rapidapi.com",
-    'x-rapidapi-key': "0abe195911msh530834c67485896p1a77cajsn860dc0c5ac8e"
+    'x-rapidapi-host': API_HOST,
+    'x-rapidapi-key': API_KEY
 }
 
 location = "Ohio"
