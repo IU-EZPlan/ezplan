@@ -31,12 +31,12 @@ def get_current_time():
 def get_all_hotels():
     location = request.args.get("location")
     print("LOCATION=", location)
+
+    if location:
+        return hotels.get_hotels_by_location(location)
     return hotels.get_all()
 
-@app.route('/home/<name>')
-def get_all_hotels_with_location(name):
-    print(name)
-    return 'your name is %s' % name
+
 
 # @app.route("/call1")
 # def fn():

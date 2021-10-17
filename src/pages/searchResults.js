@@ -11,7 +11,7 @@ const Search = () => {
     });
 
     // endpoint si currently getting hotel results in ohio    
-    fetch("/hotels", {name: "Ohio"}).then(function(response) {
+    fetch("/hotels?location=michigan").then(function(response) {
         if (response.ok) { return response.json();} 
         else { throw response; }
 
@@ -27,7 +27,7 @@ const Search = () => {
         <p>The current time is {currentTime}.</p>
         <div className="row">
         {hotel.map(h => (
-            <div className="col-sm-6 col-md-4" key={h.hotel_id}>
+            <div className="col-sm-6 col-md-4 col-xl-3 mb-3" key={h.hotel_id}>
                 <HotelCard  
                     name={h.hotel_name} 
                     address={h.address} 

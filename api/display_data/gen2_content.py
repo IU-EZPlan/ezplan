@@ -1,12 +1,19 @@
 import http.client
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_HOST = os.getenv("RAPID_API_HOST")
+API_KEY = os.getenv("RAPID_API_KEY")
 
 conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
 
 headers = {
-    'x-rapidapi-host': "booking-com.p.rapidapi.com",
-    'x-rapidapi-key': "eed4d51decmsh023551644726034p1210dcjsn04c1d5de3fcd"
-    }
+    'x-rapidapi-host': API_HOST,
+    'x-rapidapi-key': API_KEY
+}
+
 location = "Ohio"
 conn.request("GET", "/v1/hotels/locations?name="+location+"&locale=en-us", headers=headers)
 

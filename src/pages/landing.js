@@ -18,13 +18,13 @@ const Landing = () => {
                 <div className="col-sm-6 p-3">
                     <h2 className="w-50">GET UP CLOSE AND PERSONAL WITH BIG BEN</h2>
 
-                    <div class="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
-                        <div class="card-header bg-transparent border border-4">Explore London</div>
-                        <div class="card-body border border-4">
-                            <h5 class="card-title">Success card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <div className="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
+                        <div className="card-header bg-transparent border border-4">Explore London</div>
+                        <div className="card-body border border-4">
+                            <h5 className="card-title">Success card title</h5>
+                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                         </div>
-                        <div class="card-footer bg-transparent border border-4">Trip Details</div>
+                        <div className="card-footer bg-transparent border border-4">Trip Details</div>
                     </div>
 
 
