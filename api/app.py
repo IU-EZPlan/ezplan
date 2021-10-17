@@ -29,7 +29,6 @@ def get_current_time():
 @app.route('/hotels')
 def get_all_hotels():
     return hotels.get_all()
-    # return {"testing": "testing hotels api"}
 
 
 

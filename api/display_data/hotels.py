@@ -1,4 +1,5 @@
 import http.client
+import json
 
 # We are using the booking.com API for hotel data
 conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
@@ -17,48 +18,37 @@ def get_all():
 
     res = conn.getresponse()
     data = res.read()
-
     # Turn into String
     dataStr = data.decode()
-    
-    # Split into array that contains each location that appears 
-    dataStrSplit = dataStr.split('},{')
-    
-    # Get first location result
-    dataObj = dataStrSplit[0]
-    
-    # Split that into it's corresponding data
-    dataObjSplit = dataObj.split(',')
+
+    # Turn this string into an object (in python, this is a dictionary aka json)
+    x = json.loads(dataStr)
+
+    # Get the destID and destType from the dictionary with US as the country
     destID = ""
     destType = ""
-    
-    # Filter for data that is necessary to search for hotels 
-    for i in dataObjSplit:
-        if("dest_id" in i):
-            destID = i
-        elif("dest_type" in i):
-            destType = i
-    
-    # Clean that data to insert and find hotels
-    destID = destID[11:]
-    destID = destID[:len(destID)-1]
-    destType = destType[13:]
-    destType = destType[:len(destType)-1]
+    for d in x:
+        if d['country'] == 'United States':
+            destID = d["dest_id"]
+            destType = d["dest_type"]
+            break
+
+    # Make the new request
     conn.request("GET", "/v1/hotels/search?locale=en-gb&room_number=1&checkout_date=2021-11-26&order_by=popularity&units=metric&adults_number=2&filter_by_currency=AED&checkin_date=2021-11-25&dest_type="+destType+"&dest_id="+destID+"&children_number=2&page_number=0&categories_filter_ids=facility%3A%3A107%2Cfree_cancellation%3A%3A1&children_ages=5%2C0", headers=headers)
 
-    # Hotel Data!
+    # # Hotel Data!
     res1 = conn.getresponse()
     data1 = res1.read()
 
     # Turn Into String
     dataStr1 = data1.decode()
 
-    # Split into array that contains each hotel that appears 
-    dataStrSplit1 = dataStr1.split('"result":')[1]
-    dataStrSplit2 = dataStrSplit1.split('},{')
 
-    # Returns the first result
-    return dataStrSplit2[0]
+    # Load the data and return it
+    list_of_hotels = json.loads(dataStr1)
+
+    return dataStr1
+
 
 
 
