@@ -29,7 +29,7 @@ function App() {
         <Route path={ROUTES.LOGIN} component={Login} />
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
-        <Route path="/search" component={Search} />
+        <Route path={ROUTES.SEARCH} component={Search} />
 
         {/* Must have an account to see the following pages */}
         <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />

@@ -5,7 +5,7 @@ conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
 headers = {
     'x-rapidapi-host': "",
     'x-rapidapi-key': ""
-    }
+}
 
 
 location = "Ohio"

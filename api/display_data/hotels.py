@@ -74,11 +74,31 @@ def parse_data(dataObject):
     # Get the destID and destType from the dictionary with US as the country
     destID = ""
     destType = ""
+
+    # TODO: include all locations, not just in the US
     for d in dataObject:
         if d['country'] == 'United States':
             destID = d["dest_id"]
             destType = d["dest_type"]
             break
+
+
+    # TODO: Include all the following parameters
+    #   REQ dest_type="+destType
+    #   REQ dest_id="+destID
+
+    #   room_number=1
+    #   checkout_date=2021-11-26
+    #   order_by=popularity distance,review score, price, 
+    #   units=metric
+    #   adults_number=2
+    #   filter_by_currency=AED
+    #   checkin_date=2021-11-25
+    #   children_number=2
+    #   page_number=0 (20 items for page)
+
+    # categories_filter_ids=facility%3A%3A107%2Cfree_cancellation%3A%3A1&children_ages=5%2C0
+
 
     # Make the new request
     conn.request("GET", "/v1/hotels/search?locale=en-gb&room_number=1&checkout_date=2021-11-26&order_by=popularity&units=metric&adults_number=2&filter_by_currency=AED&checkin_date=2021-11-25&dest_type="+destType+"&dest_id="+destID+"&children_number=2&page_number=0&categories_filter_ids=facility%3A%3A107%2Cfree_cancellation%3A%3A1&children_ages=5%2C0", headers=headers)

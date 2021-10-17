@@ -17,9 +17,7 @@ const isPositionFixed = (pathname) => {
 }
 
 const showSearch = (pathname) => {
-    if (pathname === ROUTES.LANDING) {
-        return true;
-    } else if (pathname === ROUTES.HOME) {
+    if (pathname === ROUTES.SEARCH) {
         return true;
     } else {
         return false;

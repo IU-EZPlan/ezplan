@@ -1,17 +1,12 @@
 import http.client
 import json
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
-API_HOST = os.getenv("RAPID_API_HOST")
-API_KEY = os.getenv("RAPID_API_KEY")
 
 conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
 
 headers = {
-    'x-rapidapi-host': API_HOST,
-    'x-rapidapi-key': API_KEY
+    'x-rapidapi-host': "booking-com.p.rapidapi.com",
+    'x-rapidapi-key': "0abe195911msh530834c67485896p1a77cajsn860dc0c5ac8e"
 }
 
 location = "Ohio"
@@ -24,9 +19,9 @@ dataStr = data.decode()
 
 # Turn this string into an object (in python, this is a dictionary aka json)
 x = json.loads(dataStr)
-# print(type(x), x, "\n\n")
-# for i in x:
-#     print(i, "\n\n")
+print(type(x), x, "\n\n")
+for i in x:
+    print(i, "\n\n")
 
 # Get the destID and destType from the dictionary with US as the country
 destID = ""
