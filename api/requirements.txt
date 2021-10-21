@@ -1,0 +1,4 @@
+pyrebase
+flask
+python-dotenv
+flask-session

@@ -1,0 +1,52 @@
+.landing-hero {
+    height: 100vh;
+
+    background-image: url("https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/10/15/09/istock-483629308.jpg?width=982&height=726&auto=webp&quality=75");
+    /* background-image: url("https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2017/05/hiking3.jpg?w=1024&h=682"); */
+    /* background-image: linear-gradient(rgba(0,0,0,0), rgba(255,255,255.2)), url("https://wallpaperbat.com/img/238360-ocean-waves-wallpaper-hd.jpg"); */
+
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    text-align: center;
+}
+
+.landing-hero h1 {
+    font-size: 6em;
+    font-family: 'Oswald', sans-serif;
+}
+
+.landing-content {
+    background-color: black;
+    color: white;
+    padding: 5vh;
+}
+
+.landing-content h1 {
+    font-size: 3em;
+    font-family: 'Oswald', sans-serif;
+}
+
+h2, h3 {
+    font-family: 'Oswald', sans-serif;
+}
+
+.landing-content-footer p {
+    font-family: 'Lato', sans-serif;
+
+}
+
+.landing-content .steps {
+    justify-content: center;
+    padding: 15px;
+}
+
+.landing-content .steps h3.btn {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 2rem;
+}

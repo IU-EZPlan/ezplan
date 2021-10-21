@@ -1,0 +1,15 @@
+.screen {
+    min-height: 70vh;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen h1 {
+    font-family: "Oswald", "san-serif";
+}
+
+.screen p {
+    font-family: "Lato", "san-serif";
+}

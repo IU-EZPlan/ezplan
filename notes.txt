@@ -1,0 +1,49 @@
+To install pip:
+sudo apt install python3-pip
+
+To activate virtual environment on powershell:
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+venv/Scripts/activate
+
+To install requirements on virtual environment:
+python3 -m pip install -r .\requirements.txt
+
+
+
+
+For Mac Development:
+* pull the last changes
+```
+git pull
+```
+
+* install virtual environment
+```
+cd api
+python3 -m venv venv
+```
+
+* turn on venv and install requirements
+```
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+* run frontend
+```
+cd ..
+yarn start
+```
+
+* run backend
+```
+cd ..
+yarn start-api
+```
+
+* to install certificates for the API Development work
+```
+Macintosh HD > Applications > 
+Python<3.8> folder (or whatever version of python you're using) > 
+double click on "Install Certificates.command" file.
+```

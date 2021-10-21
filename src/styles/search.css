@@ -1,0 +1,14 @@
+.search .collapse .input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.search h3 {
+    font-family: "Oswald", "sans-serif";
+}
+
+.search p {
+    font-family: "Lato", "sans-serif";
+}
