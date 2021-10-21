@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import * as ROUTES from "../constants/routes";
 import '../styles/landing.css'
 
 
@@ -11,30 +13,39 @@ const Landing = () => {
             </div>
         </div>
 
-
-
         <section className="landing-content">
-            <div  className="row" style={{backgroundImage: `linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,0.4)), url("https://expertphotography.b-cdn.net/wp-content/uploads/2018/12/IMG_5420-1-1024x683.jpg")`, height: "90vh", backgroundRepeat: "no-repeat", backgroundSize: "cover"}}>
-                <div className="col-sm-6 p-3">
-                    <h2 className="w-50">GET UP CLOSE AND PERSONAL WITH BIG BEN</h2>
+            <div className="container my-5">
+                <h1 className="mb-5">WELCOME TO EZ PLAN</h1>
+                <p>We want you to conveniently plan your next adventure. With EZ Plan, you're able to share share your tour plans, access special deals, and benefit from our partner base.</p>
+                <p>Our mission is to provide you with a free service that allows you to plan your next affordable dream vacation.</p>
+                <Link to={ROUTES.SIGN_UP}>
+                    <button className="btn border-white text-white">Explore</button>
+                </Link>
+            </div>
+        </section>
 
-                    <div class="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
-                        <div class="card-header bg-transparent border border-4">Explore London</div>
-                        <div class="card-body border border-4">
-                            <h5 class="card-title">Success card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <div class="card-footer bg-transparent border border-4">Trip Details</div>
+
+        <section className="my-5" style={{padding: "5vh"}}>
+            <div className="container">
+                <h2 className="mb-5">HOW IT WORKS</h2>
+
+                <div className="row  mx-auto">
+                    <div className="col-md-4 h-100 steps">
+                        <h3 className="btn btn-lg btn-primary">1</h3>
+                        <h3>Search and explore things to do</h3>
                     </div>
-
-
-                </div>
-                <div className="col-sm-6 p-3">
-                    <div>
+                    <div className="col-md-4 h-100 steps">
+                        <h3 className="btn btn-lg btn-primary">2</h3>
+                        <h3>Create your personalized itinerary</h3>
+                    </div>
+                    <div className="col-md-4 h-100 steps">
+                        <h3 className="btn btn-lg btn-primary">3</h3>
+                        <h3>Go on your adventure!</h3>
                     </div>
                 </div>
             </div>
         </section>
+
 
         <section className="landing-content landing-content-footer">
             <div className="container">

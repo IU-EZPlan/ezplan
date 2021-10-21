@@ -36,7 +36,7 @@ const ForgotPassword = () => {
             <div className="w-sm-25 w-md-50 text-center">
                 <img src={logo} alt="logo" className="mx-auto w-50" />
 
-                <div class="card-body">
+                <div className="card-body">
                     <h3>Forogt Password</h3>
 
                     <form className="my-3" onSubmit={handleSubmit}>

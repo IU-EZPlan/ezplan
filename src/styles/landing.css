@@ -26,11 +26,27 @@
     padding: 5vh;
 }
 
-h2 {
+.landing-content h1 {
+    font-size: 3em;
+    font-family: 'Oswald', sans-serif;
+}
+
+h2, h3 {
     font-family: 'Oswald', sans-serif;
 }
 
 .landing-content-footer p {
     font-family: 'Lato', sans-serif;
 
+}
+
+.landing-content .steps {
+    justify-content: center;
+    padding: 15px;
+}
+
+.landing-content .steps h3.btn {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 2rem;
 }
