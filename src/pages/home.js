@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import * as ROUTES from "../constants/routes";
 import "../styles/home.css";
             
 
@@ -9,7 +11,9 @@ const Home = () => {
             <div className="container">
                 <h1>EXPLORE THE WORLD</h1>
                 <p>Grab the helm and go on an adventure.</p>
-                <button className="btn border-white text-white">Start Here</button>
+                <Link to={ROUTES.SIGN_UP}>
+                    <button className="btn border-white text-white">Start Here</button>
+                </Link>
             </div>
         </div>
 
@@ -107,6 +111,9 @@ const Home = () => {
             <div className="container">
                 <h2>PLAN YOUR ADVENTURE NOW</h2>
                 <p>Sign up now to start personalizing a tour just right for you.</p>
+                <Link to={ROUTES.SIGN_UP}>
+                    <button className="btn border-white text-white">Sign Up</button>
+                </Link>
             </div>
         </section>
         </>

@@ -26,6 +26,11 @@
     padding: 5vh;
 }
 
+.landing-content h1 {
+    font-size: 3em;
+    font-family: 'Oswald', sans-serif;
+}
+
 h2, h3 {
     font-family: 'Oswald', sans-serif;
 }

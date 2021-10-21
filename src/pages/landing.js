@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import * as ROUTES from "../constants/routes";
 import '../styles/landing.css'
 
 
@@ -12,9 +14,13 @@ const Landing = () => {
         </div>
 
         <section className="landing-content">
-            <div className="container">
-                <h2 className="my-5">WHAT IS EZPLAN?</h2>
-                <p>Lorem ipsum...</p>
+            <div className="container my-5">
+                <h1 className="mb-5">WELCOME TO EZ PLAN</h1>
+                <p>We want you to conveniently plan your next adventure. With EZ Plan, you're able to share share your tour plans, access special deals, and benefit from our partner base.</p>
+                <p>Our mission is to provide you with a free service that allows you to plan your next affordable dream vacation.</p>
+                <Link to={ROUTES.SIGN_UP}>
+                    <button className="btn border-white text-white">Explore</button>
+                </Link>
             </div>
         </section>
 
