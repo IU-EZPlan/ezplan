@@ -1,24 +1,23 @@
 import time
 from flask import Flask, request 
-#,redirect, send_from_directory, request
 from config import *
 from processing.places import *
 
 # More files to help 
 import display_data.hotels as hotels
 
-# THIS IS THROWING AN ERROR 
-#   from processing.places import Places
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+DOMAIN_HOST = os.getenv("HOST")
 
 
 app = Flask(__name__)
-# app = Flask(__name__, static_folder='public')
 
 
 @app.route("/")
 def hello_world():
-    # send_from_dir is throwing an error, cannot import properly
-    # return send_from_directory(PUBLIC_DIR, 'index.html')
     return "<p>Flask app </p>"
 
 
@@ -47,4 +46,4 @@ def get_all_hotels():
 
 
 if __name__ == '__main__':
-    app.run(host='ezplan123.herokuapp.com', port=5000)
+    app.run(host=DOMAIN_HOST, port=5000)
