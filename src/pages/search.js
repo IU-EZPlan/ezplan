@@ -24,6 +24,7 @@ const Search = () => {
     //   endpoint uses routes and search string. String is required by hotels api    
       fetch(API_ROUTES.HOTELS + `?location=${searchString}`)
         .then((response) => {
+            console.log("ok", response)
           if (response.ok) { 
               return response.json();
             } else { 
@@ -36,6 +37,7 @@ const Search = () => {
           setLoading(true);
 
         }).catch((error) => {
+            console.log(error, error.message)
             setError(error.message);
 
         }).finally(() => {
@@ -173,7 +175,7 @@ const Search = () => {
                         <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly" />
                         :
                         error ? 
-                        <PromptScreen heading="Something went wrong..." type="error" subtext="Trying searching again, or constact support" />
+                        <PromptScreen heading="Something went wrong..." type="error" subtext={error} />
                             :
                             <PromptScreen heading="Search" type="waiting" subtext="Get hotel results by searching a location. Use filters for an advanced search." />
                 }

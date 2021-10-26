@@ -1,15 +1,11 @@
 import time
-<<<<<<< HEAD
-from flask import Flask, request 
-=======
 from flask import Flask, request, send_from_directory 
->>>>>>> sprint3
-from config import *
-from processing.places import *
+from api.config import *
+from api.processing.places import *
 import os
 
 # More files to help 
-import display_data.hotels as hotels
+import api.display_data.hotels as hotels
 
 import os
 from dotenv import load_dotenv
