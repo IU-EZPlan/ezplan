@@ -77,96 +77,110 @@ const Search = () => {
 
   return (
     <div className="container-fluid search">
-        <form onSubmit={handleSubmit}>
-            <div className="row container-fluid">
-                <div className="col-12 d-flex">
-                    <input type="Search" className="form-control rounded border" placeholder="Search for hotels in..." value={searchString} onChange={(e) => setSearchString(e.target.value)} />
-                    <button className="btn btn-outline-success ml-2" type="submit">Search</button>
-                    <button className="btn btn-primary ml-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <div className="row">
+            <div className="col-sm-3 sidebar">
+                <form onSubmit={handleSubmit}>
 
-                        <i className="fa fa-filter"></i>
-                    </button>
-                </div>
-            </div>
+                    <div className="row">
+                        <div className="col-12 d-flex">
+                            <input type="Search" className="form-control rounded border" placeholder="Search for hotels in..." value={searchString} onChange={(e) => setSearchString(e.target.value)} />
 
-
-            <div className="row collapse container-fluid" id="collapseExample">
-                <div className="col-md-4 mt-3">
-                    <h3>Travelers</h3>
-
-                    <div className="input-row">
-                        <div><p className="my-auto">Rooms</p></div>
-                        <div className="d-flex">
-                            <button className="btn btn-primary" onClick={() => {handleRoomCount(-1)}}><i className="fa fa-minus"></i></button>
-                            <p className="mx-4 my-auto">{rooms}</p>
-                            <button className="btn btn-primary" onClick={() => {handleRoomCount(1)}}><i className="fa fa-plus"></i></button>
+                            <button className="btn btn-primary ml-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                <i className="fa fa-filter"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div className="input-row">
-                        <div><p className="my-auto">Adults</p></div>
-                        <div className="d-flex">
-                            <button className="btn btn-primary"  onClick={() => {handleAdultCount(-1)}}><i className="fa fa-minus"></i></button>
-                            <p className="mx-4 my-auto">{adultTravelers}</p>
-                            <button className="btn btn-primary" onClick={() => {handleAdultCount(1)}}><i className="fa fa-plus"></i></button>
+
+                    <div className="row collapse" id="collapseExample">
+                        <div className="col-md-12 mt-3">
+                            <h5>Travelers</h5>
+
+                            <div className="input-row">
+                                <div><p className="my-auto">Rooms</p></div>
+                                <div className="d-flex">
+                                    <button className="btn btn-primary" onClick={() => {handleRoomCount(-1)}}><i className="fa fa-minus"></i></button>
+                                    <p className="mx-4 my-auto">{rooms}</p>
+                                    <button className="btn btn-primary" onClick={() => {handleRoomCount(1)}}><i className="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+
+                            <div className="input-row">
+                                <div><p className="my-auto">Adults</p></div>
+                                <div className="d-flex">
+                                    <button className="btn btn-primary"  onClick={() => {handleAdultCount(-1)}}><i className="fa fa-minus"></i></button>
+                                    <p className="mx-4 my-auto">{adultTravelers}</p>
+                                    <button className="btn btn-primary" onClick={() => {handleAdultCount(1)}}><i className="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+
+                            <div className="input-row">
+                                <div><p className="my-auto">Children</p></div>
+                                <div className="d-flex">
+                                    <button className="btn btn-primary"  onClick={() => {handleChildCount(-1)}}><i className="fa fa-minus"></i></button>
+                                    <p className="mx-4 my-auto">{childTravelers}</p>
+                                    <button className="btn btn-primary" onClick={() => {handleChildCount(1)}}><i className="fa fa-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="input-row">
-                        <div><p className="my-auto">Children</p></div>
-                        <div className="d-flex">
-                            <button className="btn btn-primary"  onClick={() => {handleChildCount(-1)}}><i className="fa fa-minus"></i></button>
-                            <p className="mx-4 my-auto">{childTravelers}</p>
-                            <button className="btn btn-primary" onClick={() => {handleChildCount(1)}}><i className="fa fa-plus"></i></button>
+                        <hr />
+
+                        <div className="col-md-12 mt-3">
+                            <h3>Dates</h3>
+
+                            <div className="input-row">
+                                <p>Need to add in date picker here for check in and check out dates</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
+            
+            
+            
+                    <hr />
 
-                <div className="col-md-4 mt-3">
-                    <h3>Dates</h3>
-
-                    <div className="input-row">
-                        <p>Need to add in date picker here for check in and check out dates</p>
                     </div>
-                </div>
-    
-    
-    
-            <hr />
+
+                    <button className="btn btn-block btn-primary mt-3" type="submit">Search</button>
+                </form>
+            </div>
+
+
+            <div className="col-sm-9" style={{backgroundColor: "#fafbfa"}}>
+
+                {isSearched ? 
+                    <div className="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+                        Showing hotel results for <strong>{searchString}</strong>
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                : null }
+
+                {results.length > 0 ? 
+                    <div className="row">
+                        {results.map(h => (
+                            <div className="col-sm-6 col-md-4 col-xl-3 mb-3" key={h.hotel_id}>
+                                <HotelCard  
+                                    name={h.hotel_name} 
+                                    address={h.address} 
+                                    imgURL={h.max_photo_url}
+                                    />
+                            </div>
+                        ))}
+                    </div>
+                : 
+                    loading ?
+                        <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly" />
+                        :
+                        error ? 
+                        <PromptScreen heading="Something went wrong..." type="error" subtext="Trying searching again, or constact support" />
+                            :
+                            <PromptScreen heading="Search" type="waiting" subtext="Get hotel results by searching a location. Use filters for an advanced search." />
+                }
 
             </div>
-        </form>
-
-        {isSearched ? 
-            <div className="alert alert-warning alert-dismissible fade show mb-4" role="alert">
-                Showing hotel results for <strong>{searchString}</strong>
-                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        : null }
-
-        {results.length > 0 ? 
-            <div className="row">
-                {results.map(h => (
-                    <div className="col-sm-6 col-md-4 col-xl-3 mb-3" key={h.hotel_id}>
-                        <HotelCard  
-                            name={h.hotel_name} 
-                            address={h.address} 
-                            imgURL={h.max_photo_url}
-                            />
-                    </div>
-                ))}
-            </div>
-        : 
-            error ? 
-            <PromptScreen heading="Something went wrong..." type="error" subtext="Trying searching again, or constact support" />
-            :
-                loading ?
-                <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly" />
-                :
-                <PromptScreen heading="Search" type="waiting" subtext="Get hotel results by searching a location. Use filters for an advanced search." />
-        }
+        </div>
+        
 
     </div>
   );

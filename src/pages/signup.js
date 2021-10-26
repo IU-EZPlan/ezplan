@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthUserContext";
 import { useHistory } from "react-router";
 import * as ROUTES from '../constants/routes';
 import { Link } from "react-router-dom";
-// import { database } from "../firebase";
+import { database } from "../firebase";
 
 import logo from "../photos/logos/logo-black.png";
 
@@ -67,11 +67,14 @@ const SignUp = () => {
             });
 
             // If we were using firestore database
-            // database.collection('users').doc(newUser.uid).set({
-            //     email: newUser.email,
-            //     first_name: fname.current.value,
-            //     last_name: lname.current.value,
-            // });
+            await database.collection('users').doc(newUser.uid).set({
+                email: newUser.email,
+                first_name: fname.current.value,
+                last_name: lname.current.value,
+                photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+            });
+
+            await database.collection('users').doc(newUser.uid).collection('trips').doc('setup').set({'setup': true})
 
             history.push(ROUTES.ACCOUNT);
         } catch {
