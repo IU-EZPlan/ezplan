@@ -1,8 +1,8 @@
 import time
-from flask import Flask, request 
-#,redirect, send_from_directory, request
+from flask import Flask, request, send_from_directory 
 from config import *
 from processing.places import *
+import os
 
 # More files to help 
 import display_data.hotels as hotels
@@ -11,15 +11,21 @@ import display_data.hotels as hotels
 #   from processing.places import Places
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../build")
 # app = Flask(__name__, static_folder='public')
 
-
+@app.route('/', defaults={'path': ''})
 @app.route("/")
-def hello_world():
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
+# def hello_world():
     # send_from_dir is throwing an error, cannot import properly
     # return send_from_directory(PUBLIC_DIR, 'index.html')
-    return "<p>Flask app </p>"
+    # return "<p>Flask app </p>"
 
 
 @app.route('/time')
