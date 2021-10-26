@@ -55,62 +55,65 @@ const UpdateProfile = () => {
 
 
     return (
-        <div className="container-fluid m-3">
-            <h1>Update Profile</h1>
-
-  
+        <div className="container-fluid my-3">
             <div className="row">
-                <div className="ccol-xs-12 col-sm-6 col-md-4 card">
-                    <div className="card-body">
-                      
-                        <form className="" onSubmit={handleSubmit}>
-                            {/* This row is for first and last name.  The name is not allowed to be changed. */}
-                            <div className="row my-2">
-                                <div className="input-field col s12">
-                                    <input id="name" type="text" className="form-control" disabled defaultValue={currentUser.displayName} />
-                                    <label htmlFor="first_name">Display Name</label>
+                <div className="col-xs-12 col-md-6 col-lg-3">
+                    <div className="card profile">
+                        <div className="card-body">
+
+                            <div className="name-and-pic mb-4">
+                                <img src={currentUser.photoURL} alt="profile pic" width="50%" />
+                            </div>
+
+                            <div className="mb-3">
+                                <input type="text" readonly class="form-control-plaintext border-bottom" id="staticEmail" value={currentUser.displayName} />
+                                <p><small>Display Name</small></p>
+                            </div>
+
+                            <form onSubmit={handleSubmit}>
+
+                                {/* This row is for email */}
+                                <div className="row my-2">
+                                    <div className="input-field col s12">
+                                        <input id="email" type="email" className="form-control" required ref={emailRef} defaultValue={currentUser.email} />
+                                        <label htmlFor="email">Email</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* This row is for email */}
-                            <div className="row my-2">
-                                <div className="input-field col s12">
-                                    <input id="email" type="email" className="form-control" required ref={emailRef} defaultValue={currentUser.email} />
-                                    <label htmlFor="email">Email</label>
+                                {/* This row is for password */}
+                                <div className="row my-2">
+                                    <div className="input-field col s12">
+                                        <input id="password" type="password" className="form-control" ref={passwordRef} placeholder="Leave blank to keep the same" />
+                                        <label htmlFor="password">Password</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* This row is for password */}
-                            <div className="row my-2">
-                                <div className="input-field col s12">
-                                    <input id="password" type="password" className="form-control" ref={passwordRef} placeholder="Leave blank to keep the same" />
-                                    <label htmlFor="password">Password</label>
+                                {/* This row is for password confirmation */}
+                                <div className="row my-2">
+                                    <div className="input-field col s12">
+                                        <input id="passwordConfrim" type="password" className="form-control" ref={passwordConfirmRef} />
+                                        <label htmlFor="passwordConfirm">Confirm Password</label>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* This row is for password confirmation */}
-                            <div className="row my-2">
-                                <div className="input-field col s12">
-                                    <input id="passwordConfrim" type="password" className="form-control" ref={passwordConfirmRef} />
-                                    <label htmlFor="passwordConfirm">Confirm Password</label>
+                                {error ? (
+                                    <p className="red-text">{error}</p>
+                                ):null}
+
+                                <div>
+                                    <Link to={ROUTES.ACCOUNT}>
+                                        <button type="button" className="btn btn-secondary btn-block mb-3">Cancel</button>
+                                    </Link>
+                                    <button type="submit" className="btn btn-primary btn-block" disabled={loading}>Save Changes</button>
                                 </div>
-                            </div>
+                                
+                            </form>
 
-                            {error ? (
-                                <p className="red-text">{error}</p>
-                            ):null}
 
-                            <div>
-                                <button type="submit" className="btn btn-primary mr-3" disabled={loading}>Save Changes</button>
-
-                                <Link to={ROUTES.ACCOUNT}>
-                                    <button type="button" className="btn btn-secondary">Cancel</button>
-                                </Link>
-                            </div>
-                        </form>
-  
+                        </div>
                     </div>
                 </div>
+
 
             </div>
         </div>
