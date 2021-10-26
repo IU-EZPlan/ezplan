@@ -47,4 +47,4 @@ def get_all_hotels():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='ezplan123.herokuapp.com', port=5000)
