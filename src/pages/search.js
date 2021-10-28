@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HotelCard from '../components/hotel/card';
 import * as API_ROUTES from "../constants/api-routes"
 import PromptScreen from "../components/screenPrompt";
+
+
+import { useAuth } from "../context/AuthUserContext";
+import { database } from '../firebase';
 import "../styles/search.css";
 
 const Search = () => {
@@ -11,10 +15,24 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Advances Search Variables
-  const [adultTravelers, setAdultTravelers] = useState(2);
-  const [childTravelers, setChildTravelers] = useState(0);
-  const [rooms, setRooms] = useState(1);
+  const [trips, setTrips] = useState([]);
+
+  const { currentUser } = useAuth();
+
+
+
+  useEffect(async () => {
+    const list_of_trips = await database.collection('users').doc(currentUser.uid)
+        .collection('trips').onSnapshot((snap) => {
+            return snap.forEach((doc) => {
+                return doc.id
+            })
+        });
+
+    setTrips(list_of_trips)
+
+  }, [])
+
 
 
   const handleSubmit = (e) => {
@@ -22,7 +40,7 @@ const Search = () => {
       setIsSearched(false);
 
     //   endpoint uses routes and search string. String is required by hotels api    
-      fetch(API_ROUTES.HOTELS + `?location=${searchString}`)
+      fetch(API_ROUTES.HOTELS + `?location=${searchString}&&adults=2&&checkIN=2021-10-15&&checkOUT=2021-10-20&&rooms=1children=0`)
         .then((response) => {
           if (response.ok) { 
               return response.json();
@@ -43,36 +61,6 @@ const Search = () => {
         });
   }
 
-//   ROOMS (min: 1, max: 5)
-  const handleRoomCount = (num) => {
-      if (num === 1 && rooms < 5) {
-        setRooms(rooms + 1);
-
-      } else if (num === -1 && rooms > 1) {
-          setRooms(rooms - 1);
-      }
-  }
-
-//   ADULT (min: 1, max: 10)
-  const handleAdultCount = (num) => {
-    if (num === 1 && adultTravelers < 10) {
-      setAdultTravelers(adultTravelers + 1);
-
-    } else if (num === -1 && adultTravelers > 1) {
-        setAdultTravelers(adultTravelers - 1);
-    }
-  }
-
-//   CHILDREN (min: 0, max: 10)
-  const handleChildCount = (num) => {
-    if (num === 1 && childTravelers < 10) {
-      setChildTravelers(childTravelers + 1);
-
-    } else if (num === -1 && childTravelers > 0) {
-        setChildTravelers(childTravelers - 1);
-    }
-  }
-
 
 
   return (
@@ -81,63 +69,16 @@ const Search = () => {
             <div className="col-sm-3 sidebar">
                 <form onSubmit={handleSubmit}>
 
-                    <div className="row">
-                        <div className="col-12 d-flex">
-                            <input type="Search" className="form-control rounded border" placeholder="Search for hotels in..." value={searchString} onChange={(e) => setSearchString(e.target.value)} />
-
-                            <button className="btn btn-primary ml-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                <i className="fa fa-filter"></i>
-                            </button>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Your Trips</label>
                         </div>
-                    </div>
-
-
-                    <div className="row collapse" id="collapseExample">
-                        <div className="col-md-12 mt-3">
-                            <h5>Travelers</h5>
-
-                            <div className="input-row">
-                                <div><p className="my-auto">Rooms</p></div>
-                                <div className="d-flex">
-                                    <button className="btn btn-primary" onClick={() => {handleRoomCount(-1)}}><i className="fa fa-minus"></i></button>
-                                    <p className="mx-4 my-auto">{rooms}</p>
-                                    <button className="btn btn-primary" onClick={() => {handleRoomCount(1)}}><i className="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-
-                            <div className="input-row">
-                                <div><p className="my-auto">Adults</p></div>
-                                <div className="d-flex">
-                                    <button className="btn btn-primary"  onClick={() => {handleAdultCount(-1)}}><i className="fa fa-minus"></i></button>
-                                    <p className="mx-4 my-auto">{adultTravelers}</p>
-                                    <button className="btn btn-primary" onClick={() => {handleAdultCount(1)}}><i className="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-
-                            <div className="input-row">
-                                <div><p className="my-auto">Children</p></div>
-                                <div className="d-flex">
-                                    <button className="btn btn-primary"  onClick={() => {handleChildCount(-1)}}><i className="fa fa-minus"></i></button>
-                                    <p className="mx-4 my-auto">{childTravelers}</p>
-                                    <button className="btn btn-primary" onClick={() => {handleChildCount(1)}}><i className="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr />
-
-                        <div className="col-md-12 mt-3">
-                            <h3>Dates</h3>
-
-                            <div className="input-row">
-                                <p>Need to add in date picker here for check in and check out dates</p>
-                            </div>
-                        </div>
-            
-            
-            
-                    <hr />
-
+                        <select class="custom-select" id="inputGroupSelect01" onChange={(e) => setSearchString(e.target.value)}>
+                            <option selected>Choose...</option>
+                            <option value="ohio">One</option>
+                            <option value="bloomington">Two</option>
+                            <option value="michigan">Three</option>
+                        </select>
                     </div>
 
                     <button className="btn btn-block btn-primary mt-3" type="submit">Search</button>

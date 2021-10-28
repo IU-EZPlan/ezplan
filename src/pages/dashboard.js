@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useAuth } from "../context/AuthUserContext";
-import { database } from "../firebase";
+
 import UserTrips from "../components/userTrips";
 import * as ROUTES from '../constants/routes';
 import "../styles/dashboard.css";
@@ -38,7 +38,7 @@ const Dashboard = () => {
 
 
                             <div className="mb-3">
-                                <input type="text" readonly class="form-control-plaintext border-bottom" id="staticEmail" value={currentUser.displayName} />
+                                <input type="text" readOnly className="form-control-plaintext border-bottom" id="staticEmail" value={currentUser.displayName} />
                                 <small>Display Name</small>
                             </div>
 
