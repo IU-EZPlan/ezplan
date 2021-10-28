@@ -25,11 +25,6 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
-# def hello_world():
-    # send_from_dir is throwing an error, cannot import properly
-    # return send_from_directory(PUBLIC_DIR, 'index.html')
-    # return "<p>Flask app </p>"
-
 
 @app.route('/time')
 def get_current_time():

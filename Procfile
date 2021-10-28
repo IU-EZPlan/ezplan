@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app
+web: npm install; npm build ; gunicorn wsgi:app
