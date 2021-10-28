@@ -1,10 +1,8 @@
 import time
 from flask import Flask, request, send_from_directory 
+
 from api.config import *
 from api.processing.places import *
-import os
-
-# More files to help 
 import api.display_data.hotels as hotels
 
 import os
@@ -17,13 +15,10 @@ DOMAIN_HOST = os.getenv("HOST")
 app = Flask(__name__, static_folder="../build")
 # app = Flask(__name__, static_folder='public')
 
-@app.route('/', defaults={'path': ''})
+
 @app.route("/")
-def serve(path):
-    if path != "" and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
+def hello_world():
+    return "<p>Flask app </p>"
 
 
 @app.route('/time')
