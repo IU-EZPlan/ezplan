@@ -56,7 +56,7 @@ def get_all():
 
 
 
-def get_hotels_by_location(state):
+def get_hotels_by_location(state, adults_number, children_number, checkin_date, checkout_date, room_number):
     conn.request("GET", "/v1/hotels/locations?name="+state+"&locale=en-us", headers=headers)
 
     res = conn.getresponse()

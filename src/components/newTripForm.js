@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import { database } from "../firebase";
-import $ from 'jquery';
 
 
-const UserTrips = ({ userID }) => {
+const NewAdventureForm = ({ userID }) => {
     const [error, setError] = useState("");
     const name = useRef();
     const checkin = useRef();
@@ -18,7 +17,7 @@ const UserTrips = ({ userID }) => {
         const loc = locationName.current.value;
 
         // Get list of trip names
-        const list_of_trips = await database.collection('users').doc(userID)
+        await database.collection('users').doc(userID)
             .collection('trips').onSnapshot((snap) => {
                 snap.forEach((doc) => {
                     console.log(doc.data(), doc.id);
@@ -173,22 +172,9 @@ const UserTrips = ({ userID }) => {
                     </div>
                 </div>
             </div>
-
-
-            <div className="row">
-
-                <div className="col-sm-12">
-                    <div className="card">
-                        <div className="card-body">
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
                     
         </>
     )
 }
 
-export default UserTrips;
+export default NewAdventureForm;

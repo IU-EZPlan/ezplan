@@ -1,67 +1,94 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useAsync, IfPending, IfRejected, IfFulfilled } from 'react-async';
+
 import HotelCard from '../components/hotel/card';
 import * as API_ROUTES from "../constants/api-routes"
 import PromptScreen from "../components/screenPrompt";
-
 
 import { useAuth } from "../context/AuthUserContext";
 import { database } from '../firebase';
 import "../styles/search.css";
 
+
+const getTrips = async ({id}) => {
+    var list_of_trips = [];
+
+    await database.collection('users').doc(id)
+          .collection('trips').onSnapshot((snap) => {
+              return snap.forEach((doc) => {
+                // console.log(doc.id)
+                list_of_trips.push({"id": doc.id, "data": doc.data()})
+
+                return doc.data()
+              })
+          });
+
+    // console.log(list_of_trips);
+    return list_of_trips
+}
+
 const Search = () => {
-  const [results, setResults] = useState([]);
-  const [searchString, setSearchString] = useState("");
-  const [isSearched, setIsSearched] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+    const { currentUser } = useAuth();
 
-  const [trips, setTrips] = useState([]);
+    const [isSearched, setIsSearched] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-  const { currentUser } = useAuth();
+    const [results, setResults] = useState([]);
+    const [searchString, setSearchString] = useState("");
+    const [adults, setAdultNumber] = useState(1);
+    const [children, setChildren] = useState(0);
+    const [rooms, setRooms] = useState(1);
+    const [checkin, setCheckIn] = useState("");
+    const [checkout, setCheckOut] = useState("");
+
+    // Fetch State used in the functions below
+    const fetchState = useAsync(getTrips, {id: currentUser.uid} );
 
 
+    const handleTripChange = async (trip) => {
+        console.log(trip);
 
-  useEffect(async () => {
-    const list_of_trips = await database.collection('users').doc(currentUser.uid)
-        .collection('trips').onSnapshot((snap) => {
-            return snap.forEach((doc) => {
-                return doc.id
-            })
-        });
+        const tripDetails = await (await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip).get()).data()
+        console.log(tripDetails)
 
-    setTrips(list_of_trips)
+        setSearchString(tripDetails.location);
+        setAdultNumber(tripDetails.adults);
+        setChildren(tripDetails.children);
+        setRooms(tripDetails.rooms);
+        setCheckIn(tripDetails.checkInDate);
+        setCheckOut(tripDetails.checkOutDate);
+    }
 
-  }, [])
-
+    const searchForHotels = (e) => {
+        e.preventDefault();
+        setIsSearched(false);
+    
+        // endpoint uses routes and search string. String is required by hotels api    
+        fetch(API_ROUTES.HOTELS + `?location=${searchString}&&adults=${adults}&&checkIN=${checkin}&&checkOUT=${checkout}&&rooms=${rooms}&&children=${children}`)
+          .then((response) => {
+            if (response.ok) { 
+                return response.json();
+              } else { 
+                throw response; 
+              }
+      
+          }).then((data) => {
+            setResults(data.result);
+            setIsSearched(true);
+            setLoading(true);
+    
+          }).catch((error) => {
+              setError(error.message);
+    
+          }).finally(() => {
+              setLoading(false);
+          });
+    }
 
 
   const handleSubmit = (e) => {
-      e.preventDefault();
-      setIsSearched(false);
-
-    //   endpoint uses routes and search string. String is required by hotels api    
-      fetch(API_ROUTES.HOTELS + `?location=${searchString}&&adults=2&&checkIN=2021-10-15&&checkOUT=2021-10-20&&rooms=1children=0`)
-        .then((response) => {
-          if (response.ok) { 
-              return response.json();
-            } else { 
-              throw response; 
-            }
-    
-        }).then((data) => {
-          setResults(data.result);
-          setIsSearched(true);
-          setLoading(true);
-
-        }).catch((error) => {
-            setError(error.message);
-
-        }).finally(() => {
-            setLoading(false);
-        });
   }
-
-
 
   return (
     <div className="container-fluid search">
@@ -69,19 +96,38 @@ const Search = () => {
             <div className="col-sm-3 sidebar">
                 <form onSubmit={handleSubmit}>
 
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Your Trips</label>
+                    <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                            <label className="input-group-text" htmlFor="inputGroupSelect01">Your Trips</label>
                         </div>
-                        <select class="custom-select" id="inputGroupSelect01" onChange={(e) => setSearchString(e.target.value)}>
-                            <option selected>Choose...</option>
-                            <option value="ohio">One</option>
-                            <option value="bloomington">Two</option>
-                            <option value="michigan">Three</option>
+                        <select className="custom-select" id="inputGroupSelect01" onChange={(e) => handleTripChange(e.target.value)}>
+                            <option defaultValue>Choose...</option>
+
+                            <IfPending state={fetchState}>
+                                <option>Loading...</option>
+                            </IfPending>
+
+                            <IfRejected state={fetchState}>
+                                <option>ERROR</option>
+                            </IfRejected>
+
+                            <IfFulfilled state={fetchState}>
+                                {(data) => {
+                                    // console.log("data", data); // This is printing just fine
+
+                                    const options = data.map((t, index) => 
+                                        <option key={index} value={t.id}>{t.id}</option>
+                                    );
+
+                                    console.log(options);
+                                    return options
+                                }}
+                            </IfFulfilled>
                         </select>
                     </div>
 
-                    <button className="btn btn-block btn-primary mt-3" type="submit">Search</button>
+                    <button className="btn btn-block btn-primary mt-3" type="submit">Search for Events</button>
+                    <button className="btn btn-block btn-primary mt-3" type="buttom" onClick={searchForHotels}>Search for Hotels</button>
                 </form>
             </div>
 

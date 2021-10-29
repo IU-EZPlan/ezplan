@@ -1,14 +1,12 @@
+import os
 import time
 from flask import Flask, request, send_from_directory 
+
 from config import *
 from processing.places import *
-import os
-
-# More files to help 
 import display_data.hotels as hotels
 
-# THIS IS THROWING AN ERROR 
-#   from processing.places import Places
+
 
 
 app = Flask(__name__, static_folder="../build")
@@ -18,12 +16,6 @@ app = Flask(__name__, static_folder="../build")
 @app.route("/")
 def hello_world():
     return "<p>Flask app </p>"
-
-# def serve(path):
-#     if path != "" and os.path.exists(app.static_folder + '/' + path):
-#         return send_from_directory(app.static_folder, path)
-#     else:
-#         return send_from_directory(app.static_folder, 'index.html')
 
 
 
@@ -47,12 +39,6 @@ def get_all_hotels():
     return hotels.get_all()
 
 
-
-# @app.route("/call1")
-# def fn():
-#     json = request.json()
-#     print(json)
-#     Places.getPlaces(json)
 
 
 
