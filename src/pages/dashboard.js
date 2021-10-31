@@ -81,7 +81,7 @@ const Dashboard = () => {
         // console.log(filterTrips);
 
         if (filterTrips.length === 0) {
-            return <p className="p-3">No pending Trips</p>
+            return <p className="p-3">No pending Trips. Create a <strong>New Adventure</strong></p>
         } else {
             return filterTrips
         }

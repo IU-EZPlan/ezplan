@@ -44,12 +44,12 @@ const UpdateProfile = () => {
 
         
         Promise.all(promises).then(() => {
-            history.push(ROUTES.ACCOUNT)
+            history.push(ROUTES.ACCOUNT);
         }).catch(() => {
             setError("faild to update");
         }).finally(() => {
             setLoading(false);
-        })
+        });
 
     }
 
@@ -66,7 +66,7 @@ const UpdateProfile = () => {
                             </div>
 
                             <div className="mb-3">
-                                <input type="text" readOnly class="form-control-plaintext border-bottom" id="staticEmail" value={currentUser.displayName} />
+                                <input type="text" readOnly className="form-control-plaintext border-bottom" id="staticEmail" value={currentUser.displayName} />
                                 <p><small>Display Name</small></p>
                             </div>
 
