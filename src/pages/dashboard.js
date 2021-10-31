@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
-import { useAsync, IfPending, IfRejected, IfFulfilled } from 'react-async';
 
 import { useAuth } from "../context/AuthUserContext";
 import { database } from "../firebase";
@@ -12,27 +11,13 @@ import * as ROUTES from '../constants/routes';
 import "../styles/dashboard.css";
 
 
-const trips = async ({id}) => {
-    var list_of_trips = [];
-
-    await database.collection("users").doc(id).collection('trips')
-        .onSnapshot((snap) => {
-            snap.forEach((doc) => {
-                console.log(doc.data(), doc.id);
-                list_of_trips.push({id: doc.id, ...doc.data()});
-            })
-    })
-
-    return list_of_trips
-}
-
-
 const Dashboard = () => {
     const history = useHistory();
     const [error, setError] = useState();
+    const [loading, setLoading] = useState(true);
+    const [tripData, setTripData] = useState([]);
     const { currentUser, logout } = useAuth();
     
-    const fetchState = useAsync(trips, {id: currentUser.uid});
 
     const handleLogout = async () => {
         setError("");
@@ -42,6 +27,64 @@ const Dashboard = () => {
             history.push(ROUTES.LOGIN);
         } catch {
             setError("failed to log out");
+        }
+    }
+
+    useEffect(() => {
+        
+        database.collection("users").doc(currentUser.uid).collection('trips')
+        .onSnapshot((snap) => {
+                var list_of_trips = [];
+
+                snap.forEach((doc) => {
+                    // console.log(doc.data(), doc.id);
+                    list_of_trips.push({id: doc.id, ...doc.data()});
+                });
+
+                setTripData(list_of_trips);
+                // console.log(tripData);
+                setLoading(false);
+        });
+
+    }, [currentUser.uid]);
+
+    const getPastTrips = () => {
+        const trips = tripData.map((t) => {
+            if (t.status === "complete"){
+                return t.id
+            }
+            return null;
+        })
+        
+
+        const filterTrips = trips.filter(t => t !== null);
+        // console.log(filterTrips);
+
+        if (filterTrips.length === 0) {
+            return (<p>No Past Trips</p>)
+        } else {
+            return filterTrips.map((t, index) => {
+                return <p key={index}>{t} <span className={`badge badge-success`}>complete</span></p>
+            });
+        }
+
+    }
+
+    const getPendingTrips = () => {
+        const trips = tripData.map((trip, index) => {
+            if (trip.status === "pending") {
+                return <DashboardTrip key={index} trip={trip} />
+            }
+            return null;
+        });
+
+        const filterTrips = trips.filter(t => t !== null);
+        // console.log(filterTrips);
+
+        if (filterTrips.length === 0) {
+            return <p className="p-3">No pending Trips</p>
+        } else {
+            return filterTrips
         }
     }
 
@@ -76,32 +119,11 @@ const Dashboard = () => {
 
                     <div className="mt-5">
                         <h3>Past Tours</h3>
-
-                        <IfPending state={fetchState}>LOADING</IfPending>
-                        <IfRejected state={fetchState}>ERROR</IfRejected>
-                        <IfFulfilled state={fetchState}>
-                            {(data) => {
-                                const trips = data.map((t) => {
-                                    if (t.status === "complete") {
-                                        console.log(t.id);
-                                        return t.id;
-                                    } 
-                                    return null;
-                                });
-
-                                const filterTrips = trips.filter(t => t !== null);
-                                console.log(filterTrips);
-
-                                if (filterTrips.length === 0) {
-                                    return <p>No past trips</p>
-                                } else {
-                                    return filterTrips.map((t, index) => <p key={index}>{t}</p>)
-                                }
-
-                            }}
-                        </IfFulfilled>
-
-                        
+                        {loading ? 
+                            <p>Loading. . .</p>
+                        : 
+                            <>{getPastTrips()}</>
+                        }                        
                     </div>
                 </div>
 
@@ -110,33 +132,11 @@ const Dashboard = () => {
                     <NewAdventureForm userID={currentUser.uid} />
 
                     <div className="row">
-
-                        <IfPending state={fetchState}>LOADING</IfPending>
-                        <IfRejected state={fetchState}>ERROR</IfRejected>
-                        <IfFulfilled state={fetchState}>
-                            {(data) => {
-                                console.log(data);
-
-                                const trips = data.map((trip, index) => {
-                                    if (trip.status === "pending") {
-                                        return <DashboardTrip trip={trip} />
-                                    }
-                                    return null;
-                                });
-
-                                const filterTrips = trips.filter(t => t !== null);
-                                console.log(filterTrips);
-
-                                if (filterTrips.length === 0) {
-                                    return <p>No Pending Trips</p>
-                                } else {
-                                    return filterTrips
-                                }
-
-
-                            }}
-                        </IfFulfilled>
-
+                        {loading ? 
+                            <p>Loading. . .</p>
+                        : 
+                            <>{getPendingTrips()}</>
+                        }  
                     </div>
                 </div>
             </div>

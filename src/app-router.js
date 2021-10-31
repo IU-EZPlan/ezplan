@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom'; 
 
 import { AuthProvider } from './context/AuthUserContext';
+import { UserDataProvider } from './context/UserDataContext'
 
 // importing pages
 import Home from './pages/home';
@@ -23,17 +24,19 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Navbar />
-        <Route path={ROUTES.LANDING} exact component={Landing} />
-        <Route path={ROUTES.HOME} component={Home} />
-        <Route path={ROUTES.LOGIN} component={Login} />
-        <Route path={ROUTES.SIGN_UP} component={SignUp} />
-        <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
-        <Route path={ROUTES.SEARCH} component={Search} />
+        <UserDataProvider>
+          <Navbar />
+          <Route path={ROUTES.LANDING} exact component={Landing} />
+          <Route path={ROUTES.HOME} component={Home} />
+          <Route path={ROUTES.LOGIN} component={Login} />
+          <Route path={ROUTES.SIGN_UP} component={SignUp} />
+          <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
+          <Route path={ROUTES.SEARCH} component={Search} />
 
-        {/* Must have an account to see the following pages */}
-        <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />
-        <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
+          {/* Must have an account to see the following pages */}
+          <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />
+          <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
+        </UserDataProvider>
       </AuthProvider>
     </Router>
   );

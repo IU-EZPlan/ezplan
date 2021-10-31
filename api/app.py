@@ -3,20 +3,16 @@ import time
 from flask import Flask, request, send_from_directory 
 
 from config import *
-from processing.places import *
 import display_data.hotels as hotels
 
 
-
-
-app = Flask(__name__, static_folder="../build")
+app = Flask(__name__)
 # app = Flask(__name__, static_folder='public')
 
 
 @app.route("/")
 def hello_world():
     return "<p>Flask app </p>"
-
 
 
 @app.route('/time')

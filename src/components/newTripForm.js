@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
+import { useHistory } from "react-router";
 import { database } from "../firebase";
+import * as ROUTES from "../constants/routes";
 
 
 const NewAdventureForm = ({ userID }) => {
@@ -8,6 +10,7 @@ const NewAdventureForm = ({ userID }) => {
     const checkin = useRef();
     const checkout = useRef();
     const locationName = useRef();
+    const history = useHistory();
 
     const createNewTrip = async (e) => {
         e.preventDefault();
@@ -20,7 +23,7 @@ const NewAdventureForm = ({ userID }) => {
         await database.collection('users').doc(userID)
             .collection('trips').onSnapshot((snap) => {
                 snap.forEach((doc) => {
-                    console.log(doc.data(), doc.id);
+                    // console.log(doc.data(), doc.id);
                     if (nameStr === doc.id) {
                         setError("The trip " + nameStr + " already exists");
                     }
@@ -29,16 +32,23 @@ const NewAdventureForm = ({ userID }) => {
 
         if (error !== "") {
 
-            // Create a new trip in the databse
-            await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
-                status: "pending",
-                checkInDate: startDate,
-                checkOutDate: endDate,
-                location: loc,
-                adults: adultTravelers,
-                children: childTravelers,
-                rooms: rooms
-            });
+            try {                
+                // Create a new trip in the databse
+                await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
+                    status: "pending",
+                    checkInDate: startDate,
+                    checkOutDate: endDate,
+                    location: loc,
+                    adults: adultTravelers,
+                    children: childTravelers,
+                    rooms: rooms
+                });
+
+                history.push(ROUTES.SEARCH);
+            } catch {
+                setError("Unable to create trip");
+            }
+
 
             // close the modal
             // var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {})

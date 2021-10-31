@@ -6,6 +6,7 @@ import * as API_ROUTES from "../constants/api-routes"
 import PromptScreen from "../components/screenPrompt";
 
 import { useAuth } from "../context/AuthUserContext";
+import { FirestoreData } from '../context/UserDataContext';
 import { database } from '../firebase';
 import "../styles/search.css";
 
@@ -29,6 +30,8 @@ const getTrips = async ({id}) => {
 
 const Search = () => {
     const { currentUser } = useAuth();
+    const { tripData } = FirestoreData();
+    console.log(tripData)
 
     const [isSearched, setIsSearched] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -119,7 +122,7 @@ const Search = () => {
                                         <option key={index} value={t.id}>{t.id}</option>
                                     );
 
-                                    console.log(options);
+                                    // console.log(options);
                                     return options
                                 }}
                             </IfFulfilled>
