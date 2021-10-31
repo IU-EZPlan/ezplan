@@ -4,6 +4,8 @@ import os
 
 conn = http.client.HTTPSConnection("app.ticketmaster.com")
 # Function to return the events JSON
+
+# latlong = (*Latitude*,*Longitude*)
 def getJSONObj(latlong, includeKids, startDate, endDate, page):
     conn.request("GET", "/discovery/v2/events.json?latlong="+latlong+"&includeFamily="+includeKids+"&radius=50&unit=miles&locale=*&page="+str(page)+"&startDateTime="+startDate+"T00:00:00Z&endDateTime="+endDate+"T00:00:00Z&apikey=F8RzQmU95ElJtH7FzQRVr55vsJstaADA")
     res = conn.getresponse()
