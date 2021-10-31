@@ -6,6 +6,7 @@ import * as ROUTES from "../constants/routes";
 
 const NewAdventureForm = ({ userID }) => {
     const [error, setError] = useState("");
+    const [dateError, setDateError] = useState("");
     const name = useRef();
     const checkin = useRef();
     const checkout = useRef();
@@ -21,6 +22,15 @@ const NewAdventureForm = ({ userID }) => {
         const loc = locationName.current.value;
         const photo = photoAddress.current.value;
 
+        if (nameStr === "") {
+            setError("Trip name must not be empty");
+            return;
+        } else if (loc === "") {
+            setError("Trip location must not be empty");
+        } else if (photo === ""){
+            setError("Photo URL must not be empty");
+        }
+
         // Get list of trip names
         await database.collection('users').doc(userID)
             .collection('trips').onSnapshot((snap) => {
@@ -30,10 +40,14 @@ const NewAdventureForm = ({ userID }) => {
                         setError("The trip " + nameStr + " already exists");
                     }
                 })
-            })
+            });
+        
+        if (new Date(endDate) <= new Date(startDate)) {
+            setDateError("Check out data must be greater then check in date.");
+            return;
+        }
 
-        if (error !== "") {
-
+        if (error !== "" && dateError !== "") {
             try {                
                 // Create a new trip in the databse
                 await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
@@ -51,15 +65,7 @@ const NewAdventureForm = ({ userID }) => {
             } catch {
                 setError("Unable to create trip");
             }
-
-
-            // close the modal
-            // var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {})
-            // myModal.hide();
-        }
-
-        return;
-            
+        }   
     }
 
 
@@ -143,6 +149,7 @@ const NewAdventureForm = ({ userID }) => {
 
                                 <div className="form-group justify-content-between">
                                     <h6>Dates</h6>
+                                    {dateError ? <p className="text-danger">{dateError}</p> : null}
                                     
                                     <div className="d-flex">
                                         <div className="d-flex flex-column mb-3 mr-4 w-50">
