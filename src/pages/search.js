@@ -1,43 +1,25 @@
-import React, { useState } from 'react';
-import { useAsync, IfPending, IfRejected, IfFulfilled } from 'react-async';
+import React, { useState, useEffect } from 'react';
 
 import HotelCard from '../components/hotel/card';
 import * as API_ROUTES from "../constants/api-routes"
 import PromptScreen from "../components/screenPrompt";
 
 import { useAuth } from "../context/AuthUserContext";
-import { FirestoreData } from '../context/UserDataContext';
 import { database } from '../firebase';
 import "../styles/search.css";
 
 
-const getTrips = async ({id}) => {
-    var list_of_trips = [];
-
-    await database.collection('users').doc(id)
-          .collection('trips').onSnapshot((snap) => {
-              return snap.forEach((doc) => {
-                // console.log(doc.id)
-                list_of_trips.push({"id": doc.id, "data": doc.data()})
-
-                return doc.data()
-              })
-          });
-
-    // console.log(list_of_trips);
-    return list_of_trips
-}
 
 const Search = () => {
     const { currentUser } = useAuth();
-    const { tripData } = FirestoreData();
-    console.log(tripData)
-
     const [isSearched, setIsSearched] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    const [results, setResults] = useState([]);
+    const [tripData, setTripData] = useState();
+
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchType, setSearchType] = useState("");
     const [searchString, setSearchString] = useState("");
     const [adults, setAdultNumber] = useState(1);
     const [children, setChildren] = useState(0);
@@ -45,15 +27,29 @@ const Search = () => {
     const [checkin, setCheckIn] = useState("");
     const [checkout, setCheckOut] = useState("");
 
-    // Fetch State used in the functions below
-    const fetchState = useAsync(getTrips, {id: currentUser.uid} );
+
+    useEffect(() => {
+        database.collection('users').doc(currentUser.uid)
+          .collection('trips').onSnapshot((snap) => {
+              var list_of_trips = [];
+
+              snap.forEach((doc) => {
+                // console.log(doc.id)
+                list_of_trips.push({"id": doc.id, "data": doc.data()})
+              });
+
+              setTripData(list_of_trips);
+              setLoading(false);
+          });
+
+    }, [currentUser.uid])
 
 
     const handleTripChange = async (trip) => {
-        console.log(trip);
+        // console.log(trip);
 
         const tripDetails = await (await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip).get()).data()
-        console.log(tripDetails)
+        // console.log(tripDetails)
 
         setSearchString(tripDetails.location);
         setAdultNumber(tripDetails.adults);
@@ -66,6 +62,7 @@ const Search = () => {
     const searchForHotels = (e) => {
         e.preventDefault();
         setIsSearched(false);
+        setSearchType("hotel");
     
         // endpoint uses routes and search string. String is required by hotels api    
         fetch(API_ROUTES.HOTELS + `?location=${searchString}&&adults=${adults}&&checkIN=${checkin}&&checkOUT=${checkout}&&rooms=${rooms}&&children=${children}`)
@@ -77,7 +74,7 @@ const Search = () => {
               }
       
           }).then((data) => {
-            setResults(data.result);
+            setSearchResults(data.result);
             setIsSearched(true);
             setLoading(true);
     
@@ -90,14 +87,59 @@ const Search = () => {
     }
 
 
-  const handleSubmit = (e) => {
+  const searchForEvents = (e) => {
+    e.preventDefault();
+    setIsSearched(false);
+    setSearchType("event");
+  }
+
+  const getTripOptions = () => {
+      const options = tripData.map((t, index) => {
+          return <option key={index} value={t.id}>{t.id}</option>
+      });
+
+      if (options.length === 0) {
+        return (<option>No Trip Options</option>)
+      } else {
+          return options
+      }
+  }
+
+  const formatSearchResults = () => {
+    if (searchResults.length > 0) {
+        if (searchType === "hotel") {
+            return searchResults.map((h) => {
+                return <div className="col-sm-6 col-md-4 col-xl-3 mb-3" key={h.hotel_id}>
+                    <HotelCard 
+                        name={h.hotel_name}
+                        address={h.address}
+                        imgURL={h.max_photo_url}
+                    />
+                </div>
+            })
+
+
+        } else {
+            return <div>
+                Event will go here
+            </div>
+        }
+
+
+    } else if (loading) {
+          return <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly"/>
+    } else if (error) {
+        return <PromptScreen heading="Something went wrong..." type="error" subtext="Trying searching again, or constact support" />
+    } else {
+        return <PromptScreen heading="Search" type="waiting" subtext="Get hotel or event results by selecting one of your trips and clicking the button." />
+    }
   }
 
   return (
     <div className="container-fluid search">
         <div className="row">
             <div className="col-sm-3 sidebar">
-                <form onSubmit={handleSubmit}>
+                <form>
 
                     <div className="input-group mb-3">
                         <div className="input-group-prepend">
@@ -105,31 +147,15 @@ const Search = () => {
                         </div>
                         <select className="custom-select" id="inputGroupSelect01" onChange={(e) => handleTripChange(e.target.value)}>
                             <option defaultValue>Choose...</option>
-
-                            <IfPending state={fetchState}>
+                            {loading ?
                                 <option>Loading...</option>
-                            </IfPending>
-
-                            <IfRejected state={fetchState}>
-                                <option>ERROR</option>
-                            </IfRejected>
-
-                            <IfFulfilled state={fetchState}>
-                                {(data) => {
-                                    // console.log("data", data); // This is printing just fine
-
-                                    const options = data.map((t, index) => 
-                                        <option key={index} value={t.id}>{t.id}</option>
-                                    );
-
-                                    // console.log(options);
-                                    return options
-                                }}
-                            </IfFulfilled>
+                            :
+                                <>{getTripOptions()}</>
+                            }
                         </select>
                     </div>
 
-                    <button className="btn btn-block btn-primary mt-3" type="submit">Search for Events</button>
+                    <button className="btn btn-block btn-primary mt-3" type="button" onClick={searchForEvents}>Search for Events</button>
                     <button className="btn btn-block btn-primary mt-3" type="buttom" onClick={searchForHotels}>Search for Hotels</button>
                 </form>
             </div>
@@ -139,35 +165,16 @@ const Search = () => {
 
                 {isSearched ? 
                     <div className="alert alert-warning alert-dismissible fade show mb-4" role="alert">
-                        Showing hotel results for <strong>{searchString}</strong>
+                        Showing <strong>{searchType}</strong> results for <strong>{searchString}</strong>
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                 : null }
 
-                {results.length > 0 ? 
-                    <div className="row">
-                        {results.map(h => (
-                            <div className="col-sm-6 col-md-4 col-xl-3 mb-3" key={h.hotel_id}>
-                                <HotelCard  
-                                    name={h.hotel_name} 
-                                    address={h.address} 
-                                    imgURL={h.max_photo_url}
-                                    />
-                            </div>
-                        ))}
-                    </div>
-                : 
-                    loading ?
-                        <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly" />
-                        :
-                        error ? 
-                        <PromptScreen heading="Something went wrong..." type="error" subtext="Trying searching again, or constact support" />
-                            :
-                            <PromptScreen heading="Search" type="waiting" subtext="Get hotel results by searching a location. Use filters for an advanced search." />
-                }
-
+                <div className="row">
+                    {formatSearchResults()}
+                </div>
             </div>
         </div>
         

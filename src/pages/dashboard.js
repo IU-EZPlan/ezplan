@@ -42,7 +42,6 @@ const Dashboard = () => {
                 });
 
                 setTripData(list_of_trips);
-                // console.log(tripData);
                 setLoading(false);
         });
 
