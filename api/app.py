@@ -31,10 +31,9 @@ def get_all_hotels():
     checkout_date = request.args.get("checkOUT")
     room_number = request.args.get("rooms")
 
-
     if location:
         return hotels.get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number)
-    return hotels.get_all()
+
 
 @app.route('/events', methods=['GET'])
 def get_events():

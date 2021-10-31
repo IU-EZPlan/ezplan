@@ -17,9 +17,10 @@ const Search = () => {
     const [error, setError] = useState("");
 
     const [tripData, setTripData] = useState();
-
     const [searchResults, setSearchResults] = useState([]);
     const [searchType, setSearchType] = useState("");
+
+    const [currentTrip, setCurrentTrip] = useState("");
     const [searchString, setSearchString] = useState("");
     const [adults, setAdultNumber] = useState(1);
     const [children, setChildren] = useState(0);
@@ -35,7 +36,7 @@ const Search = () => {
 
               snap.forEach((doc) => {
                 // console.log(doc.id)
-                list_of_trips.push({"id": doc.id, "data": doc.data()})
+                list_of_trips.push({"id": doc.id, ...doc.data()})
               });
 
               setTripData(list_of_trips);
@@ -48,6 +49,7 @@ const Search = () => {
     const handleTripChange = async (trip) => {
         // console.log(trip);
         if (trip === "Choose...") { setSearchString(""); return; }
+        setCurrentTrip(trip);
 
         const tripDetails = await (await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip).get()).data()
         // console.log(tripDetails)
@@ -65,6 +67,7 @@ const Search = () => {
         e.preventDefault();
         setIsSearched(false);
         setSearchType("hotel");
+        setLoading(true);
 
         if (searchString === "") { return; }
     
@@ -78,6 +81,8 @@ const Search = () => {
               }
       
           }).then((data) => {
+              console.log(data);
+              console.log(data.result);
             setSearchResults(data.result);
             setIsSearched(true);
             setLoading(true);
@@ -95,9 +100,10 @@ const Search = () => {
     e.preventDefault();
     setIsSearched(false);
     setSearchType("event");
+    setLoading(true);
 
     // need to get longitude and latitude from hotel location in a given trip: searchString
-    if (true) {return;}
+    if (true) { return; }
 
     fetch(API_ROUTES.EVENTS + `?location=${searchString}&&children=${children > 0 ? "yes" : "no"}&&checkIN=${checkin}&&checkOUT=${checkout}`)
       .then((response) => {
@@ -119,11 +125,17 @@ const Search = () => {
           setLoading(false);
       });
   }
+  
 
   const getTripOptions = () => {
       const options = tripData.map((t, index) => {
-          return <option key={index} value={t.id}>{t.id}</option>
-      });
+          if (t.status !== "complete") {
+            return <option key={index} value={t.id}>{t.id}</option>
+          } else {
+            return null;
+          }
+      }).filter(t => t !== null);
+
 
       if (options.length === 0) {
         return (<option>No Trip Options</option>)
@@ -133,14 +145,28 @@ const Search = () => {
   }
 
   const formatSearchResults = () => {
-    if (searchResults.length > 0) {
+    if (searchResults && searchResults.length > 0) {
         if (searchType === "hotel") {
             return searchResults.map((h) => {
                 return <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-3" key={h.hotel_id}>
                     <HotelCard 
+                        tripName={currentTrip}
+                        hotel_data={h}
                         name={h.hotel_name}
+                        trans_name={h.hotel_name_trans}
                         address={h.address}
                         imgURL={h.max_photo_url}
+                        latloc={h.latitude}
+                        lonloc={h.longitude}
+                        price={h.min_total_price}
+                        currency_code={h.currency_code}
+                        review_score={h.review_score}
+                        review_word={h.review_score_word}
+                        amenity={h.ribbon_text}
+                        website={h.url}
+                        city={h.city}
+                        zip={h.zip}
+                        can_cancel={h.is_free_cancellable}
                     />
                 </div>
             })
@@ -182,8 +208,8 @@ const Search = () => {
                     </select>
                 </div>
 
-                <button className="btn btn-block btn-primary mt-0 ml-3 w-50" type="button" onClick={searchForEvents}>Search for Events</button>
                 <button className="btn btn-block btn-primary mt-0 ml-3 w-50" type="button" onClick={searchForHotels}>Search for Hotels</button>
+                <button className="btn btn-block btn-primary mt-0 ml-3 w-50" type="button" onClick={searchForEvents}>Search for Events</button>
             </form>
         </div>
 
@@ -199,7 +225,7 @@ const Search = () => {
                     </div>
                 : null }
 
-                <div className="row">
+                <div className="row my-3">
                     {formatSearchResults()}
                 </div>
             </div>

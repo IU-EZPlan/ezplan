@@ -67,10 +67,10 @@ def get_hotels_by_location(state, adults_number, children_number, checkin_date, 
 
     # Turn this string into an object (in python, this is a dictionary aka json)
     x = json.loads(dataStr)
-    return parse_data(x)
+    return parse_data(x, adults_number, children_number, checkin_date, checkout_date, room_number)
 
 
-def parse_data(dataObject):
+def parse_data(dataObject, adults_number, children_number, checkin_date, checkout_date, room_number):
     # Get the destID and destType from the dictionary with US as the country
     destID = ""
     destType = ""
@@ -101,7 +101,7 @@ def parse_data(dataObject):
 
 
     # Make the new request
-    conn.request("GET", "/v1/hotels/search?locale=en-gb&room_number=1&checkout_date=2021-11-26&order_by=popularity&units=metric&adults_number=2&filter_by_currency=AED&checkin_date=2021-11-25&dest_type="+destType+"&dest_id="+destID+"&children_number=2&page_number=0&categories_filter_ids=facility%3A%3A107%2Cfree_cancellation%3A%3A1&children_ages=5%2C0", headers=headers)
+    conn.request("GET", "/v1/hotels/search?locale=en-gb&room_number=" + room_number + "&checkout_date="+ checkout_date +"&order_by=popularity&units=metric&adults_number=" + adults_number + "&filter_by_currency=AED&checkin_date=" + checkin_date + "&dest_type=" + destType + "&dest_id=" + destID + "&children_number=1&page_number=0&categories_filter_ids=facility%3A%3A107%2Cfree_cancellation%3A%3A1&children_ages=5%2C0", headers=headers)
 
     # # Hotel Data!
     res1 = conn.getresponse()

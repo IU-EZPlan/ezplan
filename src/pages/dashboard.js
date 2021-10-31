@@ -49,7 +49,7 @@ const Dashboard = () => {
 
     const getPastTrips = () => {
         const trips = tripData.map((t) => {
-            if (t.status === "complete"){
+            if (t.status === "complete") {
                 return t.id
             }
             return null;
