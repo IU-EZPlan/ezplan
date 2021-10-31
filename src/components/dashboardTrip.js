@@ -41,7 +41,7 @@ const DashboardTrip = ({trip}) => {
                 title: "Check In",
                 subtexts: [trip.hotel.hotel_name],
                 place: [trip.hotel.address, trip.hotel.city + ", " + trip.hotel.zip],
-                time: trip.checkInDate,
+                time:  new Date(trip.checkInDate + ' ' + trip.hotel.checkin.from).toUTCString(),
                 item_classes: "active",
                 dot_line_classes: "b-primary" // b-warning or b-danger
             })
@@ -56,7 +56,7 @@ const DashboardTrip = ({trip}) => {
                 title: "Check Out",
                 subtexts: [trip.hotel.hotel_name],
                 place: [trip.hotel.address, trip.hotel.city + ", " + trip.hotel.zip],
-                time: trip.checkInDate,
+                time:  new Date(trip.checkOutDate + ' ' + trip.hotel.checkout.until).toUTCString(),
                 item_classes: "active",
                 dot_line_classes: "b-primary" // b-warning or b-danger
             })
