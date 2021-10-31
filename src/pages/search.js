@@ -47,6 +47,7 @@ const Search = () => {
 
     const handleTripChange = async (trip) => {
         // console.log(trip);
+        if (trip === "Choose...") { setSearchString(""); return; }
 
         const tripDetails = await (await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip).get()).data()
         // console.log(tripDetails)
@@ -57,12 +58,15 @@ const Search = () => {
         setRooms(tripDetails.rooms);
         setCheckIn(tripDetails.checkInDate);
         setCheckOut(tripDetails.checkOutDate);
+
     }
 
     const searchForHotels = (e) => {
         e.preventDefault();
         setIsSearched(false);
         setSearchType("hotel");
+
+        if (searchString === "") { return; }
     
         // endpoint uses routes and search string. String is required by hotels api    
         fetch(API_ROUTES.HOTELS + `?location=${searchString}&&adults=${adults}&&checkIN=${checkin}&&checkOUT=${checkout}&&rooms=${rooms}&&children=${children}`)
@@ -91,6 +95,29 @@ const Search = () => {
     e.preventDefault();
     setIsSearched(false);
     setSearchType("event");
+
+    // need to get longitude and latitude from hotel location in a given trip: searchString
+    if (true) {return;}
+
+    fetch(API_ROUTES.EVENTS + `?location=${searchString}&&children=${children > 0 ? "yes" : "no"}&&checkIN=${checkin}&&checkOUT=${checkout}`)
+      .then((response) => {
+        if (response.ok) { 
+            return response.json();
+          } else { 
+            throw response; 
+          }
+  
+      }).then((data) => {
+        setSearchResults(data.result);
+        setIsSearched(true);
+        setLoading(true);
+
+      }).catch((error) => {
+          setError(error.message);
+
+      }).finally(() => {
+          setLoading(false);
+      });
   }
 
   const getTripOptions = () => {
@@ -109,7 +136,7 @@ const Search = () => {
     if (searchResults.length > 0) {
         if (searchType === "hotel") {
             return searchResults.map((h) => {
-                return <div className="col-sm-6 col-md-4 col-xl-3 mb-3" key={h.hotel_id}>
+                return <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-3" key={h.hotel_id}>
                     <HotelCard 
                         name={h.hotel_name}
                         address={h.address}
@@ -138,30 +165,30 @@ const Search = () => {
   return (
     <div className="container-fluid search">
         <div className="row">
-            <div className="col-sm-3 sidebar">
-                <form>
+            <form className="col-sm-12 d-flex mb-3">
 
-                    <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                            <label className="input-group-text" htmlFor="inputGroupSelect01">Your Trips</label>
-                        </div>
-                        <select className="custom-select" id="inputGroupSelect01" onChange={(e) => handleTripChange(e.target.value)}>
-                            <option defaultValue>Choose...</option>
-                            {loading ?
-                                <option>Loading...</option>
-                            :
-                                <>{getTripOptions()}</>
-                            }
-                        </select>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <label className="input-group-text" htmlFor="inputGroupSelect01">Your Trips</label>
                     </div>
 
-                    <button className="btn btn-block btn-primary mt-3" type="button" onClick={searchForEvents}>Search for Events</button>
-                    <button className="btn btn-block btn-primary mt-3" type="buttom" onClick={searchForHotels}>Search for Hotels</button>
-                </form>
-            </div>
+                    <select className="custom-select" id="inputGroupSelect01" onChange={(e) => handleTripChange(e.target.value)}>
+                        <option defaultValue>Choose...</option>
+                        {loading ?
+                            <option>Loading...</option>
+                        :
+                            <>{getTripOptions()}</>
+                        }
+                    </select>
+                </div>
 
+                <button className="btn btn-block btn-primary mt-0 ml-3 w-50" type="button" onClick={searchForEvents}>Search for Events</button>
+                <button className="btn btn-block btn-primary mt-0 ml-3 w-50" type="button" onClick={searchForHotels}>Search for Hotels</button>
+            </form>
+        </div>
 
-            <div className="col-sm-9" style={{backgroundColor: "#fafbfa"}}>
+        <div className="row">
+            <div className="col-sm-12" style={{backgroundColor: "#fafbfa"}}>
 
                 {isSearched ? 
                     <div className="alert alert-warning alert-dismissible fade show mb-4" role="alert">
@@ -178,7 +205,6 @@ const Search = () => {
             </div>
         </div>
         
-
     </div>
   );
 }
