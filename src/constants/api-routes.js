@@ -1,3 +1,2 @@
 export const HOTELS = '/hotels';
-export const FLIGHTS = '/flights';
-export const TOURS = '/tours';
+export const EVENTS = '/events';

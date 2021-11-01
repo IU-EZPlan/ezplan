@@ -1,18 +1,13 @@
+import os
 import time
 from flask import Flask, request, send_from_directory 
 
-from api.config import *
-from api.processing.places import *
-import api.display_data.hotels as hotels
-
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-DOMAIN_HOST = os.getenv("HOST")
+from config import *
+import display_data.hotels as hotels
+import display_data.events as events
 
 
-app = Flask(__name__, static_folder="../build")
+app = Flask(__name__)
 # app = Flask(__name__, static_folder='public')
 
 
@@ -28,22 +23,33 @@ def get_current_time():
 
 @app.route('/hotels', methods=['GET'])
 def get_all_hotels():
+    # Assume that all params are strings
     location = request.args.get("location")
+    adults_number = request.args.get("adults")
+    children_number = request.args.get("children")
+    checkin_date = request.args.get("checkIN")
+    checkout_date = request.args.get("checkOUT")
+    room_number = request.args.get("rooms")
 
     if location:
-        return hotels.get_hotels_by_location(location)
-    return hotels.get_all()
+        return hotels.get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number)
 
 
+@app.route('/events', methods=['GET'])
+def get_events():
+    # Assume that all params are strings
+    lonlat = request.args.get("location")
+    kids = request.args.get("children")
+    start = request.args.get("checkIN")
+    end = request.args.get("checkOUT")
 
-# @app.route("/call1")
-# def fn():
-#     json = request.json()
-#     print(json)
-#     Places.getPlaces(json)
+
+    return events.getEvents(lonlat, start, end, kids)
+
+
 
 
 
 
 if __name__ == '__main__':
-    app.run(host=DOMAIN_HOST, port=5000)
+    app.run(host="https://ezplan123.herokuapp.com/", port=5000)
