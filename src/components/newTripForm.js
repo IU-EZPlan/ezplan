@@ -27,8 +27,10 @@ const NewAdventureForm = ({ userID }) => {
             return;
         } else if (loc === "") {
             setError("Trip location must not be empty");
+            return;
         } else if (photo === ""){
             setError("Photo URL must not be empty");
+            return;
         }
 
         // Get list of trip names
@@ -48,6 +50,7 @@ const NewAdventureForm = ({ userID }) => {
         }
 
         if (error !== "" && dateError !== "") {
+            console.log()
             try {                
                 // Create a new trip in the databse
                 await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
@@ -61,6 +64,7 @@ const NewAdventureForm = ({ userID }) => {
                     imageURL: photo
                 });
 
+                console.log("done");
                 history.push(ROUTES.SEARCH);
             } catch {
                 setError("Unable to create trip");

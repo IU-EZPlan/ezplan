@@ -96,16 +96,28 @@ const Search = () => {
     }
 
 
-  const searchForEvents = (e) => {
+  const searchForEvents = async (e) => {
     e.preventDefault();
     setIsSearched(false);
     setSearchType("event");
     setLoading(true);
 
     // need to get longitude and latitude from hotel location in a given trip: searchString
-    if (true) { return; }
+    var latString = "";
+    // fetch hotel lon,lat from data
+    
+    const tripSnap = await (await database.collection('users').doc(currentUser.uid).collection('trips').doc(currentTrip).get()).data();
+    console.log(tripSnap);
 
-    fetch(API_ROUTES.EVENTS + `?location=${searchString}&&children=${children > 0 ? "yes" : "no"}&&checkIN=${checkin}&&checkOUT=${checkout}`)
+    if (tripSnap.hotel) {
+        latString = tripSnap.hotel.latitude + "," + tripSnap.hotel.longitude;
+        console.log(latString);
+    }
+    console.log(latString);
+    // lat,lon : String
+    // if (true) { return; }
+
+    fetch(API_ROUTES.EVENTS + `?location=${latString}&&children=${children > 0 ? "yes" : "no"}&&checkIN=${checkin}&&checkOUT=${checkout}`)
       .then((response) => {
         if (response.ok) { 
             return response.json();
@@ -114,7 +126,9 @@ const Search = () => {
           }
   
       }).then((data) => {
-        setSearchResults(data.result);
+        console.log(data.data);
+
+        setSearchResults(data.data);
         setIsSearched(true);
         setLoading(true);
 
@@ -173,14 +187,20 @@ const Search = () => {
 
 
         } else {
-            return <div>
-                Event will go here
-            </div>
+            console.log(searchResults);
+
+            return searchResults.map((e) => {
+                console.log(e);
+                return <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+                    {/* Name, url, images */}
+                    {e.date}
+                </div>
+            })
         }
 
 
     } else if (loading) {
-          return <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly"/>
+        return <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly"/>
     } else if (error) {
         return <PromptScreen heading="Something went wrong..." type="error" subtext="Trying searching again, or constact support" />
     } else {

@@ -94,7 +94,7 @@ def parse_data(dataObject, adults_number, children_number, checkin_date, checkou
     #   adults_number=2
     #   filter_by_currency=AED
     #   checkin_date=2021-11-25
-    #   children_number=2
+    #   children_number=2 --> Does not like 0 children
     #   page_number=0 (20 items for page)
 
     # categories_filter_ids=facility%3A%3A107%2Cfree_cancellation%3A%3A1&children_ages=5%2C0

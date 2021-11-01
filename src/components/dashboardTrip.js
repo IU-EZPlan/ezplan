@@ -67,7 +67,7 @@ const DashboardTrip = ({trip}) => {
         <div className="timeline px-4 mb-4">
             {items.map((item) => {
                 return (
-                <div className={`tl-item ${item.item_classes}`}>
+                <div className={`tl-item ${item.item_classes}`} key={item.title}>
                     <div className={`tl-dot ${item.dot_line_classes}`}></div>
 
                     <div className="tl-content">
@@ -76,8 +76,8 @@ const DashboardTrip = ({trip}) => {
                         {item.subtexts ? (
                             <>
                                 {
-                                    item.subtexts.map((text) => {
-                                        return <p>{text}</p>
+                                    item.subtexts.map((text, index) => {
+                                        return <p key={index}>{text}</p>
                                     })
                                 }
                             </>
@@ -87,9 +87,11 @@ const DashboardTrip = ({trip}) => {
 
                         <div className="tl-date text-muted mt-1">{item.time}</div>
                         <div className="tl-date text-muted mt-1">
-                            {item.place.map((text) => {
-                                return <>{text} <br/></>
-                            })}
+                            {
+                                item.place.map((text, index) => {
+                                    return <span key={index}>{text} <br/></span>
+                                })
+                            }
                         </div>
                     </div>
                 </div>
@@ -166,43 +168,6 @@ const DashboardTrip = ({trip}) => {
                 </div>           
             </div>
         </div>
-
-
-
-
-        {/* <div className="col-sm-12 mb-4" key={trip.id}>
-            <div className="card" style={{borderRadius: "0px"}}>
-                <div className="card-body">
-                    <h3>{trip.id}</h3>
-                    <p><span className={`badge badge-${trip.status === "pending" ? "primary" : "secondary"} secondary`}>{trip.status}</span></p>
-
-                    <div className="row">
-                        {trip.imageURL ? 
-                            <div className="col-sm-12 col-lg-6">
-                                <img src={trip.imageURL} width="100%" alt="given_trip_image" style={{borderRadius: "20px"}} />
-                            </div>
-                        : null }
-
-                        <div className="col-sm-12 col-lg-6">
-                            <div className="mb-3">
-                                <input type="text" readOnly className="form-control-plaintext border-bottom" value={trip.location} />
-                                <small>Destination</small>
-                            </div>
-
-                            <p>Arrival: {trip.checkInDate} <br/> Departure: {trip.checkOutDate}</p>
-                            <p>Adults: {trip.adults}, Children: {trip.children}</p>
-                            <p>Rooms: {trip.rooms}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="card-footer bg-transparent">
-                    <button className="btn btn-danger mr-3" data-toggle="modal" data-target="#delete">Delete Trip</button>
-                    <button type="button" className="btn btn-secondary" data-toggle="modal" data-target="#mark-complete">Mark Complete</button>
-                </div>
-            </div>
-        </div> */}
-
 
 
 
