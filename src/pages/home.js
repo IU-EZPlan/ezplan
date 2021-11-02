@@ -25,7 +25,6 @@ const Home = () => {
                         <h4 className="card-title">Asia</h4>
                         <p>Shop at lavish malls is Dubai, go surfing in Bali, or take on Mt. Everest!</p>
                     </div>
-                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
 
@@ -35,7 +34,6 @@ const Home = () => {
                         <h4 className="card-title">Sydney</h4>
                         <p>Go on the famous Sydney Opera House Tour.</p>
                     </div>
-                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
 
@@ -45,7 +43,6 @@ const Home = () => {
                         <h4 className="card-title">Brazil</h4>
                         <p>Visit the capital and see one of the most famous locations in the world.</p>
                     </div>
-                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
 
@@ -55,7 +52,6 @@ const Home = () => {
                         <h4 className="card-title">Egypt</h4>
                         <p>Visit the Pyramids of Giza, cruise the Nile River, and explore historic Cario</p>
                     </div>
-                    <div className="card-footer border-top border-2">Trip Details</div>
                 </div>
             </div>
         </section>
@@ -69,16 +65,9 @@ const Home = () => {
                     <div className="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
                         <div className="card-header bg-transparent border border-4">Explore London</div>
                         <div className="card-body border border-4">
-                            <h5 className="card-title">Success card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <h5 className="card-title">London, England, UK</h5>
+                            <p className="card-text">London, the capital of England and the United Kingdom, is a 21st-century city with history stretching back to Roman times. At its centre stand the imposing Houses of Parliament, the iconic ‘Big Ben’ clock tower and Westminster Abbey, site of British monarch coronations. Across the Thames River, the London Eye observation wheel provides panoramic views of the South Bank cultural complex, and the entire city.</p>
                         </div>
-                        <div className="card-footer bg-transparent border border-4">Trip Details</div>
-                    </div>
-
-
-                </div>
-                <div className="col-sm-6 p-3">
-                    <div>
                     </div>
                 </div>
             </div>
@@ -92,16 +81,25 @@ const Home = () => {
                     <div className="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
                         <div className="card-header bg-transparent border border-4">Explore Oahu</div>
                         <div className="card-body border border-4">
-                            <h5 className="card-title">Success card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <h5 className="card-title">Kualoa Ranch, Oahu, Hawai'i, USA</h5>
+                            <p className="card-text">4,000-acre nature retreat offering ATVs, a zip-line, beaches & tours of Hollywood film locations, including the famous bone-yard featured in the blockbuster film, Jurassic Park.</p>
                         </div>
-                        <div className="card-footer bg-transparent border border-4">Trip Details</div>
                     </div>
-
-
                 </div>
+            </div>
+        </section>
+
+        <section className="landing-content">
+            <div  className="row" style={{backgroundImage: `linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.2)), url("https://media.gadventures.com/media-server/cache/f8/9d/f89d295583a1d4c0f5f6e6183a7446bb.jpg")`, height: "90vh", backgroundRepeat: "no-repeat", backgroundSize: "cover"}}>
                 <div className="col-sm-6 p-3">
-                    <div>
+                    <h2 className="w-50">BASK IN THE GLORY OF THE SERENGETI</h2>
+
+                    <div className="card my-3" style={{maxWidth: "18rem", backgroundColor: "rgba(0,0,0,.7)"}}>
+                        <div className="card-header bg-transparent border border-4">Explore The Serengeti</div>
+                        <div className="card-body border border-4">
+                            <h5 className="card-title">Serengeti National Park, Tanzania, Africa</h5>
+                            <p className="card-text">The Serengeti ecosystem is a geographical region in Africa, spanning northern Tanzania. The protected area within the region includes approximately 30,000 km² of land, including the Serengeti National Park and several game reserves.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,6 +108,7 @@ const Home = () => {
         <section className="landing-content landing-content-footer">
             <div className="container">
                 <h2>PLAN YOUR ADVENTURE NOW</h2>
+                <p>What are you waiting for?</p>
                 <p>Sign up now to start personalizing a tour just right for you.</p>
                 <Link to={ROUTES.SIGN_UP}>
                     <button className="btn border-white text-white">Sign Up</button>

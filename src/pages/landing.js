@@ -25,22 +25,31 @@ const Landing = () => {
         </section>
 
 
-        <section className="my-5" style={{padding: "5vh"}}>
-            <div className="container">
+        <section className="landing-content" style={{padding: "5vh"}}>
+            <div className="container my-5">
                 <h2 className="mb-5">HOW IT WORKS</h2>
 
-                <div className="row  mx-auto">
-                    <div className="col-md-4 h-100 steps">
+                <div className="row my-5">
+                    <div className="col-sm-12">
                         <h3 className="btn btn-lg btn-primary">1</h3>
-                        <h3>Search and explore things to do</h3>
+                        <h3>Create a New Trip</h3>
+                        <p>Sign up and create a new trip in your dashboard.</p>
                     </div>
-                    <div className="col-md-4 h-100 steps">
+                </div>
+
+                <div className="row my-5">
+                    <div className="col-sm-12">
                         <h3 className="btn btn-lg btn-primary">2</h3>
-                        <h3>Create your personalized itinerary</h3>
+                        <h3>Search and Explore for Hotels and Events</h3>
+                        <p>We search for hotels using the location you define. Then, once you add a hotel to your itinerary, we find events closest to where you'll stay.</p>
                     </div>
-                    <div className="col-md-4 h-100 steps">
+                </div>
+
+                <div className="row my-5">
+                    <div className="col-sm-12">
                         <h3 className="btn btn-lg btn-primary">3</h3>
-                        <h3>Go on your adventure!</h3>
+                        <h3>Create your personalized itinerary</h3>
+                        <p>With one click, add as many events as you want and we'll handle the rest!</p>
                     </div>
                 </div>
             </div>
