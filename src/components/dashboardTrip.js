@@ -33,6 +33,55 @@ const DashboardTrip = ({trip}) => {
         // borderRadius: "20px"
     }
 
+    const numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const formatCosts = () => {
+        var items = []
+        if (trip.hotel) {
+            var date1 = new Date(trip.checkInDate);
+            var date2 = new Date(trip.checkOutDate);
+
+            const difference_in_days = (date2 - date1) / (1000 * 3600 * 24);
+            const price = trip.hotel.min_total_price.toFixed(2);
+            // const price = Math.round(trip.hotel.min_total_price * 100) / 100;
+            items.push({
+                name: "Hotel",
+                description: `$ ${numberWithCommas(price)}/night  x  ${difference_in_days} days`,
+                total: price * difference_in_days
+            });
+        }
+
+        var sum = 0;
+        if (items) {
+            items.forEach((i) => {
+                sum += i.total;
+            })
+        }
+        return (
+            <div className="py-4 mb-4">
+                {items.map((i) => {
+                    return (
+                        <div>
+                            <strong>{i.name}</strong>
+                            <div className="d-flex justify-content-between">
+                                <p className="text-muted"><em>{i.description}</em></p>
+                                <p>$ {numberWithCommas(i.total)}</p>
+                            </div>
+                        </div>
+                    )
+                })}
+
+                <hr/>
+                <div className="d-flex justify-content-between">
+                    <strong>Total</strong>
+                    <p>$ {numberWithCommas(sum)}</p>
+                </div>
+            </div>
+        )
+    }
+
     const formatIntineray = () => {
         var items = [];
         // First item
@@ -159,10 +208,15 @@ const DashboardTrip = ({trip}) => {
 
                     {/* Collapse to show Itinerary */}
                     <div className="row collapse" id={`collapseExample-${trip.id}`}>
-                        <div className="col-sm-12 py-4">
+                        <div className="col-sm-12 col-lg-8 col-xl-6 py-4">
                             <h3>Itinerary</h3>
 
                             {trip.hotel || trip.itinerary ? <>{formatIntineray()}</> : <p>No hotel or event found. Add to this trip in search tab.</p>}
+                        </div>
+
+                        <div className="col-sm-12 col-lg-4 col-xl-6">
+                            <h3>Total Costs</h3>
+                            {trip.hotel || trip.itinerary ? <>{formatCosts()}</> : <p>No hotel or event found. Add to this trip to see the costs calculated.</p>}
                         </div>
                     </div>
                 </div>           
