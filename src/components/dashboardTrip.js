@@ -48,9 +48,20 @@ const DashboardTrip = ({trip}) => {
             // const price = Math.round(trip.hotel.min_total_price * 100) / 100;
             items.push({
                 name: "Hotel",
-                description: `$ ${numberWithCommas(price)}/night  x  ${difference_in_days} days`,
+                details: `$ ${numberWithCommas(price)}/night  x  ${difference_in_days} days`,
                 total: price * difference_in_days
             });
+        }
+
+        // Need to add in the intinerary totaling
+        if (trip.itinerary) {
+            trip.itinerary.map((i) => {
+                items.push({
+                    name: i.name,
+                    details: `$ ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)`,
+                    total: i.price * i.quantity
+                })
+            })
         }
 
         var sum = 0;
@@ -63,10 +74,10 @@ const DashboardTrip = ({trip}) => {
             <div className="py-4 mb-4">
                 {items.map((i) => {
                     return (
-                        <div>
+                        <div className="mb-2">
                             <strong>{i.name}</strong>
                             <div className="d-flex justify-content-between">
-                                <p className="text-muted"><em>{i.description}</em></p>
+                                <p className="text-muted"><em>{i.details}</em></p>
                                 <p>$ {numberWithCommas(i.total)}</p>
                             </div>
                         </div>
@@ -75,7 +86,7 @@ const DashboardTrip = ({trip}) => {
 
                 <hr/>
                 <div className="d-flex justify-content-between">
-                    <strong>Total</strong>
+                    <strong>Subtotal</strong>
                     <p>$ {numberWithCommas(sum)}</p>
                 </div>
             </div>
@@ -97,7 +108,18 @@ const DashboardTrip = ({trip}) => {
         }
 
         // For item in trip itinerary, sort them by date, then add them to the items list
-
+        if (trip.itinerary) {
+            trip.itinerary.map((i) => {
+                items.push({
+                    title: i.name,
+                    subtext: [i.price],
+                    place: ["address", "city"],
+                    // time: new Date(i.date + " " + i.time).toUTCSTring(),
+                    item_classes: "",
+                    dat_line_classes: "b-danger"
+                })
+            })
+        }
 
         // Last Item
         if (trip.hotel) {
