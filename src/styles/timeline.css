@@ -191,13 +191,13 @@ tl-item.active .tl-dot:before {
 }
 
 .b-warning {
-    border-color: #f4c414 !important
+    border-color: #f4c414 !important;
 }
 
 .b-primary {
-    border-color: #448bff !important
+    border-color: #448bff !important;
 }
 
 .b-danger {
-    border-color: #f54394 !important
+    border-color: #f54394 !important;
 }

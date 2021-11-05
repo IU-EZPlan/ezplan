@@ -112,11 +112,11 @@ const DashboardTrip = ({trip}) => {
             trip.itinerary.map((i) => {
                 items.push({
                     title: i.name,
-                    subtext: [i.price],
+                    subtexts: [i.price],
                     place: ["address", "city"],
-                    // time: new Date(i.date + " " + i.time).toUTCSTring(),
+                    time: new Date(i.date + ' ' + i.time).toUTCString(),
                     item_classes: "",
-                    dat_line_classes: "b-danger"
+                    dat_line_classes: "b-primary"
                 })
             })
         }
