@@ -12,6 +12,7 @@ import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import UpdateProfile from './pages/updateProfile';
 import Search from './pages/search';
+import Reviews from './pages/reviews';
 
 
 // importing components
@@ -34,6 +35,7 @@ function App() {
         {/* Must have an account to see the following pages */}
         <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />
         <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
+        <PrivateRoute path={ROUTES.REVIEWS} component={Reviews} />
       </AuthProvider>
     </Router>
   );
