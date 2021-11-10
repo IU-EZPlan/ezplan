@@ -19,8 +19,11 @@ const EventCard = ({event, tripName}) => {
             return new Promise(resolve => setTimeout(resolve, time));
         }
 
+        console.log(event);
+
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(tripName).update({
-            'itinerary': [...event]
+            // 'itinerary': FieldValue.arrayUnion(event)
+            
         });
         
         setAdded(true);
