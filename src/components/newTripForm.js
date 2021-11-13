@@ -1,14 +1,18 @@
 import React, { useRef, useState } from "react";
+import { useHistory } from "react-router";
 import { database } from "../firebase";
-import $ from 'jquery';
+import * as ROUTES from "../constants/routes";
 
 
-const UserTrips = ({ userID }) => {
+const NewAdventureForm = ({ userID }) => {
     const [error, setError] = useState("");
+    const [dateError, setDateError] = useState("");
     const name = useRef();
     const checkin = useRef();
     const checkout = useRef();
     const locationName = useRef();
+    const photoAddress = useRef();
+    const history = useHistory();
 
     const createNewTrip = async (e) => {
         e.preventDefault();
@@ -16,38 +20,56 @@ const UserTrips = ({ userID }) => {
         const startDate = checkin.current.value;
         const endDate = checkout.current.value;
         const loc = locationName.current.value;
+        const photo = photoAddress.current.value;
+
+        if (nameStr === "") {
+            setError("Trip name must not be empty");
+            return;
+        } else if (loc === "") {
+            setError("Trip location must not be empty");
+            return;
+        } else if (photo === ""){
+            setError("Photo URL must not be empty");
+            return;
+        }
 
         // Get list of trip names
-        const list_of_trips = await database.collection('users').doc(userID)
+        await database.collection('users').doc(userID)
             .collection('trips').onSnapshot((snap) => {
                 snap.forEach((doc) => {
-                    console.log(doc.data(), doc.id);
+                    // console.log(doc.data(), doc.id);
                     if (nameStr === doc.id) {
                         setError("The trip " + nameStr + " already exists");
                     }
                 })
-            })
-
-        if (error !== "") {
-
-            // Create a new trip in the databse
-            await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
-                status: "pending",
-                checkInDate: startDate,
-                checkOutDate: endDate,
-                location: loc,
-                adults: adultTravelers,
-                children: childTravelers,
-                rooms: rooms
             });
-
-            // close the modal
-            // var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {})
-            // myModal.hide();
+        
+        if (new Date(endDate) <= new Date(startDate)) {
+            setDateError("Check out data must be greater then check in date.");
+            return;
         }
 
-        return;
-            
+        if (error !== "" && dateError !== "") {
+            console.log()
+            try {                
+                // Create a new trip in the databse
+                await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
+                    status: "pending",
+                    checkInDate: startDate,
+                    checkOutDate: endDate,
+                    location: loc,
+                    adults: adultTravelers,
+                    children: childTravelers,
+                    rooms: rooms,
+                    imageURL: photo
+                });
+
+                console.log("done");
+                history.push(ROUTES.SEARCH);
+            } catch {
+                setError("Unable to create trip");
+            }
+        }   
     }
 
 
@@ -101,16 +123,18 @@ const UserTrips = ({ userID }) => {
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">New Adventure</h5>
-                            <p>Fill out the form to create a new intinerary.</p>
+                        <div className="modal-header border-0">
+                            <div>
+                                <h5 className="modal-title" id="exampleModalLabel">New Adventure</h5>
+                                <p>Fill out the form to create a new intinerary.</p>
+                            </div>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div className="modal-body">
 
-                            <form className="mt-4 container-fluid">
+                        <div className="modal-body mt-0 pt-0">
+                            <form className="container-fluid">
                                 <div className="form-group">
                                     <input type="text" className="form-control" placeholder="Name" ref={name} required/>
                                     <small id="emailHelp" className="form-text text-muted">Give your adventure a name that you'll recognize it by.</small>
@@ -119,14 +143,37 @@ const UserTrips = ({ userID }) => {
 
                                 <div className="form-group">
                                     <input type="text" className="form-control" placeholder="Trip Location" ref={locationName} required/>
-                                    <small id="emailHelp" className="form-text text-muted">Where are you going?</small>
+                                    <small className="form-text text-muted">Where are you going?</small>
                                 </div>
 
                                 <div className="form-group">
-                                    <h5>Travelers</h5>
+                                    <input type="text" className="form-control" placeholder="Image Address" ref={photoAddress} required/>
+                                    <small className="form-text text-muted">Photo URL</small>
+                                </div>
 
-                                    <div className="input-row">
+                                <div className="form-group justify-content-between">
+                                    <h6>Dates</h6>
+                                    {dateError ? <p className="text-danger">{dateError}</p> : null}
+                                    
+                                    <div className="d-flex">
+                                        <div className="d-flex flex-column mb-3 mr-4 w-50">
+                                            <input type="date" name="checkin" placeholder="Check In Date" ref={checkin} required/>
+                                            <small className="form-text text-muted">Arrival / Check In Date</small>
+                                        </div>
+                                        <div className="d-flex flex-column w-50">
+                                            <input type="date" name="checkout" placeholder="Check Out Date" ref={checkout} required/>
+                                            <small className="form-text text-muted">Departure / Check Out Date</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div className="form-group">
+                                    <h6>Travelers</h6>
+
+                                    <div className="input-row d-flex justify-content-between align-items-center mb-3">
                                         <div><p className="my-auto">Rooms</p></div>
+
                                         <div className="d-flex">
                                             <button className="btn btn-primary" onClick={() => {handleRoomCount(-1)}}><i className="fa fa-minus"></i></button>
                                             <p className="mx-4 my-auto">{rooms}</p>
@@ -134,8 +181,9 @@ const UserTrips = ({ userID }) => {
                                         </div>
                                     </div>
 
-                                    <div className="input-row">
+                                    <div className="input-row d-flex justify-content-between align-items-center mb-3">
                                         <div><p className="my-auto">Adults</p></div>
+
                                         <div className="d-flex">
                                             <button className="btn btn-primary"  onClick={() => {handleAdultCount(-1)}}><i className="fa fa-minus"></i></button>
                                             <p className="mx-4 my-auto">{adultTravelers}</p>
@@ -143,7 +191,7 @@ const UserTrips = ({ userID }) => {
                                         </div>
                                     </div>
 
-                                    <div className="input-row">
+                                    <div className="input-row d-flex justify-content-between align-items-center">
                                         <div><p className="my-auto">Children</p></div>
                                         <div className="d-flex">
                                             <button className="btn btn-primary"  onClick={() => {handleChildCount(-1)}}><i className="fa fa-minus"></i></button>
@@ -154,18 +202,6 @@ const UserTrips = ({ userID }) => {
                                 </div>
 
 
-                                <div className="form-group justify-content-between">
-                                    <h5>Dates</h5>
-                                    
-                                    <div className="d-flex flex-column">
-                                        <input type="date" name="checkin" placeholder="Check In Date" ref={checkin} required/>
-                                        <small className="form-text text-muted">Arrival / Check In Date</small>
-                                    </div>
-                                    <div className="d-flex flex-column">
-                                        <input type="date" name="checkout" placeholder="Check Out Date" ref={checkout} required/>
-                                        <small className="form-text text-muted">Departure / Check Out Date</small>
-                                    </div>
-                                </div>
 
                                 <button type="button" className="btn btn-block btn-primary mt-5" onClick={createNewTrip}>Create New Adventure</button>
                             </form>
@@ -173,22 +209,9 @@ const UserTrips = ({ userID }) => {
                     </div>
                 </div>
             </div>
-
-
-            <div className="row">
-
-                <div className="col-sm-12">
-                    <div className="card">
-                        <div className="card-body">
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
                     
         </>
     )
 }
 
-export default UserTrips;
+export default NewAdventureForm;

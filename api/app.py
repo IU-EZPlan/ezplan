@@ -1,30 +1,19 @@
+import os
 import time
 from flask import Flask, request, send_from_directory 
+
 from config import *
-from processing.places import *
-import os
-
-# More files to help 
 import display_data.hotels as hotels
-
-# THIS IS THROWING AN ERROR 
-#   from processing.places import Places
+import display_data.events as events
 
 
-app = Flask(__name__, static_folder="../build")
+app = Flask(__name__)
 # app = Flask(__name__, static_folder='public')
 
 
 @app.route("/")
 def hello_world():
     return "<p>Flask app </p>"
-
-# def serve(path):
-#     if path != "" and os.path.exists(app.static_folder + '/' + path):
-#         return send_from_directory(app.static_folder, path)
-#     else:
-#         return send_from_directory(app.static_folder, 'index.html')
-
 
 
 @app.route('/time')
@@ -44,16 +33,25 @@ def get_all_hotels():
 
     if location:
         return hotels.get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number)
+<<<<<<< HEAD
         
     return hotels.get_all()
+=======
+>>>>>>> cc98823d9ba7b85d3bd4e777181775f260b37d46
 
 
+@app.route('/events', methods=['GET'])
+def get_events():
+    # Assume that all params are strings
+    lonlat = request.args.get("location")
+    kids = request.args.get("children")
+    start = request.args.get("checkIN")
+    end = request.args.get("checkOUT")
 
-# @app.route("/call1")
-# def fn():
-#     json = request.json()
-#     print(json)
-#     Places.getPlaces(json)
+
+    return events.getEvents(lonlat, start, end, kids)
+
+
 
 
 
