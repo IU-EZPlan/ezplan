@@ -1,7 +1,10 @@
 import http.client
 import json
 import os
+
+from requests.api import head
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 API_HOST = os.getenv("RAPID_API_HOST")
@@ -56,7 +59,44 @@ def get_all():
 
 
 
-def get_hotels_by_location(state):
+def get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number):
+
+    params = {}
+
+    if location:
+        params['name'] = location
+    
+    if adults_number:
+        params['adults_number'] = adults_number
+    else:
+        params['adults_number'] = 1
+
+    if children_number:
+        params['children_number'] = children_number
+    else:
+        params['children_number'] = 0
+
+    if checkin_date:
+        params['checkin_date'] = checkin_date
+
+    if checkout_date:
+        params['checkout_date'] = checkout_date
+
+    if room_number:
+        params['room_number'] = room_number
+    else:
+        params['room_number'] = 1
+
+    params['order_by'] = 'popularity'
+    params['units'] = 'metric'
+    params['page_number'] = 0
+    params['filter_by_currency'] = 'USD'
+    params['locale'] = 'en-us'
+
+    params = tuple(params.items())
+    response = requests.get("booking-com.p.rapidapi.com/v1/hotels/locations/", params=params, headers=headers).json()
+    print(response)
+
     conn.request("GET", "/v1/hotels/locations?name="+state+"&locale=en-us", headers=headers)
 
     res = conn.getresponse()

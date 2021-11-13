@@ -44,6 +44,7 @@ def get_all_hotels():
 
     if location:
         return hotels.get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number)
+        
     return hotels.get_all()
 
 
