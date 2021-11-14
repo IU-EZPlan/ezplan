@@ -56,11 +56,11 @@ const DashboardTrip = ({trip}) => {
         // Need to add in the intinerary totaling
         if (trip.itinerary) {
             trip.itinerary.map((i) => {
-                items.push({
+                return items.push({
                     name: i.name,
-                    details: `$ ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)`,
-                    total: i.price * i.quantity
-                })
+                    details: i.price ? `$ ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)` : "Check Ticket Master for Price",
+                    total: 0
+                });
             })
         }
 
@@ -110,7 +110,7 @@ const DashboardTrip = ({trip}) => {
         // For item in trip itinerary, sort them by date, then add them to the items list
         if (trip.itinerary) {
             trip.itinerary.map((i) => {
-                items.push({
+                return items.push({
                     title: i.name,
                     subtexts: [i.price],
                     place: ["address", "city"],

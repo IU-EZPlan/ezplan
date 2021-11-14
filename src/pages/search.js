@@ -82,8 +82,8 @@ const Search = () => {
               }
       
           }).then((data) => {
-              console.log(data);
-              console.log(data.result);
+            //   console.log(data);
+            //   console.log(data.result);
             setSearchResults(data.result);
             setIsSearched(true);
             setLoading(true);
@@ -121,7 +121,7 @@ const Search = () => {
           }
   
       }).then((data) => {
-        console.log(data.result);
+        // console.log(data.result);
 
         setSearchResults(data.result);
         setIsSearched(true);
@@ -182,10 +182,10 @@ const Search = () => {
 
 
         } else {
-            console.log(searchResults);
+            // console.log(searchResults);
 
             return searchResults.map((e) => {
-                console.log(e)
+                // console.log(e)
                 return <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-3">
                     <EventCard 
                         tripName={currentTrip}
