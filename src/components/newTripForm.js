@@ -49,8 +49,7 @@ const NewAdventureForm = ({ userID }) => {
             return;
         }
 
-        if (error !== "" && dateError !== "") {
-            console.log()
+        if (!error && !dateError) {
             try {                
                 // Create a new trip in the databse
                 await database.collection('users').doc(userID).collection('trips').doc(nameStr).set({
@@ -64,7 +63,7 @@ const NewAdventureForm = ({ userID }) => {
                     imageURL: photo
                 });
 
-                console.log("done");
+                window.location.reload();
                 history.push(ROUTES.SEARCH);
             } catch {
                 setError("Unable to create trip");
@@ -134,7 +133,7 @@ const NewAdventureForm = ({ userID }) => {
                         </div>
 
                         <div className="modal-body mt-0 pt-0">
-                            <form className="container-fluid">
+                            <form className="container-fluid" onSubmit={createNewTrip}>
                                 <div className="form-group">
                                     <input type="text" className="form-control" placeholder="Name" ref={name} required/>
                                     <small id="emailHelp" className="form-text text-muted">Give your adventure a name that you'll recognize it by.</small>
@@ -175,9 +174,9 @@ const NewAdventureForm = ({ userID }) => {
                                         <div><p className="my-auto">Rooms</p></div>
 
                                         <div className="d-flex">
-                                            <button className="btn btn-primary" onClick={() => {handleRoomCount(-1)}}><i className="fa fa-minus"></i></button>
+                                            <button className="btn btn-primary" onClick={() => handleRoomCount(-1)}><i className="fa fa-minus"></i></button>
                                             <p className="mx-4 my-auto">{rooms}</p>
-                                            <button className="btn btn-primary" onClick={() => {handleRoomCount(1)}}><i className="fa fa-plus"></i></button>
+                                            <button className="btn btn-primary" onClick={() => handleRoomCount(1)}><i className="fa fa-plus"></i></button>
                                         </div>
                                     </div>
 
@@ -185,25 +184,25 @@ const NewAdventureForm = ({ userID }) => {
                                         <div><p className="my-auto">Adults</p></div>
 
                                         <div className="d-flex">
-                                            <button className="btn btn-primary"  onClick={() => {handleAdultCount(-1)}}><i className="fa fa-minus"></i></button>
+                                            <button className="btn btn-primary"  onClick={() => handleAdultCount(-1)}><i className="fa fa-minus"></i></button>
                                             <p className="mx-4 my-auto">{adultTravelers}</p>
-                                            <button className="btn btn-primary" onClick={() => {handleAdultCount(1)}}><i className="fa fa-plus"></i></button>
+                                            <button className="btn btn-primary" onClick={() => handleAdultCount(1)}><i className="fa fa-plus"></i></button>
                                         </div>
                                     </div>
 
                                     <div className="input-row d-flex justify-content-between align-items-center">
                                         <div><p className="my-auto">Children</p></div>
                                         <div className="d-flex">
-                                            <button className="btn btn-primary"  onClick={() => {handleChildCount(-1)}}><i className="fa fa-minus"></i></button>
+                                            <button className="btn btn-primary"  onClick={() => handleChildCount(-1)}><i className="fa fa-minus"></i></button>
                                             <p className="mx-4 my-auto">{childTravelers}</p>
-                                            <button className="btn btn-primary" onClick={() => {handleChildCount(1)}}><i className="fa fa-plus"></i></button>
+                                            <button className="btn btn-primary" onClick={() => handleChildCount(1)}><i className="fa fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
 
 
 
-                                <button type="button" className="btn btn-block btn-primary mt-5" onClick={createNewTrip}>Create New Adventure</button>
+                                <button type="submit" className="btn btn-block btn-primary mt-5">Create New Adventure</button>
                             </form>
                         </div>
                     </div>

@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useAuth } from "../context/AuthUserContext";
 import { database } from '../firebase';
 import "../styles/timeline.css";
 
+
 const DashboardTrip = ({trip}) => {
     const { currentUser } = useAuth();
+    const [itinerary, setItinerary] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const reviewText = useRef();
+    const [rating, setRating] = useState(5);
+
+
+    useEffect(() => {
+        
+        database.collection("users").doc(currentUser.uid).collection('trips').doc(trip.id).collection("itinerary")
+        .onSnapshot((snap) => {
+                var list_of_events = [];
+
+                snap.forEach((doc) => {
+                    // console.log(doc.data(), doc.id);
+                    list_of_events.push({id: doc.id, ...doc.data()});
+                });
+
+                setItinerary(list_of_events);
+                setLoading(false);
+        });
+
+    }, [currentUser.uid, trip.id]);
+
+
 
     const markAsComplete = async () => {
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip.id).update({
@@ -17,9 +43,22 @@ const DashboardTrip = ({trip}) => {
 
     const deleteTrip = async () => {
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip.id).delete();
-
         window.location.reload();
     }
+
+    const submitReview = async () => {
+        const reviewDetails = reviewText.current.value;
+
+        await database.collection('reviews').doc(`${trip.id}-${currentUser.uid}`).set({
+            "rating": rating,
+            "username": currentUser.displayName,
+            "comments": reviewDetails,
+            ...trip
+            // can change this base on what we want present in the review
+        });
+        window.location.reload();
+    }
+
 
     const backgroundTitleStyle = {
         background: `linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.3)), url('${trip.imageURL}')`, 
@@ -31,6 +70,67 @@ const DashboardTrip = ({trip}) => {
         justifyContent: "center",
         color: "white",
         // borderRadius: "20px"
+    }
+
+
+    const numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const formatCosts = () => {
+        var items = []
+        if (trip.hotel) {
+            var date1 = new Date(trip.checkInDate);
+            var date2 = new Date(trip.checkOutDate);
+
+            const difference_in_days = (date2 - date1) / (1000 * 3600 * 24);
+            const price = trip.hotel.min_total_price.toFixed(2);
+            // const price = Math.round(trip.hotel.min_total_price * 100) / 100;
+            items.push({
+                name: "Hotel",
+                details: `$ ${numberWithCommas(price)}/night  x  ${difference_in_days} days`,
+                total: price * difference_in_days
+            });
+        }
+
+        // Need to add in the intinerary totaling
+        if (itinerary) {
+            itinerary.map((i) => {
+                return items.push({
+                    name: i.name,
+                    details: i.price ? `$ ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)` : "Check Ticket Master for Price",
+                    total: 0
+                });
+            })
+        }
+
+        var sum = 0;
+        if (items) {
+            items.forEach((i) => {
+                sum += i.total;
+            })
+        }
+        return (
+            <div className="py-4 mb-4">
+                {items.map((i) => {
+                    return (
+                        <div className="mb-2">
+                            <strong>{i.name}</strong>
+                            <div className="d-flex justify-content-between">
+                                <p className="text-muted"><em>{i.details}</em></p>
+                                <p>$ {numberWithCommas(i.total)}</p>
+                            </div>
+                        </div>
+                    )
+                })}
+
+                <hr/>
+                <div className="d-flex justify-content-between">
+                    <strong>Subtotal</strong>
+                    <p>$ {numberWithCommas(sum)}</p>
+                </div>
+            </div>
+        )
     }
 
     const formatIntineray = () => {
@@ -47,8 +147,25 @@ const DashboardTrip = ({trip}) => {
             })
         }
 
-        // For item in trip itinerary, sort them by date, then add them to the items list
+        // Sort the itinerary before add all items
+        itinerary.sort(function(a,b) {
+            return new Date(a.date) - new Date(b.date);
+        });
 
+        // For item in trip itinerary, sort them by date, then add them to the items list
+        if (itinerary) {
+            itinerary.map((i) => {
+                return items.push({
+                    title: i.name,
+                    subtexts: [i.price],
+                    link: i.url,
+                    place: [],
+                    time: i.time ? new Date(i.date + ' ' + i.time).toUTCString() : new Date(i.date).toUTCString(),
+                    item_classes: "b-danger",
+                    dat_line_classes: ""
+                })
+            })
+        }
 
         // Last Item
         if (trip.hotel) {
@@ -61,6 +178,7 @@ const DashboardTrip = ({trip}) => {
                 dot_line_classes: "b-primary" // b-warning or b-danger
             })
         }
+
 
 
         return (
@@ -93,6 +211,13 @@ const DashboardTrip = ({trip}) => {
                                 })
                             }
                         </div>
+
+                        <div className="tl-date text-muted mt-1">
+                            {item.link ? 
+                            <a href={item.link}>Ticket Master</a>
+                            : null }
+                        </div>
+
                     </div>
                 </div>
                 )
@@ -150,6 +275,7 @@ const DashboardTrip = ({trip}) => {
 
                                 <button type="button" className="btn btn-secondary w-25 ml-2" data-toggle="modal" data-target={`#mark-complete-${trip.id}`}><small>Mark Complete</small></button>
                                 <button type="button" className="btn btn-danger w-25 ml-2" data-toggle="modal" data-target={`#delete-${trip.id}`}><small>Delete Trip</small></button>
+                                <button type="button" className="btn btn-secondary w-25 ml-2" data-toggle="modal" data-target={`#review-${trip.id}`}><small>Write a Review</small></button>
                             </div>
                             
 
@@ -159,10 +285,28 @@ const DashboardTrip = ({trip}) => {
 
                     {/* Collapse to show Itinerary */}
                     <div className="row collapse" id={`collapseExample-${trip.id}`}>
-                        <div className="col-sm-12 py-4">
+                        <div className="col-sm-12 col-lg-6 py-4">
                             <h3>Itinerary</h3>
+                            {loading ? 
+                                <p>Loading ...</p>
+                            :
+                                <>
 
-                            {trip.hotel || trip.itinerary ? <>{formatIntineray()}</> : <p>No hotel or event found. Add to this trip in search tab.</p>}
+                                    {trip.hotel || trip.itinerary ? <>{formatIntineray()}</> : <p>No hotel or event found. Add to this trip in search tab.</p>}
+                                </>
+                            }
+
+                        </div>
+
+                        <div className="col-sm-12 col-lg-6 py-4">
+                            <h3>Total Costs</h3>
+                            {loading ? 
+                                <p>Loading ...</p>
+                            :
+                                <>
+                                    {trip.hotel || trip.itinerary ? <>{formatCosts()}</> : <p>No hotel or event found. Add to this trip to see the costs calculated.</p>}
+                                </>
+                            }
                         </div>
                     </div>
                 </div>           
@@ -204,7 +348,7 @@ const DashboardTrip = ({trip}) => {
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">Delete</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
@@ -216,6 +360,47 @@ const DashboardTrip = ({trip}) => {
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" className="btn btn-danger" onClick={deleteTrip}>Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* <!-- Review Modal --> */}
+        <div className="modal fade" id={`review-${trip.id}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Write a Review</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div className="modal-body">
+                        <h5>How was your <strong>{trip.id}</strong> trip?</h5>
+
+                        <form>
+                            <div className="form-group my-4">
+                                <label htmlFor="rating"><small>How would you rate this trip?</small></label>
+                                <select className="custom-select" onChange={(e) => {setRating(e.target.value)}}>
+                                    <option value="1">1 star</option>
+                                    <option value="2">2 stars</option>
+                                    <option value="3">3 stars</option>
+                                    <option value="4">4 stars</option>
+                                    <option value="5" defaultValue>5 stars</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group mt-5">
+                                <label htmlFor="textarea"><small>What's the reason for this rating?</small></label>
+                                <textarea className="form-control rounded-1" id="textarea" rows="3" ref={reviewText} required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-primary" onClick={submitReview}>Submit</button>
                     </div>
                 </div>
             </div>

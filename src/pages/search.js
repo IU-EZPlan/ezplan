@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import HotelCard from '../components/hotel/card';
+import EventCard from '../components/event/card';
 import * as API_ROUTES from "../constants/api-routes"
 import PromptScreen from "../components/screenPrompt";
 
@@ -81,8 +82,8 @@ const Search = () => {
               }
       
           }).then((data) => {
-              console.log(data);
-              console.log(data.result);
+            //   console.log(data);
+            //   console.log(data.result);
             setSearchResults(data.result);
             setIsSearched(true);
             setLoading(true);
@@ -102,20 +103,14 @@ const Search = () => {
     setSearchType("event");
     setLoading(true);
 
-    // need to get longitude and latitude from hotel location in a given trip: searchString
-    var latString = "";
-    // fetch hotel lon,lat from data
-    
+    var latString = "";    
     const tripSnap = await (await database.collection('users').doc(currentUser.uid).collection('trips').doc(currentTrip).get()).data();
-    console.log(tripSnap);
+
 
     if (tripSnap.hotel) {
         latString = tripSnap.hotel.latitude + "," + tripSnap.hotel.longitude;
-        console.log(latString);
+        // lat,lon : String
     }
-    console.log(latString);
-    // lat,lon : String
-    // if (true) { return; }
 
     fetch(API_ROUTES.EVENTS + `?location=${latString}&&children=${children > 0 ? "yes" : "no"}&&checkIN=${checkin}&&checkOUT=${checkout}`)
       .then((response) => {
@@ -126,9 +121,9 @@ const Search = () => {
           }
   
       }).then((data) => {
-        console.log(data.data);
+        // console.log(data.result);
 
-        setSearchResults(data.data);
+        setSearchResults(data.result);
         setIsSearched(true);
         setLoading(true);
 
@@ -143,7 +138,7 @@ const Search = () => {
 
   const getTripOptions = () => {
       const options = tripData.map((t, index) => {
-          if (t.status !== "complete") {
+          if (t.status === "pending") {
             return <option key={index} value={t.id}>{t.id}</option>
           } else {
             return null;
@@ -187,18 +182,21 @@ const Search = () => {
 
 
         } else {
-            console.log(searchResults);
+            // console.log(searchResults);
 
             return searchResults.map((e) => {
-                console.log(e);
+                // console.log(e)
                 return <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                    {/* Name, url, images */}
-                    {e.date}
+                    <EventCard 
+                        tripName={currentTrip}
+                        event={e}
+                    />
                 </div>
             })
         }
 
-
+    } else if (searchResults.length === 0 && isSearched) {
+        return <PromptScreen heading="No Results" type="waiting" subtext="There are no event results near this hotel during your dates."/>
     } else if (loading) {
         return <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly"/>
     } else if (error) {

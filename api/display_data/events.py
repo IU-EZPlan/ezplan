@@ -20,8 +20,8 @@ def getEvents(lalon, start, end, kids):
 
     # We can only have a max of 5 API Calls per second, so doing this will ensure that we get as many calls as possible 
     maxPages = int(x["page"]["totalPages"])
-    if(maxPages > 3):
-        maxPages = 3
+    if(maxPages > 4):
+        maxPages = 4
 
     # creating a dictionary of our relevant information for each event
     eventDict = {}
@@ -30,7 +30,9 @@ def getEvents(lalon, start, end, kids):
         x = getJSONObj(lalon, kids, start, end, y)
         events = x['_embedded']['events']
         for i in events:
-            print(i["name"])
+            # print(i["name"])
+            # print(i)
+
             eventDict[i["id"]] = {}
             tmp = {}
             if "name" in i.keys():
@@ -67,7 +69,7 @@ def getEvents(lalon, start, end, kids):
     # jobj = json.loads(eventDict)
     # print(jobj, type(jobj))
     # return jobj
-    return {"data": eventList}
+    return {"result": eventList}
 
 
 # dataStr = getEvents("39,-86", "2021-10-21", "2021-11-11", "yes")
