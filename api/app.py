@@ -33,6 +33,11 @@ def get_all_hotels():
 
     if location:
         return hotels.get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number)
+<<<<<<< HEAD
+        
+    return hotels.get_all()
+=======
+>>>>>>> cc98823d9ba7b85d3bd4e777181775f260b37d46
 
 
 @app.route('/events', methods=['GET'])
