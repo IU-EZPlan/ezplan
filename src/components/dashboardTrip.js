@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { useAuth } from "../context/AuthUserContext";
 import { database } from '../firebase';
 import "../styles/timeline.css";
 
+
 const DashboardTrip = ({trip}) => {
     const { currentUser } = useAuth();
+    const [itinerary, setItinerary] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+
+    useEffect(() => {
+        
+        database.collection("users").doc(currentUser.uid).collection('trips').doc(trip.id).collection("itinerary")
+        .onSnapshot((snap) => {
+                var list_of_events = [];
+
+                snap.forEach((doc) => {
+                    // console.log(doc.data(), doc.id);
+                    list_of_events.push({id: doc.id, ...doc.data()});
+                });
+
+                setItinerary(list_of_events);
+                setLoading(false);
+        });
+
+    }, [currentUser.uid, trip.id]);
+
+
 
     const markAsComplete = async () => {
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip.id).update({
@@ -17,9 +40,9 @@ const DashboardTrip = ({trip}) => {
 
     const deleteTrip = async () => {
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip.id).delete();
-
         window.location.reload();
     }
+
 
     const backgroundTitleStyle = {
         background: `linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.3)), url('${trip.imageURL}')`, 
@@ -32,6 +55,7 @@ const DashboardTrip = ({trip}) => {
         color: "white",
         // borderRadius: "20px"
     }
+
 
     const numberWithCommas = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -54,8 +78,8 @@ const DashboardTrip = ({trip}) => {
         }
 
         // Need to add in the intinerary totaling
-        if (trip.itinerary) {
-            trip.itinerary.map((i) => {
+        if (itinerary) {
+            itinerary.map((i) => {
                 return items.push({
                     name: i.name,
                     details: i.price ? `$ ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)` : "Check Ticket Master for Price",
@@ -107,16 +131,22 @@ const DashboardTrip = ({trip}) => {
             })
         }
 
+        // Sort the itinerary before add all items
+        itinerary.sort(function(a,b) {
+            return new Date(a.date) - new Date(b.date);
+        });
+
         // For item in trip itinerary, sort them by date, then add them to the items list
-        if (trip.itinerary) {
-            trip.itinerary.map((i) => {
+        if (itinerary) {
+            itinerary.map((i) => {
                 return items.push({
                     title: i.name,
                     subtexts: [i.price],
-                    place: ["address", "city"],
-                    time: new Date(i.date + ' ' + i.time).toUTCString(),
-                    item_classes: "",
-                    dat_line_classes: "b-primary"
+                    link: i.url,
+                    place: [],
+                    time: i.time ? new Date(i.date + ' ' + i.time).toUTCString() : new Date(i.date).toUTCString(),
+                    item_classes: "b-danger",
+                    dat_line_classes: ""
                 })
             })
         }
@@ -132,6 +162,7 @@ const DashboardTrip = ({trip}) => {
                 dot_line_classes: "b-primary" // b-warning or b-danger
             })
         }
+
 
 
         return (
@@ -164,6 +195,13 @@ const DashboardTrip = ({trip}) => {
                                 })
                             }
                         </div>
+
+                        <div className="tl-date text-muted mt-1">
+                            {item.link ? 
+                            <a href={item.link}>Ticket Master</a>
+                            : null }
+                        </div>
+
                     </div>
                 </div>
                 )
@@ -232,13 +270,26 @@ const DashboardTrip = ({trip}) => {
                     <div className="row collapse" id={`collapseExample-${trip.id}`}>
                         <div className="col-sm-12 col-lg-8 col-xl-6 py-4">
                             <h3>Itinerary</h3>
+                            {loading ? 
+                                <p>Loading ...</p>
+                            :
+                                <>
 
-                            {trip.hotel || trip.itinerary ? <>{formatIntineray()}</> : <p>No hotel or event found. Add to this trip in search tab.</p>}
+                                    {trip.hotel || trip.itinerary ? <>{formatIntineray()}</> : <p>No hotel or event found. Add to this trip in search tab.</p>}
+                                </>
+                            }
+
                         </div>
 
                         <div className="col-sm-12 col-lg-4 col-xl-6">
                             <h3>Total Costs</h3>
-                            {trip.hotel || trip.itinerary ? <>{formatCosts()}</> : <p>No hotel or event found. Add to this trip to see the costs calculated.</p>}
+                            {loading ? 
+                                <p>Loading ...</p>
+                            :
+                                <>
+                                    {trip.hotel || trip.itinerary ? <>{formatCosts()}</> : <p>No hotel or event found. Add to this trip to see the costs calculated.</p>}
+                                </>
+                            }
                         </div>
                     </div>
                 </div>           

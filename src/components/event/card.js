@@ -20,6 +20,7 @@ const EventCard = ({event, tripName}) => {
         }
 
         const eventName = event.name;
+        await database.collection('users').doc(currentUser.uid).collection('trips').doc(tripName).set({'itinerary': true});
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(tripName).collection('itinerary').doc(eventName).set({...event})
         
         setAdded(true);
