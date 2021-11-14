@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useAuth } from "../context/AuthUserContext";
 import { database } from '../firebase';
@@ -9,6 +9,9 @@ const DashboardTrip = ({trip}) => {
     const { currentUser } = useAuth();
     const [itinerary, setItinerary] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const reviewText = useRef();
+    const [rating, setRating] = useState(5);
 
 
     useEffect(() => {
@@ -40,6 +43,19 @@ const DashboardTrip = ({trip}) => {
 
     const deleteTrip = async () => {
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip.id).delete();
+        window.location.reload();
+    }
+
+    const submitReview = async () => {
+        const reviewDetails = reviewText.current.value;
+
+        await database.collection('reviews').doc(`${trip.id}-${currentUser.uid}`).set({
+            "rating": rating,
+            "username": currentUser.displayName,
+            "comments": reviewDetails,
+            ...trip
+            // can change this base on what we want present in the review
+        });
         window.location.reload();
     }
 
@@ -259,6 +275,7 @@ const DashboardTrip = ({trip}) => {
 
                                 <button type="button" className="btn btn-secondary w-25 ml-2" data-toggle="modal" data-target={`#mark-complete-${trip.id}`}><small>Mark Complete</small></button>
                                 <button type="button" className="btn btn-danger w-25 ml-2" data-toggle="modal" data-target={`#delete-${trip.id}`}><small>Delete Trip</small></button>
+                                <button type="button" className="btn btn-secondary w-25 ml-2" data-toggle="modal" data-target={`#review-${trip.id}`}><small>Write a Review</small></button>
                             </div>
                             
 
@@ -268,7 +285,7 @@ const DashboardTrip = ({trip}) => {
 
                     {/* Collapse to show Itinerary */}
                     <div className="row collapse" id={`collapseExample-${trip.id}`}>
-                        <div className="col-sm-12 col-lg-8 col-xl-6 py-4">
+                        <div className="col-sm-12 col-lg-6 py-4">
                             <h3>Itinerary</h3>
                             {loading ? 
                                 <p>Loading ...</p>
@@ -281,7 +298,7 @@ const DashboardTrip = ({trip}) => {
 
                         </div>
 
-                        <div className="col-sm-12 col-lg-4 col-xl-6">
+                        <div className="col-sm-12 col-lg-6 py-4">
                             <h3>Total Costs</h3>
                             {loading ? 
                                 <p>Loading ...</p>
@@ -331,7 +348,7 @@ const DashboardTrip = ({trip}) => {
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">Delete</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
@@ -343,6 +360,47 @@ const DashboardTrip = ({trip}) => {
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" className="btn btn-danger" onClick={deleteTrip}>Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* <!-- Review Modal --> */}
+        <div className="modal fade" id={`review-${trip.id}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Write a Review</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div className="modal-body">
+                        <h5>How was your <strong>{trip.id}</strong> trip?</h5>
+
+                        <form>
+                            <div className="form-group my-4">
+                                <label htmlFor="rating"><small>How would you rate this trip?</small></label>
+                                <select className="custom-select" onChange={(e) => {setRating(e.target.value)}}>
+                                    <option value="1">1 star</option>
+                                    <option value="2">2 stars</option>
+                                    <option value="3">3 stars</option>
+                                    <option value="4">4 stars</option>
+                                    <option value="5" defaultValue>5 stars</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group mt-5">
+                                <label htmlFor="textarea"><small>What's the reason for this rating?</small></label>
+                                <textarea className="form-control rounded-1" id="textarea" rows="3" ref={reviewText} required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-primary" onClick={submitReview}>Submit</button>
                     </div>
                 </div>
             </div>
