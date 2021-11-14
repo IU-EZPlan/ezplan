@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import firebase from 'firebase/app'
-
 
 import { useAuth } from "../../context/AuthUserContext";
 import { database } from '../../firebase';
+
 
 const EventCard = ({event, tripName}) => {
     const [added, setAdded] = useState(false);
@@ -20,12 +19,8 @@ const EventCard = ({event, tripName}) => {
             return new Promise(resolve => setTimeout(resolve, time));
         }
 
-        // const arrayToUpdate = firebase.firestore.FieldValue.arrayUnion(event)
-
-        await database.collection('users').doc(currentUser.uid).collection('trips').doc(tripName).update({
-            'itinerary': database.FieldValue.arrayUnion(event)
-            
-        });
+        const eventName = event.name;
+        await database.collection('users').doc(currentUser.uid).collection('trips').doc(tripName).collection('itinerary').doc(eventName).set({...event})
         
         setAdded(true);
         await delay(3000);
