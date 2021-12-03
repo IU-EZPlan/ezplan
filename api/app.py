@@ -5,6 +5,7 @@ from flask import Flask, request, send_from_directory
 from config import *
 import display_data.hotels as hotels
 import display_data.events as events
+import display_data.exchange as exchange
 
 
 app = Flask(__name__)
@@ -47,6 +48,19 @@ def get_events():
     return events.getEvents(lonlat, start, end, kids)
 
 
+@app.route("/exchange", methods=['GET'])
+def get_conversion():
+    print("hello")
+    base = request.args.get("base")
+    to = request.args.get("to")
+    amt = request.args.get("amount")
+    print(base, to, amt)
+
+    x = exchange.get_rate(base, to, amt)
+    print("X = ", x)
+    return x
+
+
 
 if __name__ == '__main__':
-    app.run(host="https://ezplan123.herokuapp.com/", port=5000)
+    app.run(host="0.0.0.0", port=5000)

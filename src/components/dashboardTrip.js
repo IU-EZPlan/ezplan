@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 
+import getSymbolFromCurrency from 'currency-symbol-map';
+
 import { useAuth } from "../context/AuthUserContext";
 import { database } from '../firebase';
+import * as API_ROUTES from "../constants/api-routes";
 import "../styles/timeline.css";
 
 
@@ -9,6 +12,7 @@ const DashboardTrip = ({trip}) => {
     const { currentUser } = useAuth();
     const [itinerary, setItinerary] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [totalCostInUSD, setTotalCostInUSD] = useState();
 
     const reviewText = useRef();
     const [rating, setRating] = useState(5);
@@ -21,7 +25,6 @@ const DashboardTrip = ({trip}) => {
                 var list_of_events = [];
 
                 snap.forEach((doc) => {
-                    // console.log(doc.data(), doc.id);
                     list_of_events.push({id: doc.id, ...doc.data()});
                 });
 
@@ -32,6 +35,25 @@ const DashboardTrip = ({trip}) => {
     }, [currentUser.uid, trip.id]);
 
 
+    const currency_conversion = async (base, amount) => {
+
+        fetch(API_ROUTES.CURRENCY + `?base=${base}&&amount=${amount}&&to=USD`)
+        .then((response) => {
+          if (response.ok) { 
+              return response.json();
+
+            } else { 
+              throw response; 
+            }
+    
+        }).then((data) => {
+          setTotalCostInUSD(data.amount);
+  
+        }).catch((error) => {
+            console.log(error);
+  
+        });
+    }
 
     const markAsComplete = async () => {
         await database.collection('users').doc(currentUser.uid).collection('trips').doc(trip.id).update({
@@ -79,6 +101,9 @@ const DashboardTrip = ({trip}) => {
 
     const formatCosts = () => {
         var items = []
+        const currency_code = trip.hotel.price_breakdown.currency;
+        const currency_symbol = getSymbolFromCurrency(currency_code)
+
         if (trip.hotel) {
             var date1 = new Date(trip.checkInDate);
             var date2 = new Date(trip.checkOutDate);
@@ -86,9 +111,10 @@ const DashboardTrip = ({trip}) => {
             const difference_in_days = (date2 - date1) / (1000 * 3600 * 24);
             const price = trip.hotel.min_total_price.toFixed(2);
             // const price = Math.round(trip.hotel.min_total_price * 100) / 100;
+
             items.push({
                 name: "Hotel",
-                details: `$ ${numberWithCommas(price)}/night  x  ${difference_in_days} days`,
+                details: `${currency_symbol} ${numberWithCommas(price)}/night  x  ${difference_in_days} days`,
                 total: price * difference_in_days
             });
         }
@@ -98,7 +124,7 @@ const DashboardTrip = ({trip}) => {
             itinerary.map((i) => {
                 return items.push({
                     name: i.name,
-                    details: i.price ? `$ ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)` : "Check Ticket Master for Price",
+                    details: i.price ? `${currency_symbol} ${numberWithCommas(i.price)}  x  ${i.quantity} person(s)` : "Check Ticket Master for Price",
                     total: 0
                 });
             })
@@ -110,6 +136,12 @@ const DashboardTrip = ({trip}) => {
                 sum += i.total;
             })
         }
+
+        if (currency_symbol !== "$"){
+            currency_conversion(currency_code, numberWithCommas(sum))
+        }
+
+
         return (
             <div className="py-4 mb-4">
                 {items.map((i) => {
@@ -118,7 +150,7 @@ const DashboardTrip = ({trip}) => {
                             <strong>{i.name}</strong>
                             <div className="d-flex justify-content-between">
                                 <p className="text-muted"><em>{i.details}</em></p>
-                                <p>$ {numberWithCommas(i.total)}</p>
+                                <p>{currency_symbol} {numberWithCommas(i.total)}</p>
                             </div>
                         </div>
                     )
@@ -127,8 +159,16 @@ const DashboardTrip = ({trip}) => {
                 <hr/>
                 <div className="d-flex justify-content-between">
                     <strong>Subtotal</strong>
-                    <p>$ {numberWithCommas(sum)}</p>
+                    <p>{currency_symbol} {numberWithCommas(sum)}</p>
                 </div>
+
+                    {currency_symbol !== "$" ? 
+                        <div className="float-right">
+                            <p><em>In USD this is equal to $ {numberWithCommas(parseFloat(totalCostInUSD))}</em></p>
+                        </div>
+                        :
+                        null
+                    }
             </div>
         )
     }
@@ -229,7 +269,7 @@ const DashboardTrip = ({trip}) => {
 
     return (
         <>
-        <div className="col-sm-12 mb-4" key={trip.id}>
+        <div className="col-sm-12 mb-4" key={`dash-${trip.id}`}>
             <div className="card border-start-4 dashboard-trip">
                 <div className="card-body">
                     <div className="row">

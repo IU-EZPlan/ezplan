@@ -12,6 +12,7 @@ headers = {
 
 # Takes original currency code (EUR, USD....) and the new currency code returns the exchange rate (str, str, str)
 def get_rate(original, toConvert, amount):
+    print(original, toConvert, amount)
     if original != toConvert:
         conn.request("GET", "/v1/metadata/exchange-rates?currency="+original+"&locale=en-gb", headers=headers)
 
@@ -34,7 +35,9 @@ def get_rate(original, toConvert, amount):
 
 # returns a string representing the conversion from the given amount to the desired currency, accurate enough probably.....
 def convert(amount, rate):
-     amount = float(amount) * rate
-     amount = round(amount, 2)
-     return '{:0.2f}'.format(amount)
+    amount = amount.replace(",", "")
+    amount = float(amount) * rate
+    amount = round(amount, 2)
+    print(amount)
+    return {"amount" : '{:0.2f}'.format(amount)}
 
