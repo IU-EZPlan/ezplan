@@ -1,14 +1,11 @@
+import os
 import time
-from flask import Flask, request 
-#,redirect, send_from_directory, request
+from flask import Flask, request, send_from_directory 
+
 from config import *
-from processing.places import *
-
-# More files to help 
 import display_data.hotels as hotels
-
-# THIS IS THROWING AN ERROR 
-#   from processing.places import Places
+import display_data.events as events
+import display_data.exchange as exchange
 
 
 app = Flask(__name__)
@@ -17,8 +14,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    # send_from_dir is throwing an error, cannot import properly
-    # return send_from_directory(PUBLIC_DIR, 'index.html')
     return "<p>Flask app </p>"
 
 
@@ -29,22 +24,43 @@ def get_current_time():
 
 @app.route('/hotels', methods=['GET'])
 def get_all_hotels():
+    # Assume that all params are strings
     location = request.args.get("location")
+    adults_number = request.args.get("adults")
+    children_number = request.args.get("children")
+    checkin_date = request.args.get("checkIN")
+    checkout_date = request.args.get("checkOUT")
+    room_number = request.args.get("rooms")
 
     if location:
-        return hotels.get_hotels_by_location(location)
-    return hotels.get_all()
+        return hotels.get_hotels_by_location(location, adults_number, children_number, checkin_date, checkout_date, room_number)
 
 
+@app.route('/events', methods=['GET'])
+def get_events():
+    # Assume that all params are strings
+    lonlat = request.args.get("location")
+    kids = request.args.get("children")
+    start = request.args.get("checkIN")
+    end = request.args.get("checkOUT")
 
-# @app.route("/call1")
-# def fn():
-#     json = request.json()
-#     print(json)
-#     Places.getPlaces(json)
 
+    return events.getEvents(lonlat, start, end, kids)
+
+
+@app.route("/exchange", methods=['GET'])
+def get_conversion():
+    print("hello")
+    base = request.args.get("base")
+    to = request.args.get("to")
+    amt = request.args.get("amount")
+    print(base, to, amt)
+
+    x = exchange.get_rate(base, to, amt)
+    print("X = ", x)
+    return x
 
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host="0.0.0.0", port=5000)

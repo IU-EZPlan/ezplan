@@ -12,6 +12,7 @@ import Login from './pages/login';
 import ForgotPassword from './pages/forgotPassword';
 import UpdateProfile from './pages/updateProfile';
 import Search from './pages/search';
+import Reviews from './pages/reviews';
 
 
 // importing components
@@ -29,9 +30,10 @@ function App() {
         <Route path={ROUTES.LOGIN} component={Login} />
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <Route path={ROUTES.PASSWORD_FORGET} component={ForgotPassword} />
-        <Route path={ROUTES.SEARCH} component={Search} />
+        <Route path={ROUTES.REVIEWS} component={Reviews} />
 
         {/* Must have an account to see the following pages */}
+        <PrivateRoute path={ROUTES.SEARCH} component={Search} />
         <PrivateRoute path={ROUTES.ACCOUNT} component={Dashboard} />
         <PrivateRoute path={ROUTES.UPDATE_PROFILE} component={UpdateProfile} />
       </AuthProvider>
