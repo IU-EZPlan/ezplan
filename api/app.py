@@ -1,6 +1,8 @@
 import os
 import time
 from flask import Flask, request, send_from_directory 
+from flask_cors import CORS, cross_origin
+
 
 from config import *
 import display_data.hotels as hotels
@@ -9,6 +11,7 @@ import display_data.exchange as exchange
 
 
 app = Flask(__name__)
+CORS(app)
 # app = Flask(__name__, static_folder='public')
 
 
@@ -63,4 +66,4 @@ def get_conversion():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="ezplan123.herokuapp.com", port=5000)

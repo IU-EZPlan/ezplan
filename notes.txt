@@ -47,3 +47,12 @@ Macintosh HD > Applications >
 Python<3.8> folder (or whatever version of python you're using) > 
 double click on "Install Certificates.command" file.
 ```
+
+
+* Things to change for deployment:
+```
+api-routes.js
+app.py
+package.json
+Procfile
+```
