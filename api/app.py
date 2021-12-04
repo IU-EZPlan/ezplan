@@ -66,4 +66,4 @@ def get_conversion():
 
 
 if __name__ == '__main__':
-    app.run(host="ezplan123.herokuapp.com", port=5000)
+    app.run(host="ezplan12-api.herokuapp.com", port=5000)
