@@ -2,13 +2,10 @@ import http.client
 import json
 import os
 
-from requests.api import head
-from dotenv import load_dotenv
-import requests
+# import requests
 
-load_dotenv()
-API_HOST = os.getenv("RAPID_API_HOST")
-API_KEY = os.getenv("RAPID_API_KEY")
+API_HOST = "booking-com.p.rapidapi.com"
+API_KEY = "0abe195911msh530834c67485896p1a77cajsn860dc0c5ac8e"
 
 # We are using the booking.com API for hotel data
 conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
@@ -54,8 +51,8 @@ def get_hotels_by_location(location, adults_number, children_number, checkin_dat
     params['locale'] = 'en-us'
 
     params = tuple(params.items())
-    response = requests.get("booking-com.p.rapidapi.com/v1/hotels/locations/", params=params, headers=headers).json()
-    print(response)
+    # response = requests.get("booking-com.p.rapidapi.com/v1/hotels/locations/", params=params, headers=headers).json()
+    # print(response)
 
     conn.request("GET", "/v1/hotels/locations?name="+location+"&locale=en-us", headers=headers)
 
