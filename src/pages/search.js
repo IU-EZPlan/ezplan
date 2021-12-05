@@ -195,7 +195,7 @@ const Search = () => {
             })
         }
 
-    } else if (searchResults && searchResults.length === 0 && isSearched) {
+    } else if (searchResults.length === 0 && isSearched) {
         return <PromptScreen heading="No Results" type="waiting" subtext="There are no event results near this hotel during your dates."/>
     } else if (loading) {
         return <PromptScreen heading="Loading Results" type="loading" subtext="Your search results will appear shortly"/>
