@@ -324,7 +324,7 @@ const DashboardTrip = ({trip}) => {
 
 
                     {/* Collapse to show Itinerary */}
-                    <div className="row collapse" id={`collapseExample-${trip.id}`}>
+                    <div className="row collapse" id={`collapseExample-${trip.id.replace(/\s+/g, '-')}`}>
                         <div className="col-sm-12 col-lg-6 py-4">
                             <h3>Itinerary</h3>
                             {loading ? 
