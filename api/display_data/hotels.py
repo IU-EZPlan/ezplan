@@ -54,10 +54,9 @@ def get_hotels_by_location(location, adults_number, children_number, checkin_dat
     params['locale'] = 'en-us'
 
     params = tuple(params.items())
-    response = requests.get("booking-com.p.rapidapi.com/v1/hotels/locations/", params=params, headers=headers).json()
-    print(response)
+    # response = requests.get("http://booking-com.p.rapidapi.com/v1/hotels/locations/", params=params, headers=headers).json()
 
-    conn.request("GET", "/v1/hotels/locations?name="+state+"&locale=en-us", headers=headers)
+    conn.request("GET", "/v1/hotels/locations?name="+location+"&locale=en-us", headers=headers)
 
     res = conn.getresponse()
     data = res.read()
