@@ -356,7 +356,7 @@ const DashboardTrip = ({trip}) => {
 
 
         {/* <!-- Mark Complete Modal --> */}
-        <div className="modal fade" id={`mark-complete-${trip.id}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id={`mark-complete-${trip.id.replace(/\s+/g, '-')}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -382,7 +382,7 @@ const DashboardTrip = ({trip}) => {
 
 
         {/* <!-- Delete Complete Modal --> */}
-        <div className="modal fade" id={`delete-${trip.id}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id={`delete-${trip.id.replace(/\s+/g, '-')}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -406,7 +406,7 @@ const DashboardTrip = ({trip}) => {
         </div>
 
         {/* <!-- Review Modal --> */}
-        <div className="modal fade" id={`review-${trip.id}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id={`review-${trip.id.replace(/\s+/g, '-')}`} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">

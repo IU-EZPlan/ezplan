@@ -12,7 +12,8 @@ conn = http.client.HTTPSConnection("booking-com.p.rapidapi.com")
 
 headers = {
     'x-rapidapi-host': API_HOST,
-    'x-rapidapi-key': API_KEY
+    'x-rapidapi-key': API_KEY,
+    
 }
 
 
